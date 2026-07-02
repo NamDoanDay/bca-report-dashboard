@@ -1,0 +1,2593 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Tổng Quan Báo Cáo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        background-color: #f9ffff;
+      }
+      .scroll-container {
+        overflow-y: auto;
+        scrollbar-color: #888888 transparent;
+        scrollbar-width: thin;
+      }
+      .scroll-container::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      .scroll-container::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .scroll-container::-webkit-scrollbar-thumb {
+        background-color: #888888;
+        border-radius: 4px;
+      }
+
+      .neu-flat {
+        background: #f9ffff;
+        box-shadow:
+          6px 6px 16px #d1dddd,
+          -6px -6px 16px #ffffff;
+      }
+      .neu-inset {
+        background: #f9ffff;
+        box-shadow:
+          inset 4px 4px 8px #d1dddd,
+          inset -4px -4px 8px #ffffff;
+      }
+      .btn-dark-blue {
+        background-color: #0b557a;
+        color: white;
+        box-shadow: 3px 3px 8px #cbd8d8;
+      }
+      .glass-card {
+        background: rgba(252, 255, 249, 0.45);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        box-shadow: 6px 6px 16px #d1dddd;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="text-gray-600 font-sans antialiased h-screen">
+    <div
+      id="appContainer"
+      class="container w-full h-full min-h-screen flex flex-col overflow-hidden"
+    >
+      <header
+        id="appHeader"
+        class="sticky top-0 z-50 bg-green-50 pt-1 flex justify-between items-center shrink-0"
+      >
+        <div class="flex items-end gap-0 bg-gray-100 rounded-tr-xl">
+          <a
+            href="./index.html"
+            class="relative z-10 flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-blue-500 bg-white border border-gray-200 border-b-transparent rounded-tr-2xl shadow-[0_-4px_12px_-4px_rgba(0,0,0,0.05)] transition-all duration-150"
+          >
+            <i class="fa-solid fa-chart-simple text-base text-blue-500"></i>
+            <span>Thống kê báo cáo</span>
+          </a>
+
+          <a
+            href="./hientrang.html"
+            class="group flex items-center gap-2 px-5 py-2.5 text-sm font-medium hover:bg-white rounded-t-xl"
+          >
+            <i
+              class="group-hover:text-blue-500 fa-solid fa-folder text-base"
+            ></i>
+            <span class="group-hover:text-blue-500">Chi tiết hiện trạng</span>
+          </a>
+        </div>
+        <div
+          class="flex items-center justify-between sm:justify-end gap-6 pr-8"
+        >
+          <div class="flex items-center gap-1">
+            <span class="text-xs font-medium text-gray-500">Dark mode</span>
+            <div
+              class="w-10 h-5 bg-gray-200 rounded-full p-0.5 cursor-pointer neu-inset relative"
+            >
+              <div
+                class="w-4 h-4 bg-white rounded-full shadow-md transform translate-x-0 transition duration-200"
+              ></div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button
+              class="w-9 h-9 rounded-full flex items-center justify-center text-gray-500 neu-flat hover:text-gray-700 relative"
+            >
+              <i class="fa-solid fa-bell"></i>
+              <span
+                class="absolute top-1 right-1 w-2 h-2 bg-red-400 rounded-full"
+              ></span>
+            </button>
+            <button
+              class="w-9 h-9 rounded-full flex items-center justify-center text-gray-500 neu-flat hover:text-gray-700 relative"
+            >
+              <i class="fa-solid fa-gear w-5"></i>
+            </button>
+            <button
+              class="w-9 h-9 rounded-full overflow-hidden neu-flat flex items-center justify-center hover:text-gray-700 relative"
+            >
+              <i class="fa-solid fa-user"></i>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main id="appMain" class="flex h-full flex-col gap-4 p-6 overflow-auto">
+        <section
+          id="section-1"
+          class="neu-flat glass-card p-4 pb-8 rounded-2xl bg-[#f9ffff] space-y-6"
+        >
+          <div class="flex items-center">
+            <h1
+              id="dynamicSectionTitle"
+              class="text-2xl font-bold text-gray-800"
+            >
+              Tổng quan Bộ ngành
+            </h1>
+          </div>
+
+          <div
+            class="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+          >
+            <div
+              class="neu-inset flex gap-1 bg-gray-100 p-1 rounded-lg text-xs font-medium self-start"
+            >
+              <button
+                id="tab-tongquan"
+                onclick="switchTab('tongquan')"
+                class="px-3 py-1 bg-white rounded shadow-sm text-gray-800 font-semibold transition-all"
+              >
+                Tổng quan
+              </button>
+              <button
+                id="tab-tieuchi"
+                onclick="switchTab('tieuchi')"
+                class="px-3 py-1 text-gray-400 hover:bg-white rounded transition-all"
+              >
+                Nhóm tiêu chí
+              </button>
+              <button
+                class="px-3 py-1 text-gray-400 hover:bg-white rounded cursor-not-allowed opacity-50"
+              >
+                Reports
+              </button>
+              <button
+                class="px-3 py-1 text-gray-400 hover:bg-white rounded cursor-not-allowed opacity-50"
+              >
+                Notifications
+              </button>
+            </div>
+
+            <div
+              class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 text-sm"
+            >
+              <div
+                id="groupFilterWrapper"
+                class="hidden relative flex items-center gap-2 px-3 py-3 rounded-lg neu-inset bg-white border border-gray-100"
+              >
+                <i class="fa-solid fa-filter text-teal-600 text-xs"></i>
+                <select
+                  id="groupSelectFilter"
+                  onchange="filterGroups()"
+                  class="bg-transparent text-xs rounded-lg font-semibold text-gray-700 outline-none pr-4 cursor-pointer"
+                >
+                  <option value="all">Tất cả nhóm</option>
+                  <option value="Pháp lý">Pháp lý</option>
+                  <option value="Tài chính">Tài chính</option>
+                  <option value="Hạ tầng">Hạ tầng</option>
+                  <option value="Dữ liệu">Dữ liệu</option>
+                  <option value="Phần mềm">Phần mềm</option>
+                  <option value="ATTT">An toàn thông tin</option>
+                </select>
+              </div>
+
+              <div
+                class="relative flex items-center gap-2 px-3 py-1.5 rounded-lg neu-inset text-gray-500 bg-white border border-gray-100 hover:border-gray-300 transition-all cursor-pointer"
+                onclick="openDatePicker(this)"
+              >
+                <i class="fa-regular fa-calendar text-[#0b557a]"></i>
+                <div class="flex flex-col text-left">
+                  <span
+                    class="text-[10px] text-gray-400 font-medium uppercase leading-none"
+                    >Từ ngày</span
+                  >
+                  <input
+                    type="text"
+                    id="startDateDisplay"
+                    value="29/08/2024"
+                    class="date-display bg-transparent text-xs font-semibold text-gray-700 outline-none pointer-events-none pt-0.5 w-24"
+                    readonly=""
+                  />
+                  <input
+                    type="date"
+                    id="startDatePicker"
+                    value="2024-08-29"
+                    onchange="handleDateChange(this, 'start')"
+                    class="date-picker absolute opacity-0 pointer-events-none"
+                  />
+                </div>
+              </div>
+
+              <div
+                class="relative flex items-center gap-2 px-3 py-1.5 rounded-lg neu-inset text-gray-500 bg-white border border-gray-100 hover:border-gray-300 transition-all cursor-pointer"
+                onclick="openDatePicker(this)"
+              >
+                <i class="fa-regular fa-calendar text-rose-500"></i>
+                <div class="flex flex-col text-left">
+                  <span
+                    class="text-[10px] text-gray-400 font-medium uppercase leading-none"
+                    >Đến ngày</span
+                  >
+                  <input
+                    type="text"
+                    id="endDateDisplay"
+                    value="10/02/2025"
+                    class="date-display bg-transparent text-xs font-semibold text-gray-700 outline-none pointer-events-none pt-0.5 w-24"
+                    readonly=""
+                  />
+                  <input
+                    type="date"
+                    id="endDatePicker"
+                    value="2025-02-10"
+                    onchange="handleDateChange(this, 'end')"
+                    class="date-picker absolute opacity-0 pointer-events-none"
+                  />
+                </div>
+              </div>
+
+              <button
+                onclick="applyDateFilter()"
+                class="neu-flat flex items-center gap-1 px-4 py-2 rounded-lg bg-green-500 text-white text-sm font-medium hover:bg-green-600"
+              >
+                <i class="fa-solid fa-magnifying-glass"></i>Tìm kiếm
+              </button>
+            </div>
+          </div>
+
+          <div id="chartTongQuanWrapper">
+            <div
+              id="tab-content-tongquan"
+              class="grid grid-cols-1 lg:grid-cols-6 gap-4 items-stretch"
+            >
+              <div id="cardPieChart" class="col-span-3">
+                <div
+                  class="neu-flat p-5 rounded-2xl bg-white h-full flex flex-col justify-between relative group"
+                >
+                  <button
+                    onclick="openDetailModal('all')"
+                    class="absolute top-4 right-4 w-7 h-7 rounded-md border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 hover:text-slate-900 flex items-center justify-center transition-all shadow-sm z-10"
+                    title="Mở rộng danh sách tổng thể"
+                  >
+                    <i class="fa-solid fa-expand text-xs"></i>
+                  </button>
+
+                  <div
+                    class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center flex-1 w-full"
+                  >
+                    <div class="sm:col-span-6 space-y-2 text-xs font-semibold">
+                      <div
+                        class="p-3 rounded-2xl neu-flat flex items-center justify-between gap-3 bg-slate-50"
+                      >
+                        <div
+                          class="w-10 h-10 rounded-xl neu-inset flex items-center justify-center text-gray-500 text-base"
+                        >
+                          <i class="fa-solid fa-chart-pie"></i>
+                        </div>
+                        <div class="flex-1 text-right">
+                          <p
+                            class="text-xs font-bold uppercase tracking-wider text-gray-400 text-[10px]"
+                          >
+                            Tổng số CSDL
+                          </p>
+                          <h3 class="text-sm font-bold text-gray-800">26</h3>
+                        </div>
+                      </div>
+
+                      <div
+                        onclick="openDetailModal('Đã xây dựng')"
+                        class="p-2.5 rounded-xl bg-emerald-50/60 border border-emerald-100 flex items-center justify-between gap-3 cursor-pointer hover:bg-emerald-50 transition-all"
+                      >
+                        <div class="flex items-center gap-2">
+                          <i class="text-green-500 fa-solid fa-check"></i>
+                          <span class="text-emerald-900 font-medium text-xs"
+                            >Đã xây dựng</span
+                          >
+                        </div>
+                        <div
+                          class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold text-xs shrink-0"
+                        >
+                          17
+                        </div>
+                      </div>
+
+                      <div
+                        onclick="openDetailModal('Đang xây dựng')"
+                        class="p-2.5 rounded-xl bg-amber-50/60 border border-amber-100 flex items-center justify-between gap-3 cursor-pointer hover:bg-amber-50 transition-all"
+                      >
+                        <div class="flex items-center gap-2">
+                          <i
+                            class="text-yellow-600 fa-regular fa-hourglass"
+                          ></i>
+                          <span class="text-amber-700 font-medium text-xs"
+                            >Đang xây dựng</span
+                          >
+                        </div>
+                        <div
+                          class="w-5 h-5 rounded-full bg-amber-100 text-amber-700 border border-amber-200 flex items-center justify-center font-bold text-xs shrink-0"
+                        >
+                          8
+                        </div>
+                      </div>
+
+                      <div
+                        onclick="openDetailModal('Chưa xây dựng')"
+                        class="p-2.5 rounded-xl bg-rose-50/60 border border-rose-100 flex items-center justify-between gap-3 cursor-pointer hover:bg-rose-50 transition-all"
+                      >
+                        <div class="flex items-center gap-2">
+                          <i
+                            class="text-red-500 fa-solid fa-triangle-exclamation"
+                          ></i>
+                          <span class="text-rose-700 font-medium text-xs"
+                            >Chưa xây dựng</span
+                          >
+                        </div>
+                        <div
+                          class="w-5 h-5 rounded-full bg-rose-100 text-rose-700 border border-rose-200 flex items-center justify-center font-bold text-xs shrink-0"
+                        >
+                          1
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="sm:col-span-6 flex flex-col items-center justify-center relative min-h-[180px]"
+                    >
+                      <div class="w-full max-w-[200px] aspect-square">
+                        <canvas id="csdlPieChart"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="cardLineChart" class="col-span-3">
+                <div
+                  class="neu-flat p-5 rounded-2xl bg-white h-full flex flex-col justify-between"
+                >
+                  <div class="flex flex-col gap-1 mb-2">
+                    <h3 class="text-gray-800 font-bold text-sm text-left">
+                      Số lượng theo hiện trạng tiến độ liên thông
+                    </h3>
+                    <p class="text-[11px] text-slate-400 text-left font-medium">
+                      Theo dõi chu kỳ thời gian từ ngày bắt đầu đến ngày kết
+                      thúc
+                    </p>
+                  </div>
+                  <div class="w-full relative flex-1 min-h-[200px]">
+                    <canvas id="statusLineChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              id="tab-content-tieuchi"
+              class="hidden grid grid-cols-2 animate-fade-in gap-4"
+            ></div>
+          </div>
+        </section>
+
+        <section
+          id="section-2"
+          class="section-2 glass-card p-4 rounded-2xl neu-flat bg-[#f9ffff] space-y-6"
+        >
+          <div class="flex items-center">
+            <h1
+              id="dynamicSectionTitle"
+              class="text-2xl font-bold text-gray-800"
+            >
+              Chi tiết bộ ngành
+            </h1>
+          </div>
+
+          <div
+            class="date-picker flex flex-wrap items-center justify-center gap-4"
+          >
+            <div class="relative w-full sm:w-80">
+              <span
+                class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400"
+              >
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </span>
+              <input
+                type="text"
+                placeholder="Search..."
+                class="w-full pl-11 pr-4 py-2.5 rounded-full neu-inset text-sm text-gray-700 placeholder-gray-400 focus:outline-none"
+              />
+            </div>
+
+            <div
+              class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 text-sm"
+            >
+              <div
+                class="relative flex items-center gap-2 px-3 py-1.5 rounded-lg neu-inset text-gray-500 bg-white border border-gray-100 hover:border-gray-300 transition-all cursor-pointer group"
+                onclick="this.querySelector('.date-picker').showPicker()"
+              >
+                <i class="fa-regular fa-calendar text-[#0b557a]"></i>
+                <div class="flex flex-col text-left">
+                  <span
+                    class="text-[10px] text-gray-400 font-medium uppercase leading-none"
+                    >Từ ngày</span
+                  >
+                  <input
+                    type="text"
+                    class="date-display bg-transparent text-xs font-semibold text-gray-700 outline-none pointer-events-none pt-0.5 w-28"
+                    readonly=""
+                  />
+                  <input
+                    type="date"
+                    value="2024-08-29"
+                    class="date-picker absolute opacity-0 pointer-events-none"
+                    onchange="updateDateDisplay(this)"
+                  />
+                </div>
+              </div>
+
+              <div
+                class="relative flex items-center gap-2 px-3 py-1.5 rounded-lg neu-inset text-gray-500 bg-white border border-gray-100 hover:border-gray-300 transition-all cursor-pointer group"
+                onclick="this.querySelector('.date-picker').showPicker()"
+              >
+                <i class="fa-regular fa-calendar text-rose-500"></i>
+                <div class="flex flex-col text-left">
+                  <span
+                    class="text-[10px] text-gray-400 font-medium uppercase leading-none"
+                    >Đến ngày</span
+                  >
+                  <input
+                    type="text"
+                    class="date-display bg-transparent text-xs font-semibold text-gray-700 outline-none pointer-events-none pt-0.5 w-28"
+                    readonly=""
+                  />
+                  <input
+                    type="date"
+                    value="2024-09-10"
+                    class="date-picker absolute opacity-0 pointer-events-none"
+                    onchange="updateDateDisplay(this)"
+                  />
+                </div>
+              </div>
+              <button
+                class="flex items-center gap-1 px-4 py-2 rounded-lg bg-green-500 text-white text-sm font-medium hover:bg-green-600 transition-colors"
+              >
+                <i class="fa-solid fa-magnifying-glass"></i>Tìm kiếm
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <div
+              class="col-span-12 p-5 bg-white rounded-2xl border border-gray-100 shadow-sm neu-flat"
+            >
+              <div
+                class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4"
+              >
+                <div>
+                  <h3 class="text-gray-800 font-bold text-base">
+                    Tỷ lệ xây dựng CSDL theo Bộ ban ngành
+                  </h3>
+                  <p class="text-[11px] text-gray-400 font-medium">
+                    Thống kê chi tiết hiện trạng Đã xây dựng, Đang xây dựng và
+                    Chưa xây dựng trên tổng số CSDL
+                  </p>
+                </div>
+                <span
+                  class="text-[10px] bg-slate-100 text-slate-500 font-bold px-2 py-1 rounded"
+                  >Đơn vị: Số lượng CSDL</span
+                >
+              </div>
+
+              <div class="w-full h-80 relative">
+                <canvas id="multipleBarChartMinistries"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="w-full space-y-3.5 p-6 rounded-xl border border-slate-200 bg-white text-slate-950 shadow-sm"
+          >
+            <div
+              class="flex flex-wrap items-center justify-between gap-3 text-xs"
+            >
+              <div class="flex flex-wrap items-center gap-2">
+                <div class="relative w-72">
+                  <i
+                    class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"
+                  ></i>
+                  <input
+                    id="tanstackSearch"
+                    type="text"
+                    placeholder="Lọc dữ liệu theo Bộ ngành, CSDL..."
+                    oninput="onTableStateChange()"
+                    class="w-full pl-9 pr-3 py-2 rounded-md border border-slate-200 bg-slate-50/50 placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-400 focus-visible:bg-white transition-all text-xs font-medium"
+                  />
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <button
+                  onclick="toggleProgressSort()"
+                  class="h-9 px-3 border border-slate-200 rounded-md bg-white text-slate-700 hover:bg-slate-50 flex items-center gap-1.5 font-medium transition-all shadow-sm active:scale-95"
+                >
+                  <i
+                    class="fa-solid fa-arrow-down-wide-short text-slate-400"
+                  ></i>
+                  Tiến độ: <span id="sortLabelText">Giảm dần</span>
+                </button>
+
+                <div class="relative inline-block text-left group/menu">
+                  <button
+                    class="h-9 px-3 border border-slate-200 rounded-md bg-white text-slate-700 hover:bg-slate-50 flex items-center gap-1.5 font-medium shadow-sm"
+                  >
+                    <i class="fa-solid fa-table-columns text-slate-400"></i>
+                    Hiển thị cột
+                  </button>
+                  <div
+                    class="absolute right-0 mt-1 w-44 bg-white border border-slate-200 rounded-md shadow-md hidden group-hover/menu:block z-50 p-1.5 space-y-0.5 animate-fade-in text-slate-700"
+                  >
+                    <label
+                      class="flex items-center gap-2 p-2 hover:bg-slate-100 rounded-md cursor-pointer font-medium"
+                      ><input
+                        type="checkbox"
+                        checked
+                        onchange="toggleTableCol(4, this)"
+                        class="rounded border-slate-300 text-slate-900 focus:ring-slate-400"
+                      />
+                      Đơn vị chủ quản</label
+                    >
+                    <label
+                      class="flex items-center gap-2 p-2 hover:bg-slate-100 rounded-md cursor-pointer font-medium"
+                      ><input
+                        type="checkbox"
+                        checked
+                        onchange="toggleTableCol(6, this)"
+                        class="rounded border-slate-300 text-slate-900 focus:ring-slate-400"
+                      />
+                      Các tiêu chí con</label
+                    >
+                    <label
+                      class="flex items-center gap-2 p-2 hover:bg-slate-100 rounded-md cursor-pointer font-medium"
+                      ><input
+                        type="checkbox"
+                        checked
+                        onchange="toggleTableCol(12, this)"
+                        class="rounded border-slate-300 text-slate-900 focus:ring-slate-400"
+                      />
+                      Đánh giá chung</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="rounded-md border border-slate-200 overflow-x-auto bg-white"
+            >
+              <table
+                id="mainShadcnReactTable"
+                class="w-full text-xs border-collapse min-w-[1250px] tracking-tight"
+              >
+                <thead>
+                  <tr
+                    class="border-b border-slate-200 bg-slate-50/70 text-slate-500 transition-colors"
+                  >
+                    <th class="p-3 font-semibold text-center w-12">STT</th>
+                    <th class="p-3 font-semibold text-left">Bộ ngành</th>
+                    <th class="p-3 font-semibold text-left col-sub-holder">
+                      Đơn vị chủ quản
+                    </th>
+                    <th class="p-3 font-semibold text-left">
+                      Tên Cơ sở dữ liệu chuyên ngành
+                    </th>
+                    <th class="p-3 font-semibold text-center w-24">Tiến độ</th>
+                    <th
+                      class="p-3 font-semibold text-center w-16 col-sub-criteria"
+                    >
+                      Pháp lý
+                    </th>
+                    <th
+                      class="p-3 font-semibold text-center w-16 col-sub-criteria"
+                    >
+                      Tài chính
+                    </th>
+                    <th
+                      class="p-3 font-semibold text-center w-16 col-sub-criteria"
+                    >
+                      Hạ tầng
+                    </th>
+                    <th
+                      class="p-3 font-semibold text-center w-16 col-sub-criteria"
+                    >
+                      Dữ liệu
+                    </th>
+                    <th
+                      class="p-3 font-semibold text-center w-16 col-sub-criteria"
+                    >
+                      Phần mềm
+                    </th>
+                    <th
+                      class="p-3 font-semibold text-center w-16 col-sub-criteria"
+                    >
+                      ATTT
+                    </th>
+                    <th class="p-3 font-semibold text-center w-32 col-sub-eval">
+                      Đánh giá chung
+                    </th>
+                    <th
+                      class="p-3 font-semibold text-center w-12 text-slate-400"
+                    >
+                      <i class="fa-solid fa-eye"></i>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  id="reactTableBody"
+                  class="divide-y divide-slate-200/60 text-slate-700 bg-white"
+                ></tbody>
+              </table>
+            </div>
+
+            <div
+              class="flex items-center justify-between text-xs text-slate-500 font-medium pt-1"
+            >
+              <div class="flex items-center gap-1">
+                <i
+                  class="fa-solid fa-circle-info text-[10px] text-slate-400"
+                ></i>
+                <span id="counterRowsSummary"
+                  >Đang tải dữ liệu cấu phần dữ liệu...</span
+                >
+              </div>
+              <div class="flex items-center gap-4">
+                <span id="paginationInfo">Trang 1 / 1</span>
+                <div class="flex items-center gap-1">
+                  <button
+                    class="w-7 h-7 border border-slate-200 rounded-md bg-white flex items-center justify-center text-slate-400 cursor-not-allowed opacity-50"
+                    disabled
+                  >
+                    <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                  </button>
+                  <button
+                    class="w-7 h-7 border border-slate-200 rounded-md bg-white flex items-center justify-center text-slate-400 cursor-not-allowed opacity-50"
+                    disabled
+                  >
+                    <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2">
+                  <span>Số hàng hiển thị:</span>
+                  <select
+                    id="rowsPerPageSelect"
+                    onchange="onRowsPerPageChange()"
+                    class="h-7 px-2 rounded border border-slate-200 bg-white text-slate-700 font-medium outline-none cursor-pointer text-xs"
+                  >
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                  </select>
+                </div>
+
+                <div class="flex items-center gap-4">
+                  <span id="paginationInfo">Trang 1 / 1</span>
+                  <div class="flex items-center gap-1">
+                    <button
+                      id="prevPageBtn"
+                      onclick="goToPage(-1)"
+                      class="w-7 h-7 border border-slate-200 rounded-md bg-white flex items-center justify-center text-slate-600 hover:bg-slate-50 active:scale-95 transition-all disabled:text-slate-300 disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100"
+                    >
+                      <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    </button>
+                    <button
+                      id="nextPageBtn"
+                      onclick="goToPage(1)"
+                      class="w-7 h-7 border border-slate-200 rounded-md bg-white flex items-center justify-center text-slate-600 hover:bg-slate-50 active:scale-95 transition-all disabled:text-slate-300 disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100"
+                    >
+                      <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div
+          id="shadcnDialogModal"
+          class="fixed inset-0 bg-black/60 backdrop-blur-xs z-[9999] hidden flex items-center justify-center p-4 animate-fade-in"
+        >
+          <div
+            class="bg-white rounded-lg w-full max-w-lg shadow-lg overflow-hidden transform transition-all duration-200 scale-95 opacity-0 flex flex-col border border-slate-200"
+            id="dialogBoxStructure"
+          >
+            <div
+              class="px-5 py-4 border-b border-slate-100 flex items-start justify-between bg-slate-50/50"
+            >
+              <div class="space-y-0.5">
+                <div
+                  class="inline-flex items-center text-[10px] bg-slate-100 border border-slate-200 text-slate-800 font-mono font-bold px-1.5 py-0.5 rounded"
+                  id="dialogMetaSTT"
+                >
+                  STT
+                </div>
+                <h4
+                  class="font-bold text-slate-900 text-sm leading-tight mt-1"
+                  id="dialogMetaCsdlName"
+                >
+                  Cơ sở dữ liệu
+                </h4>
+              </div>
+              <button
+                onclick="closeShadcnDialog()"
+                class="text-slate-400 hover:text-slate-600 rounded p-1 transition-colors"
+              >
+                <i class="fa-solid fa-xmark text-sm"></i>
+              </button>
+            </div>
+            <div class="p-5 space-y-4 text-xs">
+              <div class="space-y-2">
+                <div
+                  class="flex justify-between py-1 border-b border-slate-100"
+                >
+                  <span class="text-slate-400 font-medium"
+                    >Cơ quan bộ ngành:</span
+                  ><strong
+                    class="text-slate-800 font-semibold"
+                    id="dialogMetaBoNganh"
+                    >---</strong
+                  >
+                </div>
+                <div
+                  class="flex justify-between py-1 border-b border-slate-100"
+                >
+                  <span class="text-slate-400 font-medium"
+                    >Đơn vị chịu trách nhiệm:</span
+                  ><strong
+                    class="text-slate-800 font-semibold"
+                    id="dialogMetaChuQuan"
+                    >---</strong
+                  >
+                </div>
+              </div>
+
+              <div
+                class="bg-slate-50 border border-slate-200/60 p-3 rounded-lg"
+              >
+                <div
+                  class="flex items-center justify-between font-semibold mb-1.5 text-slate-700"
+                >
+                  <span>Tiến độ phân hệ</span
+                  ><span id="dialogProgressText" class="text-slate-900"
+                    >0%</span
+                  >
+                </div>
+                <div
+                  class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden"
+                >
+                  <div
+                    id="dialogProgressBar"
+                    class="bg-slate-900 h-1.5 transition-all duration-500"
+                    style="width: 0%"
+                  ></div>
+                </div>
+              </div>
+
+              <div class="space-y-1.5">
+                <span class="text-slate-400 font-medium block"
+                  >Chi tiết 6 nhóm tiêu chí kỹ thuật:</span
+                >
+                <div
+                  class="grid grid-cols-2 gap-2"
+                  id="dialogCriteriaGridBox"
+                ></div>
+              </div>
+
+              <div
+                class="pt-2 border-t border-slate-100 flex items-center justify-between"
+              >
+                <span class="font-semibold text-slate-800"
+                  >Trạng thái đánh giá tổng quan:</span
+                >
+                <div id="dialogGeneralStatusBadge">---</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          id="ministryDetailModal"
+          class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] hidden flex items-center justify-center p-4"
+        >
+          <div
+            class="bg-white rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden transform transition-all duration-200 scale-95 opacity-0 flex flex-col"
+            id="ministryModalBox"
+          >
+            <div
+              class="px-6 py-4 bg-slate-50 border-b border-slate-100 flex flex-col gap-1.5"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-[10px] bg-teal-100 text-teal-800 font-bold px-2 py-0.5 rounded uppercase"
+                  id="modalGroupNameBadge"
+                  >PHÁP LÝ</span
+                >
+                <button
+                  onclick="closeMinistryModal()"
+                  class="text-slate-400 hover:text-slate-600 p-1"
+                >
+                  <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+              </div>
+              <h3
+                class="font-bold text-slate-800 text-sm leading-snug"
+                id="modalCriterionQuestion"
+              >
+                Tiêu chí: ---
+              </h3>
+            </div>
+
+            <div
+              class="px-6 pt-3 bg-slate-50/50 border-b border-slate-100 flex gap-2"
+            >
+              <button
+                id="btn-popup-passed"
+                onclick="switchPopupTab('passed')"
+                class="px-4 py-2 text-xs font-bold border-b-2 border-teal-500 text-teal-600 transition-all"
+              >
+                Đã đạt
+              </button>
+              <button
+                id="btn-popup-failed"
+                onclick="switchPopupTab('failed')"
+                class="px-4 py-2 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all"
+              >
+                Chưa đạt
+              </button>
+              <button
+                id="btn-popup-all"
+                onclick="switchPopupTab('all')"
+                class="px-4 py-2 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all"
+              >
+                Tổng quan
+              </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto max-h-[50vh]">
+              <div class="overflow-hidden border border-slate-100 rounded-xl">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr
+                      class="bg-slate-100/80 text-slate-500 font-semibold border-b border-slate-200"
+                    >
+                      <th class="p-3">STT</th>
+                      <th class="p-3">Tên Bộ / Ban / Ngành</th>
+                      <th class="p-3">Tên Cơ sở dữ liệu chuyên ngành</th>
+                      <th class="p-3 text-center">Trạng thái</th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    id="ministryTableBody"
+                    class="text-slate-700 divide-y divide-slate-100"
+                  ></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          id="criteriaExpandModal"
+          class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] hidden flex items-center justify-center p-4"
+        >
+          <div
+            class="bg-white rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-95 opacity-0 flex flex-col"
+            id="criteriaModalBox"
+          >
+            <div
+              class="px-5 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between"
+            >
+              <h3 class="font-bold text-slate-800 text-sm">
+                Báo cáo chi tiết chỉ số
+              </h3>
+              <button
+                onclick="closeCriteriaExpandModal()"
+                class="text-slate-400 hover:text-slate-600 p-1"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+            <div class="p-6 space-y-4">
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                <p
+                  id="modalActiveCriterion"
+                  class="text-xs font-bold text-slate-800 leading-relaxed"
+                >
+                  ---
+                </p>
+                <p
+                  id="modalActiveStats"
+                  class="text-[11px] text-teal-600 font-bold mt-1"
+                >
+                  ---
+                </p>
+              </div>
+              <p
+                id="modalDescriptionParagraph"
+                class="text-xs text-slate-500 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100 whitespace-pre-line"
+              >
+                ---
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          id="criteriaExpandModal"
+          class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] hidden flex items-center justify-center p-4"
+        >
+          <div
+            class="bg-white rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-95 opacity-0 flex flex-col"
+            id="criteriaModalBox"
+          >
+            <div
+              class="px-6 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between"
+            >
+              <div class="flex items-center gap-2">
+                <span
+                  class="p-2 bg-teal-50 text-teal-600 rounded-xl text-xs font-bold"
+                  id="modalGroupBadge"
+                  >PHÁP LÝ</span
+                >
+                <h3 class="font-bold text-slate-800 text-sm">
+                  Báo cáo chi tiết nhóm tiêu chí
+                </h3>
+              </div>
+              <button
+                onclick="closeCriteriaExpandModal()"
+                class="text-slate-400 hover:text-slate-600 p-1.5 hover:bg-slate-200/60 rounded-lg transition"
+              >
+                <i class="fa-solid fa-xmark text-lg"></i>
+              </button>
+            </div>
+            <div class="p-6 overflow-y-auto max-h-[70vh] space-y-4">
+              <div
+                class="p-4 bg-teal-50/40 rounded-xl border border-teal-100/60"
+              >
+                <h4
+                  class="text-xs font-bold text-slate-400 uppercase tracking-wide"
+                >
+                  Tiêu chí đang kiểm tra
+                </h4>
+                <p
+                  id="modalActiveCriterion"
+                  class="text-sm font-bold text-slate-800 mt-1 leading-relaxed"
+                >
+                  ---
+                </p>
+                <p
+                  id="modalActiveStats"
+                  class="text-xs text-teal-600 font-bold mt-1"
+                >
+                  Đáp ứng: ---
+                </p>
+              </div>
+              <div>
+                <h4
+                  class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2"
+                >
+                  Diễn giải pháp lý & Quy chuẩn mẫu hành chính
+                </h4>
+                <div
+                  id="modalDescriptionParagraph"
+                  class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200/60 font-medium whitespace-pre-line"
+                >
+                  ---
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          id="chartDetailModal"
+          class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4 animate-fade-in"
+        >
+          <div
+            id="modalBoxStructure"
+            class="bg-white rounded-xl border border-slate-200 shadow-xl max-w-3xl w-full flex flex-col overflow-hidden transform scale-95 opacity-0 transition-all duration-150 max-h-[85vh]"
+          >
+            <div
+              class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50"
+            >
+              <div>
+                <h4 id="modalTitle" class="font-bold text-sm text-slate-900">
+                  Danh sách Cơ sở dữ liệu
+                </h4>
+                <p
+                  id="modalSubtitle"
+                  class="text-[11px] text-slate-500 font-medium mt-0.5"
+                ></p>
+              </div>
+              <button
+                onclick="closeDetailModal()"
+                class="w-6 h-6 rounded-md border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 hover:text-slate-900 flex items-center justify-center active:scale-95 transition-all"
+              >
+                <i class="fa-solid fa-xmark text-xs"></i>
+              </button>
+            </div>
+            <div class="p-4 overflow-x-auto overflow-y-auto flex-1">
+              <table
+                class="w-full text-xs text-left border-collapse tracking-tight"
+              >
+                <thead>
+                  <tr
+                    class="border-b border-slate-200 bg-slate-50 text-slate-500 font-semibold"
+                  >
+                    <th class="p-2.5 text-center w-12">STT</th>
+                    <th class="p-2.5">Bộ ngành</th>
+                    <th class="p-2.5">Đơn vị chủ quản</th>
+                    <th class="p-2.5">Tên Cơ sở dữ liệu chuyên ngành</th>
+                    <th class="p-2.5 text-center w-28">Hiện trạng</th>
+                  </tr>
+                </thead>
+                <tbody
+                  id="modalTableBody"
+                  class="divide-y divide-slate-100 text-slate-700"
+                ></tbody>
+              </table>
+            </div>
+            <div
+              class="p-3 border-t border-slate-100 bg-slate-50 text-right text-[11px] font-medium text-slate-400"
+            >
+              Bấm ESC hoặc Click nút đóng để thoát view xem nhanh.
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const ctx = document.getElementById("csdlPieChart").getContext("2d");
+
+      new Chart(ctx, {
+        type: "pie",
+        data: {
+          labels: ["Đã xây dựng", "Đang xây dựng", "Chưa xây dựng"],
+          datasets: [
+            {
+              data: [17, 8, 1],
+              backgroundColor: [
+                "rgb(50 239 84)", // Xanh lục (Đã xây dựng)
+                "rgb(247 213 77)", // vàng (Đang xây dựng)
+                "rgb(236 40 40)", // Đỏ (Chưa xây dựng)
+              ],
+              borderWidth: 2,
+              borderColor: "#ffffff",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  let label = context.label || "";
+                  let value = context.raw || 0;
+                  return ` ${label}: ${value} CSDL`;
+                },
+              },
+            },
+            title: {
+              display: false,
+              text: "Pie Chart",
+            },
+          },
+        },
+      });
+    });
+    function updateDateDisplay(input) {
+      if (!input.value) return;
+      // Tách chuỗi yyyy-mm-dd từ input gốc
+      const [year, month, day] = input.value.split("-");
+      // Tìm thẻ hiển thị text nằm cùng cụm với nó và gán lại theo format dd/mm/yyyy
+      const displayInput = input.parentElement.querySelector(".date-display");
+      if (displayInput) {
+        displayInput.value = `${day}/${month}/${year}`;
+      }
+    }
+
+    // Khởi chạy khi trang vừa load để cập nhật giá trị mặc định (value ban đầu)
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll(".date-picker").forEach((input) => {
+        updateDateDisplay(input);
+      });
+    });
+  </script>
+
+  <script>
+    // Đăng ký plugin hiển thị số liệu đầu mốc dữ liệu
+    Chart.register(ChartDataLabels);
+
+    const ctx = document.getElementById("statusLineChart").getContext("2d");
+
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: ["Tuần trước", "Tuần này", "Tuần tới"],
+        datasets: [
+          {
+            label: "Đã xây dựng",
+            data: [20, 20, 0], // Dựa theo tỉ lệ tương đối trong ảnh gốc (mốc 20 gần vạch 50)
+            borderColor: "#10b981", // Màu xanh lá
+            backgroundColor: "#10b981",
+            borderWidth: 2,
+            tension: 0, // Đường thẳng, không uốn cong mềm
+            pointRadius: 4,
+            pointHoverRadius: 6,
+          },
+          {
+            label: "Chưa xây dựng",
+            data: [100, 100, 10], // Điểm cuối cùng nhấc nhẹ lên trên mốc 0 (Giá trị 10 hiển thị nhãn số 0)
+            borderColor: "#ef4444", // Màu đỏ
+            backgroundColor: "#ef4444",
+            borderWidth: 2,
+            tension: 0,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+          },
+          {
+            label: "Đang xây dựng",
+            data: [0, 0, 0], // Trùng vạch đáy số 0 màu xanh dương
+            borderColor: "#3b82f6",
+            backgroundColor: "#3b82f6",
+            borderWidth: 2,
+            tension: 0,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          // Ẩn block legend mặc định của Chart.js đi vì ta đã tự làm HTML custom legend ở trên
+          legend: {
+            display: false,
+          },
+          // Cấu hình hiển thị text số lượng (100, 2, 0...) trên đầu nút tròn
+          datalabels: {
+            align: "top",
+            offset: 6,
+            font: {
+              size: 11,
+              weight: "bold",
+            },
+            color: "#1e293b",
+            formatter: function (value, context) {
+              // Ép cấu hình hiển thị text cứng theo đúng số lượng thực tế trong ảnh mẫu của bạn
+              const dataMap = [
+                [2, 2, 0], // Hàng xanh lá (Đã xây dựng)
+                [100, 100, 0], // Hàng đỏ (Chưa xây dựng)
+                [0, 0, 1], // Hàng xanh dương (Đang xây dựng - điểm cuối bằng 1)
+              ];
+              return dataMap[context.datasetIndex][context.dataIndex];
+            },
+          },
+        },
+        scales: {
+          x: {
+            grid: {
+              display: false, // Ẩn toàn bộ các đường lưới dọc đứng
+              drawBorder: false,
+            },
+            ticks: {
+              color: "#64748b",
+              font: { size: 12 },
+            },
+          },
+          y: {
+            min: 0,
+            max: 200,
+            ticks: {
+              stepSize: 50, // Chia vạch cách nhau từng đoạn 50 đơn vị (0, 50, 100, 150, 200)
+              color: "#64748b",
+              font: { size: 12 },
+            },
+            grid: {
+              color: "#f1f5f9", // Đường lưới ngang mờ thanh lịch
+              drawBorder: false, // Khóa đường viền trục ngoài cùng
+            },
+          },
+        },
+      },
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    // 1. DỮ LIỆU ĐÁNH GIÁ MẪU (Tổng số CSDL cần đánh giá = 100)
+    const TOTAL_CSDL = 100;
+
+    const criteriaData = {
+      "Pháp lý": [
+        {
+          id: 1,
+          q: "Đã có cơ sở pháp lý để triển khai xây dựng CSDL?",
+          passed: 75,
+        },
+        {
+          id: 2,
+          q: "Đã ban hành quy trình thu thập, tạo lập dữ liệu?",
+          passed: 60,
+        },
+        {
+          id: 3,
+          q: "Đã ban hành danh mục trường thông tin của CSDL?",
+          passed: 45,
+        },
+      ],
+      "Tài chính": [
+        { id: 4, q: "Đã đăng ký nhu cầu vốn triển khai?", passed: 80 },
+        { id: 5, q: "Đã được bố trí kinh phí triển khai?", passed: 55 },
+      ],
+      "Hạ tầng": [
+        {
+          id: 6,
+          q: "CSDL đã được triển khai trên hạ tầng tập trung?",
+          passed: 70,
+        },
+        {
+          id: 7,
+          q: "Hạ tầng đang vận hành tại TTDL đạt tiêu chuẩn?",
+          passed: 65,
+        },
+      ],
+      "Dữ liệu": [
+        { id: 8, q: "Dữ liệu bảo đảm 'đúng'?", passed: 85 },
+        { id: 9, q: "Dữ liệu bảo đảm 'đủ'?", passed: 78 },
+        { id: 10, q: "Dữ liệu bảo đảm 'sạch'?", passed: 62 },
+        { id: 11, q: "Dữ liệu bảo đảm 'sống'?", passed: 40 },
+      ],
+    };
+
+    // 2. GIẢ LẬP DỮ LIỆU DANH SÁCH BỘ BAN NGÀNH VÀ CÁC CSDL ĐỂ ĐỔ VÀO POPUP XEM CHI TIẾT
+    const mockMinistries = [
+      {
+        ministry: "Bộ Xây dựng",
+        csdl: "CSDL Quốc gia về Cấp thoát nước đô thị",
+        status: "passed",
+      },
+      {
+        ministry: "Bộ Công An",
+        csdl: "CSDL Căn cước công dân và Định danh xác thực",
+        status: "passed",
+      },
+      {
+        ministry: "Bộ Tài nguyên và Môi trường",
+        csdl: "CSDL Đất đai quốc gia",
+        status: "passed",
+      },
+      {
+        ministry: "Bộ Giao thông Vận tải",
+        csdl: "CSDL Đăng kiểm phương tiện giao thông",
+        status: "failed",
+      },
+      {
+        ministry: "Bộ Y tế",
+        csdl: "CSDL Hồ sơ sức khỏe điện tử toàn dân",
+        status: "failed",
+      },
+      {
+        ministry: "Bộ Giáo dục và Đào tạo",
+        csdl: "CSDL Văn bằng chứng chỉ số",
+        status: "passed",
+      },
+      {
+        ministry: "Bộ Tài chính",
+        csdl: "CSDL Thuế thu nhập doanh nghiệp tập trung",
+        status: "failed",
+      },
+    ];
+
+    let polarChartsInstances = {};
+    let globalPieChart = null;
+    let activePopupItem = null; // Lưu trữ tiêu chí đang mở popup
+
+    // KHỞI TẠO BIỂU ĐỒ TRÒN Ở MÀN HÌNH TỔNG QUAN
+    function initPieChart() {
+      if (globalPieChart) globalPieChart.destroy();
+      const ctx = document.getElementById("csdlPieChart").getContext("2d");
+      globalPieChart = new Chart(ctx, {
+        type: "pie",
+        data: {
+          labels: ["Đã xây dựng", "Đang xây dựng", "Chưa xây dựng"],
+          datasets: [
+            {
+              data: [17, 8, 1],
+              backgroundColor: ["#10b981", "#f59e0b", "#ef4444"],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: "bottom",
+              labels: { boxWidth: 10, font: { size: 9, weight: "bold" } },
+            },
+          },
+        },
+      });
+    }
+
+    // CHUYỂN ĐỔI TAB CHÍNH (TỔNG QUAN <-> TIÊU CHÍ)
+    function switchTab(tabName) {
+      const title = document.getElementById("dynamicSectionTitle");
+      const filterWrapper = document.getElementById("groupFilterWrapper");
+
+      document.getElementById("tab-tongquan").className =
+        "px-3 py-1 text-gray-400 hover:bg-gray-200/50 rounded transition-all";
+      document.getElementById("tab-tieuchi").className =
+        "px-3 py-1 text-gray-400 hover:bg-gray-200/50 rounded transition-all";
+      document.getElementById("tab-content-tongquan").classList.add("hidden");
+      document.getElementById("tab-content-tieuchi").classList.add("hidden");
+
+      if (tabName === "tongquan") {
+        title.textContent = "Tổng Quan";
+        filterWrapper.classList.add("hidden");
+        document.getElementById("tab-tongquan").className =
+          "px-3 py-1 bg-white rounded shadow-sm text-gray-800 font-semibold transition-all";
+        document
+          .getElementById("tab-content-tongquan")
+          .classList.remove("hidden");
+        initPieChart();
+      } else {
+        title.textContent = "Nhóm tiêu chí đánh giá CSDL";
+        filterWrapper.classList.remove("hidden");
+        document.getElementById("tab-tieuchi").className =
+          "px-3 py-1 bg-white rounded shadow-sm text-gray-800 font-semibold transition-all";
+        document
+          .getElementById("tab-content-tieuchi")
+          .classList.remove("hidden");
+        renderCriteriaDashboard();
+      }
+    }
+
+    // DỰNG TOÀN BỘ GIAO DIỆN MÀN TIÊU CHÍ
+    function renderCriteriaDashboard() {
+      const container = document.getElementById("tab-content-tieuchi");
+      container.innerHTML = "";
+
+      Object.values(polarChartsInstances).forEach((chart) => chart.destroy());
+      polarChartsInstances = {};
+
+      Object.keys(criteriaData).forEach((groupName) => {
+        const listItems = criteriaData[groupName];
+        const safeName = groupName.replace(/\s+/g, "");
+
+        // Khung bọc nhóm tiêu chí bự
+        const groupWrapper = document.createElement("div");
+        groupWrapper.className =
+          "group-card-wrapper border border-slate-200 rounded-2xl p-5 bg-white shadow-sm space-y-4";
+        groupWrapper.setAttribute("data-group-name", groupName);
+
+        groupWrapper.innerHTML = `
+        <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+          <div>
+            <span class="text-md bg-teal-50 text-teal-700 font-bold px-2 py-1 rounded tracking-wide uppercase">${groupName}</span>
+          </div>
+          <button onclick="toggleColumnsAction(this, '${safeName}')" class="flex items-center gap-1.5 text-[11px] bg-slate-100 hover:bg-teal-50 text-slate-600 hover:text-teal-700 px-3 py-1.5 rounded-lg font-bold transition-all">
+            <span>Xem tiêu chí</span>
+            <i class="fa-solid fa-angles-right text-[10px]"></i>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+          
+          <div class="col-span-12 lg:col-span-12 transition-all duration-300 flex justify-center items-center py-4 bg-slate-50/40 border border-slate-100 rounded-xl" id="chart-panel-${safeName}">
+            <div class="w-full max-w-[340px] h-60">
+              <canvas id="polar-${safeName}"></canvas>
+            </div>
+          </div>
+
+          <div class="col-span-12 lg:col-span-6 hidden space-y-2.5 transition-all duration-300 overflow-y-auto max-h-[250px] pr-1" id="criteria-panel-${safeName}">
+            ${listItems
+              .map((item) => {
+                const per = Math.round((item.passed / TOTAL_CSDL) * 100);
+                return `
+                <div class="p-3 rounded-xl bg-slate-50 hover:bg-white border border-slate-100 hover:border-teal-400 hover:shadow-sm transition-all flex items-center justify-between gap-4 relative group/item">
+                  <div class="flex-1">
+                    <p class="text-xs font-bold text-slate-700 leading-snug">${item.q}</p>
+                    <div class="flex items-center gap-2 mt-1.5">
+                      <span class="text-[10px] font-bold text-slate-400">Đáp ứng: ${item.passed}/${TOTAL_CSDL}</span>
+                      <span class="text-[10px] font-bold text-teal-600">(${per}%)</span>
+                    </div>
+                  </div>
+                  <button onclick="openMinistryModal('${groupName}', ${item.id})" class="flex-shrink-0 w-7 h-7 bg-white border border-slate-200 text-slate-400 hover:text-teal-600 hover:border-teal-300 rounded-lg flex items-center justify-center transition-all shadow-sm active:scale-90" title="Xem chi tiết bộ ngành">
+                    <i class="fa-solid fa-expand text-xs"></i>
+                  </button>
+                </div>
+              `;
+              })
+              .join("")}
+          </div>
+
+        </div>
+      `;
+
+        container.appendChild(groupWrapper);
+        renderPolarChart(groupName, listItems);
+      });
+    }
+
+    // KHỞI TẠO VÀ HIỂN THỊ POLAR AREA CHART KÈM LABEL
+    function renderPolarChart(groupName, items) {
+      const safeName = groupName.replace(/\s+/g, "");
+      const ctx = document.getElementById(`polar-${safeName}`).getContext("2d");
+      const labels = items.map((i) =>
+        i.q.length > 25 ? i.q.substring(0, 25) + "..." : i.q,
+      );
+      const dataValues = items.map((i) => i.passed);
+
+      polarChartsInstances[groupName] = new Chart(ctx, {
+        type: "polarArea",
+        data: {
+          labels: labels, // Label tiêu chí hiển thị rõ ràng bên dưới biểu đồ
+          datasets: [
+            {
+              data: dataValues,
+              backgroundColor: [
+                "rgba(20, 184, 166, 0.65)",
+                "rgba(59, 130, 246, 0.65)",
+                "rgba(245, 158, 11, 0.65)",
+                "rgba(239, 68, 68, 0.65)",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            r: {
+              max: TOTAL_CSDL,
+              ticks: { display: false },
+              grid: { color: "#f1f5f9" },
+            },
+          },
+          plugins: {
+            legend: {
+              display: true,
+              position: "bottom",
+              labels: {
+                boxWidth: 8,
+                font: { size: 9, weight: "medium" },
+                padding: 6,
+              },
+            },
+          },
+        },
+      });
+    }
+
+    // XỬ LÝ COLLAPSE VÀ EXPAND ĐỂ BIẾN ĐỔI SANG GRID COLUMN 2 CỦA CÁC NHÓM CARD TIÊU CHÍ
+    function toggleColumnsAction(btn, safeName) {
+      const chartPanel = document.getElementById(`chart-panel-${safeName}`);
+      const criteriaPanel = document.getElementById(
+        `criteria-panel-${safeName}`,
+      );
+      const label = btn.querySelector("span");
+      const icon = btn.querySelector("i");
+
+      if (criteriaPanel.classList.contains("hidden")) {
+        // Chuyển đổi sang giao diện grid 2 cột (Cột 1: Chart chiếm 6 phần | Cột 2: Tiêu chí chiếm 6 phần)
+        chartPanel.className =
+          "col-span-12 lg:col-span-6 transition-all duration-300 flex justify-center items-center py-4 bg-slate-50/40 border border-slate-100 rounded-xl";
+        criteriaPanel.classList.remove("hidden");
+        label.textContent = "Thu gọn nội dung";
+        icon.className = "fa-solid fa-angles-left text-[10px]"; // Collapse icon
+      } else {
+        // Thu gọn về trạng thái cũ (Chỉ hiển thị Polar Area Chart chiếm trọn 12 phần)
+        chartPanel.className =
+          "col-span-12 lg:col-span-12 transition-all duration-300 flex justify-center items-center py-4 bg-slate-50/40 border border-slate-100 rounded-xl";
+        criteriaPanel.classList.add("hidden");
+        label.textContent = "Xem tiêu chí";
+        icon.className = "fa-solid fa-angles-right text-[10px]"; // Expand icon
+      }
+    }
+
+    // 3. ĐIỀU KHIỂN LOGIC ĐỔ DỮ LIỆU VÀO POPUP BỘ BAN NGÀNH (MINISTRY DETAILED POPUP)
+    function openMinistryModal(groupName, itemId) {
+      let targetGroup = criteriaData[groupName];
+      let foundItem = targetGroup.find((i) => i.id === itemId);
+      activePopupItem = { ...foundItem, group: groupName };
+
+      document.getElementById("modalGroupNameBadge").textContent =
+        groupName.toUpperCase();
+      document.getElementById("modalCriterionQuestion").textContent =
+        `Tiêu chí: ${foundItem.q}`;
+
+      // Mở Modal kèm hiệu ứng mượt
+      const modal = document.getElementById("ministryDetailModal");
+      const box = document.getElementById("ministryModalBox");
+      modal.classList.remove("hidden");
+      setTimeout(() => {
+        box.classList.remove("scale-95", "opacity-0");
+        box.classList.add("scale-100", "opacity-100");
+      }, 10);
+
+      // Mặc định ban đầu hiển thị Tab "Đã đạt"
+      switchPopupTab("passed");
+    }
+
+    function closeMinistryModal() {
+      document
+        .getElementById("ministryModalBox")
+        .classList.add("scale-95", "opacity-0");
+      setTimeout(
+        () =>
+          document
+            .getElementById("ministryDetailModal")
+            .classList.add("hidden"),
+        150,
+      );
+    }
+
+    // CHUYỂN TAB ĐIỀU KHIỂN BÊN TRONG POPUP (Đã đạt | Chưa đạt | Tổng quan)
+    function switchPopupTab(tabType) {
+      // Đổi giao diện nút tab hoạt động
+      const tabs = {
+        passed: document.getElementById("btn-popup-passed"),
+        failed: document.getElementById("btn-popup-failed"),
+        all: document.getElementById("btn-popup-all"),
+      };
+
+      Object.keys(tabs).forEach((k) => {
+        if (k === tabType) {
+          tabs[k].className =
+            "px-4 py-2 text-xs font-bold border-b-2 border-teal-500 text-teal-600 transition-all";
+        } else {
+          tabs[k].className =
+            "px-4 py-2 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all";
+        }
+      });
+
+      // Lọc danh sách và vẽ bảng số liệu tương ứng
+      const tbody = document.getElementById("ministryTableBody");
+      tbody.innerHTML = "";
+
+      let filteredList = [];
+      if (tabType === "all") {
+        filteredList = mockMinistries;
+      } else {
+        filteredList = mockMinistries.filter((m) => m.status === tabType);
+      }
+
+      if (filteredList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400 font-medium bg-slate-50/50">Không tìm thấy dữ liệu phù hợp của Bộ ban ngành</td></tr>`;
+        return;
+      }
+
+      filteredList.forEach((m, idx) => {
+        const isPassed = m.status === "passed";
+        const badgeHtml = isPassed
+          ? `<div class="px-2 py-0.5 text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-md">Đã đáp ứng</div>`
+          : `<div class="px-2 py-0.5 text-[10px] font-bold bg-rose-50 text-rose-500 border border-rose-200 rounded-md">Chưa đáp ứng</div>`;
+
+        const row = document.createElement("tr");
+        row.className = "hover:bg-slate-50/60 transition-colors font-medium";
+        row.innerHTML = `
+        <td class="p-3 text-slate-400 font-bold">${idx + 1}</td>
+        <td class="p-3 font-semibold text-slate-800">${m.ministry}</td>
+        <td class="p-3 text-slate-600">${m.csdl}</td>
+        <td class="p-3 text-center">${badgeHtml}</td>
+      `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // LỌC NHÓM CARD TOÀN CỤC Ở THANH TÌM KIẾM TRÊN CÙNG
+    function filterGroups() {
+      const val = document.getElementById("groupSelectFilter").value;
+      document.querySelectorAll(".group-card-wrapper").forEach((card) => {
+        if (val === "all" || card.getAttribute("data-group-name") === val)
+          card.classList.remove("hidden");
+        else card.classList.add("hidden");
+      });
+    }
+
+    // Khởi động biểu đồ hình tròn ngay khi vừa load trang thành công
+    document.addEventListener("DOMContentLoaded", () => initPieChart());
+  </script>
+
+  <!-- //123123 -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Khởi tạo danh sách 14 Bộ Ban Ngành kèm Fake Data chi tiết
+      const ministryDataRaw = [
+        { name: "Bộ Quốc phòng", passed: 12, processing: 4, failed: 2 },
+        { name: "Bộ Công an", passed: 15, processing: 3, failed: 1 },
+        { name: "Bộ Ngoại giao", passed: 6, processing: 2, failed: 1 },
+        { name: "Bộ Nội vụ", passed: 8, processing: 3, failed: 0 },
+        { name: "Bộ Tư pháp", passed: 9, processing: 4, failed: 2 },
+        { name: "Bộ Tài chính", passed: 18, processing: 6, failed: 2 },
+        { name: "Bộ Công Thương", passed: 11, processing: 5, failed: 3 },
+        { name: "Bộ NN & PTNT", passed: 14, processing: 4, failed: 4 }, // Viết gọn để hiển thị trục X đẹp hơn
+        { name: "Bộ Xây dựng", passed: 10, processing: 5, failed: 1 },
+        { name: "Bộ VHTTDL", passed: 7, processing: 3, failed: 2 },
+        { name: "Bộ KH & CN", passed: 8, processing: 2, failed: 1 },
+        { name: "Bộ GD & ĐT", passed: 13, processing: 4, failed: 0 },
+        { name: "Bộ Y tế", passed: 12, processing: 6, failed: 3 },
+        { name: "Ủy ban Dân tộc", passed: 5, processing: 2, failed: 1 }, // Đại diện Bộ Dân tộc và Tôn giáo
+      ];
+
+      // 2. Tách mảng dữ liệu phục vụ Chart.js
+      const labels = ministryDataRaw.map((item) => item.name);
+
+      // Tạo cấu trúc chuỗi hiển thị dạng "Số lượng / Tổng số" phục vụ Tooltip khi hover vào cột
+      const passedData = ministryDataRaw.map((item) => item.passed);
+      const processingData = ministryDataRaw.map((item) => item.processing);
+      const failedData = ministryDataRaw.map((item) => item.failed);
+      const totalData = ministryDataRaw.map(
+        (item) => item.passed + item.processing + item.failed,
+      );
+
+      // 3. Khởi tạo cấu hình Multiple Bar Chart
+      const ctx = document
+        .getElementById("multipleBarChartMinistries")
+        .getContext("2d");
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Đã xây dựng",
+              data: passedData,
+              backgroundColor: "#10b981", // Màu xanh lục lá thanh lịch
+              borderRadius: 4,
+              barPercentage: 0.8,
+              categoryPercentage: 0.85,
+            },
+            {
+              label: "Đang xây dựng",
+              data: processingData,
+              backgroundColor: "#f59e0b", // Màu vàng hổ phách nổi bật
+              borderRadius: 4,
+              barPercentage: 0.8,
+              categoryPercentage: 0.85,
+            },
+            {
+              label: "Chưa xây dựng",
+              data: failedData,
+              backgroundColor: "#ef4444", // Màu đỏ hồng chuẩn lỗi
+              borderRadius: 4,
+              barPercentage: 0.8,
+              categoryPercentage: 0.85,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: "bottom",
+              labels: {
+                boxWidth: 12,
+                padding: 16,
+                font: { size: 11, weight: "bold" },
+              },
+            },
+            tooltip: {
+              backgroundColor: "rgba(15, 23, 42, 0.9)", // Nền tối hiện đại (Slate 900)
+              titleFont: { size: 12, weight: "bold" },
+              bodyFont: { size: 11 },
+              padding: 10,
+              cornerRadius: 8,
+              callbacks: {
+                // Biến đổi hiển thị nội dung hover thành định dạng "Hiện tại / Tổng số" theo đúng nghiệp vụ của bạn
+                label: function (context) {
+                  const index = context.dataIndex;
+                  const currentVal = context.raw;
+                  const total = totalData[index];
+                  const datasetLabel = context.dataset.label;
+                  return ` ${datasetLabel}: ${currentVal}/${total} CSDL`;
+                },
+              },
+            },
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: {
+                font: { size: 10, weight: "semibold" },
+                color: "#64748b",
+                maxRotation: 45, // Tự động nghiêng chữ nếu màn hình thiết bị quá hẹp
+                minRotation: 0,
+              },
+            },
+            y: {
+              beginAtZero: true,
+              grid: { color: "#f1f5f9" },
+              ticks: {
+                font: { size: 10 },
+                color: "#94a3b8",
+                stepSize: 5,
+              },
+            },
+          },
+        },
+      });
+    });
+  </script>
+
+  <!-- //1123 -->
+  <script>
+    // Tập hợp dữ liệu giả lập chuẩn xác cấu trúc nghiệp vụ liên thông CSDL
+    const coreDataSource = [
+      {
+        id: 1,
+        boNganh: "Bộ Quốc phòng",
+        chuQuan: "Cục CNTT",
+        csdl: "CSDL Quản lý Sĩ quan & Lực lượng Dự bị động viên",
+        progress: 85,
+        pl: true,
+        tc: true,
+        ht: true,
+        dl: true,
+        pm: true,
+        attt: false,
+        eval: "Chưa đạt",
+      },
+      {
+        id: 2,
+        boNganh: "Bộ Công an",
+        chuQuan: "Cục Cảnh sát QLHC về TTXH",
+        csdl: "CSDL Quốc gia về Dân cư cơ bản",
+        progress: 100,
+        pl: true,
+        tc: true,
+        ht: true,
+        dl: true,
+        pm: true,
+        attt: true,
+        eval: "Đạt",
+      },
+      {
+        id: 3,
+        boNganh: "Bộ Ngoại giao",
+        chuQuan: "Cục Lãnh sự",
+        csdl: "CSDL Quản lý Thị thực và Hộ chiếu điện tử",
+        progress: 70,
+        pl: true,
+        tc: true,
+        ht: true,
+        dl: false,
+        pm: true,
+        attt: false,
+        eval: "Chưa đạt",
+      },
+      {
+        id: 4,
+        boNganh: "Bộ Nội vụ",
+        chuQuan: "Trung tâm Thông tin",
+        csdl: "CSDL Toàn quốc về Cán bộ, Công chức, Viên chức",
+        progress: 100,
+        pl: true,
+        tc: true,
+        ht: true,
+        dl: true,
+        pm: true,
+        attt: true,
+        eval: "Đạt",
+      },
+      {
+        id: 5,
+        boNganh: "Bộ Tư pháp",
+        chuQuan: "Cục CNTT",
+        csdl: "CSDL Hộ tịch điện tử đồng bộ dữ liệu quốc gia",
+        progress: 95,
+        pl: true,
+        tc: true,
+        ht: true,
+        dl: true,
+        pm: true,
+        attt: true,
+        eval: "Đạt",
+      },
+      {
+        id: 6,
+        boNganh: "Bộ Tài chính",
+        chuQuan: "Tổng cục Thuế",
+        csdl: "CSDL Hóa đơn điện tử và Nghĩa vụ thuế tập trung",
+        progress: 100,
+        pl: true,
+        tc: true,
+        ht: true,
+        dl: true,
+        pm: true,
+        attt: true,
+        eval: "Đạt",
+      },
+      {
+        id: 7,
+        boNganh: "Bộ Công Thương",
+        chuQuan: "Cục Thương mại điện tử",
+        csdl: "CSDL Quản lý Chứng nhận xuất xứ hàng hóa điện tử",
+        progress: 45,
+        pl: false,
+        tc: true,
+        ht: false,
+        dl: true,
+        pm: false,
+        attt: false,
+        eval: "Chưa đạt",
+      },
+      {
+        id: 8,
+        boNganh: "Bộ Nông nghiệp & PTNT",
+        chuQuan: "Cục Thủy sản",
+        csdl: "CSDL Đăng ký tàu cá và Nhật ký khai thác hải sản",
+        progress: 60,
+        pl: true,
+        tc: false,
+        ht: true,
+        dl: false,
+        pm: true,
+        attt: false,
+        eval: "Chưa đạt",
+      },
+      {
+        id: 9,
+        boNganh: "Bộ Xây dựng",
+        chuQuan: "Trung tâm Thông tin",
+        csdl: "CSDL Hệ thống thông tin thị trường bất động sản",
+        progress: 75,
+        pl: true,
+        tc: true,
+        ht: true,
+        dl: false,
+        pm: true,
+        attt: false,
+        eval: "Chưa đạt",
+      },
+      {
+        id: 10,
+        boNganh: "Bộ VHTTDL",
+        chuQuan: "Cục Du lịch Quốc gia",
+        csdl: "CSDL Quản lý Danh mục di sản và cơ sở lữ hành",
+        progress: 35,
+        pl: false,
+        tc: false,
+        ht: true,
+        dl: false,
+        pm: true,
+        attt: false,
+        eval: "Chưa đạt",
+      },
+      {
+        id: 11,
+        boNganh: "Bộ Khoa học & Công nghệ",
+        chuQuan: "Cục Sở hữu trí tuệ",
+        csdl: "CSDL Đăng ký Tài sản trí tuệ và Văn bằng bảo hộ",
+        progress: 80,
+        pl: true,
+        tc: true,
+        ht: true,
+        dl: true,
+        pm: true,
+        attt: false,
+        eval: "Chưa đạt",
+      },
+      {
+        id: 12,
+        boNganh: "Bộ Giáo dục & Đào tạo",
+        chuQuan: "Cục QLCL Giáo dục",
+        csdl: "CSDL Quốc gia về Văn bằng chứng chỉ liên thông",
+        progress: 100,
+        pl: true,
+        tc: true,
+        ht: true,
+        dl: true,
+        pm: true,
+        attt: true,
+        eval: "Đạt",
+      },
+      {
+        id: 13,
+        boNganh: "Bộ Y tế",
+        chuQuan: "Cục Quản lý Dược",
+        csdl: "CSDL Quản lý giá thuốc và hệ thống cung ứng Dược",
+        progress: 55,
+        pl: true,
+        tc: false,
+        ht: false,
+        dl: true,
+        pm: true,
+        attt: false,
+        eval: "Chưa đạt",
+      },
+    ];
+
+    // TanStack Table Core State Simulation Tracker
+    const tableState = {
+      globalFilter: "",
+      statusFilter: "all",
+      advancedFilter: "all",
+      sortDirection: "desc", // desc hoặc asc theo tiến độ
+      currentPage: 1, // Trang hiện tại
+      rowsPerPage: 10, // Số hàng hiển thị mặc định
+    };
+
+    // PHƯƠNG THỨC KẾT XUẤT DỮ LIỆU ĐỘNG (CORE RENDER)
+    function renderTableEngine() {
+      // 1. Thực hiện các bước Filter theo State
+      let filteredData = [...coreDataSource];
+
+      // Lọc theo Global Search
+      if (tableState.globalFilter) {
+        const search = tableState.globalFilter.toLowerCase();
+        filteredData = filteredData.filter(
+          (d) =>
+            d.boNganh.toLowerCase().includes(search) ||
+            d.chuQuan.toLowerCase().includes(search) ||
+            d.csdl.toLowerCase().includes(search),
+        );
+      }
+
+      // Lọc theo trạng thái Đánh giá chung
+      if (tableState.statusFilter !== "all") {
+        filteredData = filteredData.filter(
+          (d) => d.eval === tableState.statusFilter,
+        );
+      }
+
+      // Lọc theo cấu hình nâng cao
+      if (tableState.advancedFilter !== "all") {
+        if (tableState.advancedFilter === "low")
+          filteredData = filteredData.filter((d) => d.progress < 60);
+        else if (tableState.advancedFilter === "high")
+          filteredData = filteredData.filter((d) => d.progress === 100);
+        else if (tableState.advancedFilter === "no-attt")
+          filteredData = filteredData.filter((d) => d.attt === false);
+      }
+
+      // 2. Thực hiện Sort theo State
+      filteredData.sort((a, b) => {
+        return tableState.sortDirection === "asc"
+          ? a.progress - b.progress
+          : b.progress - a.progress;
+      });
+
+      // 3. Tính toán Phân trang
+      const totalRows = filteredData.length;
+      const totalPages = Math.ceil(totalRows / tableState.rowsPerPage) || 1;
+
+      // Khống chế việc tràn số trang khi bộ lọc thay đổi làm giảm tổng số dòng
+      if (tableState.currentPage > totalPages) {
+        tableState.currentPage = totalPages;
+      }
+
+      const startIndex = (tableState.currentPage - 1) * tableState.rowsPerPage;
+      const endIndex = Math.min(startIndex + tableState.rowsPerPage, totalRows);
+
+      // Cắt mảng dữ liệu để chỉ hiển thị trang hiện tại
+      const paginatedData = filteredData.slice(startIndex, endIndex);
+
+      // 4. Tiến hành đổ dữ liệu ra DOM HTML
+      const tbody = document.getElementById("reactTableBody");
+      tbody.innerHTML = "";
+
+      if (totalRows === 0) {
+        tbody.innerHTML = `<tr><td colspan="13" class="p-8 text-center text-slate-400 font-medium bg-slate-50/50">Không tìm thấy bản ghi dữ liệu phù hợp với cấu hình bộ lọc hiện tại.</td></tr>`;
+
+        // Cập nhật text footer khi rỗng
+        document.getElementById("counterRowsSummary").textContent =
+          "Hiển thị 0 hệ thống CSDL.";
+        updatePaginationUI(1, 1, true, true);
+        return;
+      }
+
+      paginatedData.forEach((row, index) => {
+        const dotValid = `<div class="w-2.5 h-2.5 rounded-full bg-emerald-500 mx-auto" title="Đạt chuẩn"></div>`;
+        const dotInvalid = `<div class="w-2.5 h-2.5 rounded-full bg-rose-200 border border-rose-400/30 mx-auto" title="Chưa đạt / Vướng mắc"></div>`;
+
+        const badgeGeneral =
+          row.eval === "Đạt"
+            ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-semibold">🟢 Đạt chuẩn</span>`
+            : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 text-[11px] font-semibold">🔴 Chưa đạt</span>`;
+
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-50/70 transition-colors bg-white";
+        // Số thứ tự tăng tiến chính xác theo vị trí thực tế trong danh sách đã lọc
+        const absoluteIndex = startIndex + index + 1;
+
+        tr.innerHTML = `
+          <td class="p-3 text-center font-mono text-slate-400 font-bold">${absoluteIndex}</td>
+          <td class="p-3 font-semibold text-slate-900">${row.boNganh}</td>
+          <td class="p-3 text-slate-500 col-sub-holder">${row.chuQuan}</td>
+          <td class="p-3 text-slate-700 font-medium max-w-sm truncate">${row.csdl}</td>
+          <td class="p-3 text-center font-bold text-slate-900 font-mono">${row.progress}%</td>
+          <td class="p-3 col-sub-criteria">${row.pl ? dotValid : dotInvalid}</td>
+          <td class="p-3 col-sub-criteria">${row.tc ? dotValid : dotInvalid}</td>
+          <td class="p-3 col-sub-criteria">${row.ht ? dotValid : dotInvalid}</td>
+          <td class="p-3 col-sub-criteria">${row.dl ? dotValid : dotInvalid}</td>
+          <td class="p-3 col-sub-criteria">${row.pm ? dotValid : dotInvalid}</td>
+          <td class="p-3 col-sub-criteria">${row.attt ? dotValid : dotInvalid}</td>
+          <td class="p-3 text-center col-sub-eval">${badgeGeneral}</td>
+          <td class="p-3 text-center">
+            <button onclick="openShadcnDialog(${row.id})" class="w-6 h-6 rounded-md border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 hover:text-slate-900 flex items-center justify-center transition-all active:scale-90 shadow-2xs">
+              <i class="fa-solid fa-expand text-[10px]"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // 5. Đồng bộ văn bản Footer hiển thị kết quả (Ví dụ: Hiển thị từ 1 đến 10 trên tổng số 13 hệ thống CSDL)
+      document.getElementById("counterRowsSummary").textContent =
+        `Hiển thị từ ${startIndex + 1} đến ${endIndex} trên tổng số ${totalRows} hệ thống CSDL được lọc.`;
+
+      // 6. Cập nhật trạng thái các nút phân trang
+      const isPrevDisabled = tableState.currentPage === 1;
+      const isNextDisabled = tableState.currentPage === totalPages;
+      updatePaginationUI(
+        tableState.currentPage,
+        totalPages,
+        isPrevDisabled,
+        isNextDisabled,
+      );
+    }
+
+    // HÀM TIỆN ÍCH CẬP NHẬT TRẠNG THÁI UI PHÂN TRANG
+    function updatePaginationUI(
+      currentPage,
+      totalPages,
+      prevDisabled,
+      nextDisabled,
+    ) {
+      // Do trong HTML của bạn có 2 cụm nút phân trang trùng ID `paginationInfo`, ta cập nhật cho tất cả.
+      const pageInfoElements = document.querySelectorAll("#paginationInfo");
+      pageInfoElements.forEach((el) => {
+        el.textContent = `Trang ${currentPage} / ${totalPages}`;
+      });
+
+      const prevBtn = document.getElementById("prevPageBtn");
+      const nextBtn = document.getElementById("nextPageBtn");
+
+      if (prevBtn) {
+        prevBtn.disabled = prevDisabled;
+      }
+      if (nextBtn) {
+        nextBtn.disabled = nextDisabled;
+      }
+    }
+
+    // EVENT HANDLER ĐỒNG BỘ TRẠNG THÁI TOÀN CỤC (STATE SYNC)
+    function onTableStateChange() {
+      tableState.globalFilter = document.getElementById("tanstackSearch").value;
+      tableState.statusFilter = document.getElementById(
+        "tanstackFilterStatus",
+      ).value;
+      tableState.advancedFilter = document.getElementById(
+        "tanstackFilterAdvanced",
+      ).value;
+      tableState.currentPage = 1; // Reset về trang 1 khi lọc tiêu chí mới
+      renderTableEngine();
+    }
+
+    // XỬ LÝ SỰ KIỆN THAY ĐỔI SỐ HÀNG HIỂN THỊ TRÊN MỘT TRANG
+    function onRowsPerPageChange() {
+      tableState.rowsPerPage = parseInt(
+        document.getElementById("rowsPerPageSelect").value,
+        10,
+      );
+      tableState.currentPage = 1; // Quay về trang đầu tiên
+      renderTableEngine();
+    }
+
+    // DI CHUYỂN QUA LẠI GIỮA CÁC TRANG (Kế thừa từ hàm goToPage gốc của bạn và sửa lại logic đúng)
+    function goToPage(direction) {
+      tableState.currentPage += direction;
+      renderTableEngine();
+    }
+
+    // ĐIỀU KHIỂN SẮP XẾP TIẾN ĐỘ
+    function toggleProgressSort() {
+      tableState.sortDirection =
+        tableState.sortDirection === "desc" ? "asc" : "desc";
+      document.getElementById("sortLabelText").textContent =
+        tableState.sortDirection === "asc" ? "Tăng dần" : "Giảm dần";
+      renderTableEngine();
+    }
+
+    // ẨN / HIỆN CỘT BẢNG THEO LỚP CSS ĐỊNH DANH (COLUMN VISIBILITY COUPLING)
+    function toggleTableCol(colKey, cb) {
+      let selector = "";
+      if (colKey === 4) selector = ".col-sub-holder";
+      else if (colKey === 6) selector = ".col-sub-criteria";
+      else if (colKey === 12) selector = ".col-sub-eval";
+
+      if (!selector) return;
+      document.querySelectorAll(selector).forEach((el) => {
+        el.style.display = cb.checked ? "" : "none";
+      });
+    }
+
+    // DIALOG CONTROLLER (Mở / Đóng popup phóng to xem chi tiết bản ghi dữ liệu)
+    function openShadcnDialog(rowId) {
+      const item = coreDataSource.find((d) => d.id === rowId);
+      if (!item) return;
+
+      document.getElementById("dialogMetaSTT").textContent =
+        `STT-${String(item.id).padStart(2, "0")}`;
+      document.getElementById("dialogMetaCsdlName").textContent = item.csdl;
+      document.getElementById("dialogMetaBoNganh").textContent = item.boNganh;
+      document.getElementById("dialogMetaChuQuan").textContent = item.chuQuan;
+      document.getElementById("dialogProgressText").textContent =
+        `${item.progress}%`;
+      document.getElementById("dialogProgressBar").style.width =
+        `${item.progress}%`;
+
+      const criteriaItems = [
+        { key: "Pháp lý", val: item.pl },
+        { key: "Tài chính", val: item.tc },
+        { key: "Hạ tầng", val: item.ht },
+        { key: "Dữ liệu", val: item.dl },
+        { key: "Phần mềm", val: item.pm },
+        { key: "ATTT", val: item.attt },
+      ];
+
+      const gridBox = document.getElementById("dialogCriteriaGridBox");
+      gridBox.innerHTML = criteriaItems
+        .map(
+          (c) => `
+          <div class="p-2 border rounded-md flex items-center justify-between ${c.val ? "bg-emerald-50/40 border-emerald-200 text-emerald-900" : "bg-slate-50 border-slate-200 text-slate-500"}">
+            <span class="font-medium text-slate-600">${c.key}</span>
+            <span class="font-bold text-[11px]">${c.val ? "✔️ Đạt" : "❌ Chưa"}</span>
+          </div>
+        `,
+        )
+        .join("");
+
+      document.getElementById("dialogGeneralStatusBadge").innerHTML =
+        item.eval === "Đạt"
+          ? `<span class="px-2.5 py-1 bg-slate-900 text-white rounded font-bold text-[11px]">🟢 Hệ thống đạt chuẩn</span>`
+          : `<span class="px-2.5 py-1 bg-slate-100 border border-slate-200 text-slate-800 rounded font-bold text-[11px]">🔴 Cần hoàn thiện thêm</span>`;
+
+      const modal = document.getElementById("shadcnDialogModal");
+      const box = document.getElementById("dialogBoxStructure");
+      modal.classList.remove("hidden");
+      setTimeout(() => {
+        box.classList.remove("scale-95", "opacity-0");
+        box.classList.add("scale-100", "opacity-100");
+      }, 20);
+    }
+
+    function closeShadcnDialog() {
+      document
+        .getElementById("dialogBoxStructure")
+        .classList.add("scale-95", "opacity-0");
+      setTimeout(() => {
+        document.getElementById("shadcnDialogModal").classList.add("hidden");
+      }, 140);
+    }
+
+    // Khởi chạy nền bảng ngay khi hệ thống xử lý xong DOM
+    document.addEventListener("DOMContentLoaded", () => renderTableEngine());
+  </script>
+
+  <script>
+    // Khởi tạo các interface định dạng kiểu dữ liệu
+    /**
+     * @typedef {Object} ChartRecord
+     * @property {number} id
+     * @property {string} boNganh
+     * @property {string} chuQuan
+     * @property {string} csdl
+     * @property {string} status
+     * @property {string} date
+     */
+
+    /** @type {ChartRecord[]} */
+    const chartSourceData = [
+      {
+        id: 1,
+        boNganh: "Bộ Quốc phòng",
+        chuQuan: "Cục CNTT",
+        csdl: "CSDL Quản lý Sĩ quan & Lực lượng Dự bị động viên",
+        status: "Đang xây dựng",
+        date: "2024-09",
+      },
+      {
+        id: 2,
+        boNganh: "Bộ Công an",
+        chuQuan: "Cục Cảnh sát QLHC về TTXH",
+        csdl: "CSDL Quốc gia về Dân cư cơ bản",
+        status: "Đã xây dựng",
+        date: "2024-11",
+      },
+      {
+        id: 3,
+        boNganh: "Bộ Ngoại giao",
+        chuQuan: "Cục Lãnh sự",
+        csdl: "CSDL Quản lý Thị thực và Hộ chiếu điện tử",
+        status: "Đang xây dựng",
+        date: "2024-10",
+      },
+      {
+        id: 4,
+        boNganh: "Bộ Nội vụ",
+        chuQuan: "Trung tâm Thông tin",
+        csdl: "CSDL Toàn quốc về Cán bộ, Công chức, Viên chức",
+        status: "Đã xây dựng",
+        date: "2024-12",
+      },
+      {
+        id: 5,
+        boNganh: "Bộ Tư pháp",
+        chuQuan: "Cục CNTT",
+        csdl: "CSDL Hộ tịch điện tử đồng bộ dữ liệu quốc gia",
+        status: "Đã xây dựng",
+        date: "2024-09",
+      },
+      {
+        id: 6,
+        boNganh: "Bộ Tài chính",
+        chuQuan: "Tổng cục Thuế",
+        csdl: "CSDL Hóa đơn điện tử và Nghĩa vụ thuế tập trung",
+        status: "Đã xây dựng",
+        date: "2025-01",
+      },
+      {
+        id: 7,
+        boNganh: "Bộ Công Thương",
+        chuQuan: "Cục Thương mại điện tử",
+        csdl: "CSDL Quản lý Chứng nhận xuất xứ hàng hóa điện tử",
+        status: "Chưa xây dựng",
+        date: "2024-08",
+      },
+      {
+        id: 8,
+        boNganh: "Bộ Nông nghiệp & PTNT",
+        chuQuan: "Cục Thủy sản",
+        csdl: "CSDL Đăng ký tàu cá và Nhật ký khai thác hải sản",
+        status: "Đang xây dựng",
+        date: "2024-11",
+      },
+      {
+        id: 9,
+        boNganh: "Bộ Xây dựng",
+        chuQuan: "Trung tâm Thông tin",
+        csdl: "CSDL Hệ thống thông tin thị trường bất động sản",
+        status: "Đang xây dựng",
+        date: "2024-12",
+      },
+      {
+        id: 10,
+        boNganh: "Bộ VHTTDL",
+        chuQuan: "Cục Du lịch Quốc gia",
+        csdl: "CSDL Quản lý Danh mục di sản và cơ sở lữ hành",
+        status: "Đang xây dựng",
+        date: "2025-01",
+      },
+    ];
+
+    /** @type {any} */
+    let pieChartInstance = null;
+    /** @type {any} */
+    let barChartInstance = null; // Quản lý Instance cho biểu đồ cột mới
+    /** @type {string[]} */
+    let globalKeys = [];
+    /** @type {string[]} */
+    let globalLabels = [];
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initPieChart();
+      renderBarChartWithDateRange(); // Khởi tạo biểu đồ cột theo mốc mặc định
+    });
+
+    function openDatePicker(wrapper) {
+      const picker = wrapper.querySelector(".date-picker");
+      if (picker) picker.showPicker();
+    }
+
+    function handleDateChange(input, type) {
+      const rawDate = input.value;
+      if (!rawDate) return;
+      const [year, month, day] = rawDate.split("-");
+      const displayField =
+        type === "start" ? "startDateDisplay" : "endDateDisplay";
+      const element = document.getElementById(displayField);
+      if (element) element.value = `${day}/${month}/${year}`;
+    }
+
+    function getMonthsRange(startDateStr, endDateStr) {
+      const start = new Date(startDateStr);
+      const end = new Date(endDateStr);
+      start.setDate(1);
+      end.setDate(1);
+
+      const labels = [];
+      const keys = [];
+
+      while (start <= end) {
+        const m = String(start.getMonth() + 1).padStart(2, "0");
+        const y = start.getFullYear();
+        labels.push(`Tháng ${m}/${y}`);
+        keys.push(`${y}-${m}`);
+        start.setMonth(start.getMonth() + 1);
+      }
+      return { labels, keys };
+    }
+
+    function applyDateFilter() {
+      const startVal = document.getElementById("startDatePicker").value;
+      const endVal = document.getElementById("endDatePicker").value;
+
+      if (new Date(startVal) > new Date(endVal)) {
+        alert("Ngày bắt đầu không được lớn hơn ngày kết thúc!");
+        return;
+      }
+      renderBarChartWithDateRange(startVal, endVal);
+    }
+
+    // Thay thế engine render Line Chart thành Bar Chart Stacked nâng cao
+    function renderBarChartWithDateRange(
+      start = "2024-08-29",
+      end = "2025-02-10",
+    ) {
+      const { labels, keys } = getMonthsRange(start, end);
+      globalKeys = keys;
+      globalLabels = labels;
+
+      const canvas = document.getElementById("statusLineChart");
+      const ctx = canvas.getContext("2d");
+
+      // Lọc và tính toán chính xác số liệu phân bố từ mảng dữ liệu thực chartSourceData
+      const dataDaXayDung = keys.map(
+        (key) =>
+          chartSourceData.filter(
+            (item) => item.date === key && item.status === "Đã xây dựng",
+          ).length,
+      );
+      const dataDangXayDung = keys.map(
+        (key) =>
+          chartSourceData.filter(
+            (item) => item.date === key && item.status === "Đang xây dựng",
+          ).length,
+      );
+      const dataChuaXayDung = keys.map(
+        (key) =>
+          chartSourceData.filter(
+            (item) => item.date === key && item.status === "Chưa xây dựng",
+          ).length,
+      );
+
+      if (barChartInstance) {
+        barChartInstance.destroy(); // Hủy biểu đồ cũ tránh đè hoặc crash bộ nhớ
+      }
+
+      // Khởi tạo đồ họa Bar Chart
+      barChartInstance = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Đã xây dựng",
+              data: dataDaXayDung,
+              backgroundColor: "#10b981",
+              borderRadius: 4,
+            },
+            {
+              label: "Đang xây dựng",
+              data: dataDangXayDung,
+              backgroundColor: "#f59e0b",
+              borderRadius: 4,
+            },
+            {
+              label: "Chưa xây dựng",
+              data: dataChuaXayDung,
+              backgroundColor: "#f43f5e",
+              borderRadius: 4,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: "top",
+              labels: { boxWidth: 12, font: { size: 11 } },
+            },
+          },
+          scales: {
+            y: {
+              stacked: true, // Tạo hiệu ứng cột chồng cột
+              beginAtZero: true,
+              ticks: { stepSize: 1 },
+              grid: { color: "#f8fafc" },
+            },
+            x: {
+              stacked: true,
+              grid: { display: false },
+            },
+          },
+          onClick: (event, elements) => {
+            if (elements.length > 0) {
+              const elementIndex = elements[0].index;
+              const datasetIndex = elements[0].datasetIndex;
+
+              const targetTimeKey = globalKeys[elementIndex];
+              const targetTimeLabel = globalLabels[elementIndex];
+              const targetStatus =
+                barChartInstance.data.datasets[datasetIndex].label;
+
+              openDetailModal(targetStatus, targetTimeKey, targetTimeLabel);
+            }
+          },
+        },
+      });
+    }
+
+    function initPieChart() {
+      const canvas = document.getElementById("csdlPieChart");
+      const ctx = canvas.getContext("2d");
+
+      // Tính tổng số lượng thực tế từ `chartSourceData` để đồng bộ hoàn toàn giữa 2 biểu đồ
+      const countDaXayDung = chartSourceData.filter(
+        (item) => item.status === "Đã xây dựng",
+      ).length;
+      const countDangXayDung = chartSourceData.filter(
+        (item) => item.status === "Đang xây dựng",
+      ).length;
+      const countChuaXayDung = chartSourceData.filter(
+        (item) => item.status === "Chưa xây dựng",
+      ).length;
+
+      pieChartInstance = new Chart(ctx, {
+        type: "pie",
+        data: {
+          labels: ["Đã xây dựng", "Đang xây dựng", "Chưa xây dựng"],
+          datasets: [
+            {
+              data: [countDaXayDung, countDangXayDung, countChuaXayDung],
+              backgroundColor: ["#10b981", "#f59e0b", "#f43f5e"],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          onClick: (event, elements) => {
+            if (elements.length > 0) {
+              const index = elements[0].index;
+              const targetStatus = pieChartInstance.data.labels[index];
+              openDetailModal(targetStatus);
+            }
+          },
+        },
+      });
+    }
+
+    function openDetailModal(statusType, timeKey = null, timeLabel = null) {
+      const modal = document.getElementById("chartDetailModal");
+      const box = document.getElementById("modalBoxStructure");
+      const title = document.getElementById("modalTitle");
+      const subtitle = document.getElementById("modalSubtitle");
+      const tbody = document.getElementById("modalTableBody");
+
+      if (!modal || !box || !title || !subtitle || !tbody) return;
+
+      title.textContent =
+        statusType === "all"
+          ? "Tổng số tất cả hệ thống CSDL thành phần"
+          : `Hiện trạng: ${statusType}`;
+      subtitle.textContent = timeLabel
+        ? `Mốc thời gian ghi nhận: ${timeLabel}`
+        : `Xem chi tiết danh sách thông tin hệ thống`;
+
+      // Lọc chính xác bản ghi khớp với tháng được click (nếu có click từ Bar Chart)
+      let records = [...chartSourceData];
+      if (statusType !== "all") {
+        records = records.filter((item) => item.status === statusType);
+      }
+      if (timeKey) {
+        records = records.filter((item) => item.date === timeKey);
+      }
+
+      tbody.innerHTML = "";
+      if (records.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400 bg-slate-50">Không ghi nhận dữ liệu phù hợp.</td></tr>`;
+      } else {
+        records.forEach((row, idx) => {
+          const badgeColor =
+            row.status === "Đã xây dựng"
+              ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+              : row.status === "Đang xây dựng"
+                ? "bg-amber-50 text-amber-700 border-amber-200"
+                : "bg-rose-50 text-rose-700 border-rose-200";
+
+          tbody.innerHTML += `
+        <tr class="hover:bg-slate-50 transition-colors">
+          <td class="p-2.5 text-center font-bold text-slate-400">${idx + 1}</td>
+          <td class="p-2.5 font-semibold text-slate-800">${row.boNganh}</td>
+          <td class="p-2.5 text-slate-500">${row.chuQuan}</td>
+          <td class="p-2.5 text-slate-700 font-medium">${row.csdl}</td>
+          <td class="p-2.5 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${badgeColor}">${row.status}</span></td>
+        </tr>`;
+        });
+      }
+
+      modal.classList.remove("hidden");
+      setTimeout(() => {
+        box.classList.remove("scale-95", "opacity-0");
+        box.classList.add("scale-100", "opacity-100");
+      }, 20);
+    }
+
+    function closeDetailModal() {
+      const box = document.getElementById("modalBoxStructure");
+      const modal = document.getElementById("chartDetailModal");
+      if (box && modal) {
+        box.classList.add("scale-95", "opacity-0");
+        setTimeout(() => {
+          modal.classList.add("hidden");
+        }, 140);
+      }
+    }
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeDetailModal();
+    });
+  </script>
+</html>
