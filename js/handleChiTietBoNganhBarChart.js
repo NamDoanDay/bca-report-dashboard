@@ -117,3 +117,92 @@ document.addEventListener("DOMContentLoaded", () => {
         },
     });
 });
+
+let activeChartFilter = null; // Lưu trạng thái tên bộ ngành đang click chọn trên Chart
+let globalChartInstance = null; // Trực quan hóa thực thể chart để update động
+
+function initMultipleBarChart(filteredInputText = "") {
+    // Lọc cục bộ danh sách bộ ngành trên chart nếu người dùng gõ tìm kiếm
+    const cleanedSearch = filteredInputText.toLowerCase().trim();
+    const displayData = ministryDataRaw.filter(item =>
+        item.name.toLowerCase().includes(cleanedSearch)
+    );
+
+    const labels = displayData.map(item => item.name);
+    const passedData = displayData.map(item => item.passed);
+    const processingData = displayData.map(item => item.processing);
+    const failedData = displayData.map(item => item.failed);
+    const totalData = displayData.map(item => item.passed + item.processing + item.failed);
+
+    const canvas = document.getElementById("multipleBarChartMinistries");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+
+    // Hủy chart cũ nếu đã tồn tại trước đó để tránh lỗi đè layer đồ họa
+    if (globalChartInstance) {
+        globalChartInstance.destroy();
+    }
+
+    globalChartInstance = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [
+                { label: "Đã xây dựng", data: passedData, backgroundColor: "#10b981", borderRadius: 4 },
+                { label: "Đang xây dựng", data: processingData, backgroundColor: "#f59e0b", borderRadius: 4 },
+                { label: "Chưa xây dựng", data: failedData, backgroundColor: "#ef4444", borderRadius: 4 }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            // ĐẶT SỰ KIỆN CLICK VÀO CỘT BIỂU ĐỒ (EXPAND / CLOSE FILTER)
+            onClick: (event, elements) => {
+                if (elements.length > 0) {
+                    const firstElement = elements[0];
+                    const clickedIndex = firstElement.index;
+                    const clickedMinistryName = labels[clickedIndex];
+
+                    const inputSearch = document.getElementById("tanstackSearch");
+
+                    if (activeChartFilter === clickedMinistryName) {
+                        // CLOSE: Nếu đang chọn trùng tên thì gỡ bỏ bộ lọc, trả lại trạng thái nguyên bản
+                        activeChartFilter = null;
+                        if (inputSearch) inputSearch.value = "";
+                        tableState.globalFilter = "";
+                    } else {
+                        // EXPAND: Đưa tên Bộ ngành vừa click thẳng vào ô tìm kiếm chính và kích hoạt Table
+                        activeChartFilter = clickedMinistryName;
+                        if (inputSearch) inputSearch.value = clickedMinistryName;
+                        tableState.globalFilter = clickedMinistryName;
+                    }
+
+                    // Thực thi render lại bảng theo điều kiện mới
+                    tableState.currentPage = 1;
+                    renderTableEngine();
+                }
+            },
+            plugins: {
+                legend: { display: true, position: "bottom" },
+                tooltip: {
+                    backgroundColor: "rgba(15, 23, 42, 0.9)",
+                    callbacks: {
+                        label: function (context) {
+                            const index = context.dataIndex;
+                            return ` ${context.dataset.label}: ${context.raw}/${totalData[index]} CSDL`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: { grid: { display: false }, ticks: { font: { size: 10, weight: "semibold" }, color: "#64748b" } },
+                y: { beginAtZero: true, grid: { color: "#f1f5f9" }, ticks: { stepSize: 2 } }
+            }
+        }
+    });
+}
+
+// Lắng nghe sự kiện tải trang hoàn tất
+document.addEventListener("DOMContentLoaded", () => {
+    initMultipleBarChart();
+});

@@ -137,8 +137,15 @@ function executeTimeSearch() {
         renderCriteriaTable();
     }
 }
+// Quản lý trạng thái dữ liệu đang hiển thị để hỗ trợ Live Search độc lập
+let currentRow1Status = null;
+let currentFilteredListRow1 = [];
 
-// --- 5. ĐIỀU KHIỂN BIỂU ĐỒ TRÒN (PIE CHART) ---
+let currentRow2Status = null;
+let currentRow2DatePoint = null;
+let currentFilteredListRow2 = [];
+
+// --- 5. ĐIỀU KHIỂN VÀ SỰ KIỆN CLICK PIE CHART (HÀNG 1) ---
 function renderPieChart(da, dang, chua) {
     const ctx = document.getElementById("csdlPieChart").getContext("2d");
     if (pieChartInstance) pieChartInstance.destroy();
@@ -154,6 +161,13 @@ function renderPieChart(da, dang, chua) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            onClick: (event, activeElements) => {
+                if (activeElements && activeElements.length > 0) {
+                    const dataIndex = activeElements[0].index;
+                    const labelStatus = pieChartInstance.data.labels[dataIndex];
+                    toggleExpandRow1(labelStatus);
+                }
+            },
             plugins: {
                 legend: { display: false },
                 datalabels: {
@@ -167,7 +181,58 @@ function renderPieChart(da, dang, chua) {
     });
 }
 
-// --- 6. ĐIỀU KHIỂN BIỂU ĐỒ CỘT (MULTIPLE BAR CHART) ---
+function toggleExpandRow1(status) {
+    const panel = document.getElementById("panelDetailRow1");
+    const icon = document.getElementById("iconTogglePie");
+    const searchInput = document.getElementById("searchRow1");
+
+    if (!panel.classList.contains("hidden") && currentRow1Status === status) {
+        closeExpandRow1();
+        return;
+    }
+
+    currentRow1Status = status;
+    panel.classList.remove("hidden");
+    icon.className = "fa-solid fa-angles-left text-xs";
+    searchInput.value = ""; // Reset ô tìm kiếm khi đổi bộ lọc
+
+    document.getElementById("panelTitleRow1").textContent = `Trạng thái: ${status === 'all' ? 'Tất cả CSDL' : status}`;
+    document.getElementById("panelSubtitleRow1").textContent = `Thời điểm: Hiện tại`;
+
+    // Tạo tập dữ liệu gốc cho Row 1
+    currentFilteredListRow1 = [...mock50Databases].map(item => ({ ...item, status: getStatusAtDate(item, new Date()) }));
+    if (status !== "all") {
+        currentFilteredListRow1 = currentFilteredListRow1.filter(item => item.status === status);
+    }
+
+    executeSearchRow1();
+}
+
+function handleSearchRow1() {
+    executeSearchRow1();
+}
+
+function executeSearchRow1() {
+    const keyword = document.getElementById("searchRow1").value.trim().toLowerCase();
+    const tbody = document.getElementById("tableBodyRow1");
+
+    const results = currentFilteredListRow1.filter(item =>
+        item.boNganh.toLowerCase().includes(keyword) ||
+        item.chuQuan.toLowerCase().includes(keyword) ||
+        item.csdl.toLowerCase().includes(keyword)
+    );
+
+    renderTableRows(tbody, results);
+}
+
+function closeExpandRow1() {
+    document.getElementById("panelDetailRow1").classList.add("hidden");
+    document.getElementById("iconTogglePie").className = "fa-solid fa-angles-right text-xs";
+    currentRow1Status = null;
+}
+
+
+// --- 6. ĐIỀU KHIỂN VÀ SỰ KIỆN CLICK MULTIPLE BAR CHART (HÀNG 2) ---
 function renderMultipleBarChart(labels, timeSteps, daArr, dangArr, chuaArr) {
     const ctx = document.getElementById("statusBarChart").getContext("2d");
     if (barChartInstance) barChartInstance.destroy();
@@ -185,9 +250,7 @@ function renderMultipleBarChart(labels, timeSteps, daArr, dangArr, chuaArr) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: {
-                y: { beginAtZero: true, max: 55 },
-            },
+            scales: { y: { beginAtZero: true, max: 55 } },
             plugins: {
                 legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } }
             },
@@ -200,18 +263,89 @@ function renderMultipleBarChart(labels, timeSteps, daArr, dangArr, chuaArr) {
                     const targetLabel = labels[elementIndex];
                     const datasetLabel = barChartInstance.data.datasets[datasetIndex].label;
 
-                    let selectedStatus = datasetLabel.includes("Đã")
-                        ? "Đã xây dựng"
-                        : datasetLabel.includes("Đang")
-                            ? "Đang xây dựng"
-                            : "Chưa xây dựng";
+                    let selectedStatus = datasetLabel.includes("Đã") ? "Đã xây dựng" : datasetLabel.includes("Đang") ? "Đang xây dựng" : "Chưa xây dựng";
 
-                    openModalDetailList(selectedStatus, targetDate, targetLabel);
+                    toggleExpandRow2(selectedStatus, targetDate, targetLabel);
                 }
             },
         },
     });
 }
+
+function toggleExpandRow2(status, datePoint, dateLabel) {
+    const barContainer = document.getElementById("barChartContainer");
+    const panel = document.getElementById("panelDetailRow2");
+    const searchInput = document.getElementById("searchRow2");
+
+    currentRow2Status = status;
+    currentRow2DatePoint = datePoint;
+
+    barContainer.className = "col-span-1 lg:col-span-3 transition-all duration-300 relative group";
+    panel.classList.remove("hidden");
+    searchInput.value = ""; // Reset ô tìm kiếm
+
+    document.getElementById("panelTitleRow2").textContent = `Tiến độ: ${status}`;
+    document.getElementById("panelSubtitleRow2").textContent = `Mốc: ${dateLabel}`;
+
+    currentFilteredListRow2 = mock50Databases.filter(db => getStatusAtDate(db, datePoint) === status);
+
+    executeSearchRow2();
+}
+
+function handleSearchRow2() {
+    executeSearchRow2();
+}
+
+function executeSearchRow2() {
+    const keyword = document.getElementById("searchRow2").value.trim().toLowerCase();
+    const tbody = document.getElementById("tableBodyRow2");
+
+    const results = currentFilteredListRow2.filter(item =>
+        item.boNganh.toLowerCase().includes(keyword) ||
+        item.chuQuan.toLowerCase().includes(keyword) ||
+        item.csdl.toLowerCase().includes(keyword)
+    );
+
+    renderTableRows(tbody, results, currentRow2Status);
+}
+
+function closeExpandRow2() {
+    const barContainer = document.getElementById("barChartContainer");
+    const panel = document.getElementById("panelDetailRow2");
+
+    panel.classList.add("hidden");
+    barContainer.className = "col-span-1 lg:col-span-6 transition-all duration-300 relative group";
+    currentRow2Status = null;
+    currentRow2DatePoint = null;
+}
+
+
+// --- HÀM TRỢ GIÚP RENDER CORE TABLE TRÁNH LẶP CODE (Đã bổ sung Đơn vị chủ quản) ---
+function renderTableRows(tbody, list, fixedStatus = null) {
+    tbody.innerHTML = "";
+    if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 bg-slate-50/50">Không tìm thấy dữ liệu phù hợp.</td></tr>`;
+        return;
+    }
+    list.forEach((row, idx) => {
+        let currentStatus = fixedStatus || row.status || getStatusAtDate(row, new Date());
+        let badgeColor = currentStatus === "Đã xây dựng" ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
+            currentStatus === "Đang xây dựng" ? "bg-amber-50 text-amber-700 border-amber-200" :
+                "bg-rose-50 text-rose-700 border-rose-200";
+
+        tbody.innerHTML += `
+        <tr class="hover:bg-slate-50 transition-colors border-b border-slate-100">
+          <td class="p-2 text-center font-mono font-bold text-slate-400">${idx + 1}</td>
+          <td class="p-2 font-bold text-slate-800 text-[10px] truncate max-w-[85px]" title="${row.boNganh}">${row.boNganh}</td>
+          <td class="p-2 text-slate-500 text-[10px] leading-tight font-medium max-w-[110px] truncate" title="${row.chuQuan}">${row.chuQuan}</td>
+          <td class="p-2 text-blue-950 font-semibold leading-tight text-[10.5px]">${row.csdl}</td>
+          <td class="p-2 text-center">
+            <span class="px-1.5 py-0.5 rounded border text-[9px] font-bold whitespace-nowrap ${badgeColor}">${currentStatus}</span>
+          </td>
+        </tr>`;
+    });
+}
+
 
 // --- 7. ĐIỀU HƯỚNG TƯƠNG TÁC TABS ---
 function switchTab(tabId) {
@@ -238,60 +372,7 @@ function switchTab(tabId) {
     }
 }
 
-// --- 8. KHỚP NỐI ĐÓNG/MỞ VÀ ĐỔ DỮ LIỆU VÀO MODAL CỦA INDEX2.HTML ---
-function openModalDetailList(status, datePoint, dateLabel) {
-    // Đồng bộ chính xác ID "chartDetailModal" của file index2.html
-    const modal = document.getElementById("chartDetailModal");
-    const tbody = document.getElementById("modalTableBody");
-
-    document.getElementById("modalTitle").textContent = `Danh sách CSDL chuyên ngành - Trạng thái: ${status}`;
-    document.getElementById("modalSubtitle").textContent = `Mốc thời điểm kiểm kê: Ngày ${dateLabel}`;
-
-    const filteredList = mock50Databases.filter(
-        (db) => getStatusAtDate(db, datePoint) === status,
-    );
-
-    tbody.innerHTML = "";
-    if (filteredList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">Không có dữ liệu phù hợp tại mốc thời gian này.</td></tr>`;
-    } else {
-        filteredList.forEach((row, idx) => {
-            let badgeColor = status === "Đã xây dựng"
-                ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                : status === "Đang xây dựng"
-                    ? "bg-amber-50 text-amber-700 border-amber-200"
-                    : "bg-rose-50 text-rose-700 border-rose-200";
-
-            tbody.innerHTML += `
-        <tr class="hover:bg-slate-50 transition-colors border-b border-slate-100">
-          <td class="p-2.5 text-center font-mono font-bold text-slate-400">${idx + 1}</td>
-          <td class="p-2.5 font-bold text-slate-800 text-[11px]">${row.boNganh}</td>
-          <td class="p-2.5 text-slate-600 font-medium">${row.chuQuan}</td>
-          <td class="p-2.5 text-blue-950 font-semibold">${row.csdl}</td>
-          <td class="p-2.5 text-center">
-            <span class="px-2 py-0.5 rounded border text-[10px] font-bold ${badgeColor}">${status}</span>
-          </td>
-        </tr>`;
-        });
-    }
-
-    // Hiển thị modal (gỡ class hidden)
-    modal.classList.remove("hidden");
-    const modalBox = document.getElementById("modalBoxStructure");
-    if (modalBox) {
-        setTimeout(() => {
-            modal.classList.remove("opacity-0");
-            modalBox.classList.remove("scale-95");
-        }, 50);
-    }
-}
-
-function closeDetailModal() {
-    const modal = document.getElementById("chartDetailModal");
-    modal.classList.add("hidden");
-}
-
-// --- 9. ĐỔ DỮ LIỆU CHO BẢNG TIÊU CHÍ CHI TIẾT (TAB 2) ---
+// --- 8. ĐỔ DỮ LIỆU CHO BẢNG TIÊU CHÍ CHI TIẾT (TAB 2) ---
 function renderCriteriaTable() {
     const tbody = document.getElementById("criteriaTableBody");
     if (!tbody) return;
@@ -327,163 +408,7 @@ function filterGroups() {
     });
 }
 
-function openDetailModal(statusType, timeKey = null, timeLabel = null) {
-    const modal = document.getElementById("chartDetailModal");
-    const box = document.getElementById("modalBoxStructure");
-    const title = document.getElementById("modalTitle");
-    const subtitle = document.getElementById("modalSubtitle");
-    const tbody = document.getElementById("modalTableBody");
-
-    if (!modal || !box || !title || !subtitle || !tbody) return;
-
-    title.textContent =
-        statusType === "all"
-            ? "Tổng số tất cả hệ thống CSDL thành phần"
-            : `Hiện trạng: ${statusType}`;
-    subtitle.textContent = timeLabel
-        ? `Mốc thời gian ghi nhận: ${timeLabel}`
-        : `Xem chi tiết danh sách thông tin hệ thống`;
-
-    // Lọc chính xác bản ghi khớp với tháng được click (nếu có click từ Bar Chart)
-    let records = [...mock50Databases].map((item) => {
-        const status = getStatusAtDate(item, timeKey ? new Date(timeKey) : new Date());
-        return {
-            ...item,
-            status
-        };
-    });;
-    if (statusType !== "all") {
-        records = records.filter((item) => item.status === statusType);
-    }
-    if (timeKey) {
-        records = records.filter((item) => item.date === timeKey);
-    }
-
-    tbody.innerHTML = "";
-    if (records.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400 bg-slate-50">Không ghi nhận dữ liệu phù hợp.</td></tr>`;
-    } else {
-        records.forEach((row, idx) => {
-            const badgeColor =
-                row.status === "Đã xây dựng"
-                    ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                    : row.status === "Đang xây dựng"
-                        ? "bg-amber-50 text-amber-700 border-amber-200"
-                        : "bg-rose-50 text-rose-700 border-rose-200";
-
-            tbody.innerHTML += `
-        <tr class="hover:bg-slate-50 transition-colors">
-          <td class="p-2.5 text-center font-bold text-slate-400">${idx + 1}</td>
-          <td class="p-2.5 font-semibold text-slate-800">${row.boNganh}</td>
-          <td class="p-2.5 text-slate-500">${row.chuQuan}</td>
-          <td class="p-2.5 text-slate-700 font-medium">${row.csdl}</td>
-          <td class="p-2.5 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${badgeColor}">${row.status}</span></td>
-        </tr>`;
-        });
-    }
-
-    modal.classList.remove("hidden");
-    setTimeout(() => {
-        box.classList.remove("scale-95", "opacity-0");
-        box.classList.add("scale-100", "opacity-100");
-    }, 20);
-}
-
-function openDetailModal(statusType, timeKey = null, timeLabel = null) {
-    const modal = document.getElementById("csdlDetailModal");
-    const box = document.getElementById("csdlBoxStructure");
-    const title = document.getElementById("csdlTitle");
-    const subtitle = document.getElementById("csdlSubtitle");
-    const tbody = document.getElementById("csdlTableBody");
-
-    if (!modal || !box || !title || !subtitle || !tbody) return;
-
-    // 1. Cập nhật nội dung text
-    title.textContent = statusType === "all"
-        ? "Tổng số tất cả hệ thống CSDL thành phần"
-        : `Hiện trạng: ${statusType}`;
-
-    subtitle.textContent = timeLabel
-        ? `Mốc thời gian ghi nhận: ${timeLabel}`
-        : `Xem chi tiết danh sách thông tin hệ thống`;
-
-    // 2. Logic lọc dữ liệu (Giữ nguyên của bạn)
-    let records = [...mock50Databases].map((item) => {
-        const status = getStatusAtDate(item, timeKey ? new Date(timeKey) : new Date());
-        return { ...item, status };
-    });
-    if (statusType !== "all") {
-        records = records.filter((item) => item.status === statusType);
-    }
-    if (timeKey) {
-        records = records.filter((item) => item.date === timeKey);
-    }
-
-    // 3. Render Table (Giữ nguyên của bạn)
-    tbody.innerHTML = "";
-    if (records.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400 bg-slate-50">Không ghi nhận dữ liệu phù hợp.</td></tr>`;
-    } else {
-        records.forEach((row, idx) => {
-            const badgeColor =
-                row.status === "Đã xây dựng" ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
-                    row.status === "Đang xây dựng" ? "bg-amber-50 text-amber-700 border-amber-200" :
-                        "bg-rose-50 text-rose-700 border-rose-200";
-
-            tbody.innerHTML += `
-                <tr class="hover:bg-slate-50 transition-colors">
-                  <td class="p-2.5 text-center font-bold text-slate-400">${idx + 1}</td>
-                  <td class="p-2.5 font-semibold text-slate-800">${row.boNganh}</td>
-                  <td class="p-2.5 text-slate-500">${row.chuQuan}</td>
-                  <td class="p-2.5 text-slate-700 font-medium">${row.csdl}</td>
-                  <td class="p-2.5 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold border ${badgeColor}">${row.status}</span></td>
-                </tr>`;
-        });
-    }
-
-    // 4. HIỂN THỊ MODAL (Sửa tại đây)
-    modal.classList.remove("hidden");
-
-    // Thêm setTimeout một chút để hiệu ứng transition của Tailwind hoạt động mượt mà
-    setTimeout(() => {
-        // Hiện background mờ của modal cha
-        modal.classList.remove("opacity-0");
-        modal.classList.add("opacity-100");
-
-        // Phóng to và hiện rõ hộp nội dung bên trong
-        box.classList.remove("scale-95", "opacity-0");
-        box.classList.add("scale-100", "opacity-100");
-    }, 20);
-}
-
-// BỔ SUNG: Hàm đóng modal mượt mà
-function closeCsdlModal() {
-    const modal = document.getElementById("csdlDetailModal");
-    const box = document.getElementById("csdlBoxStructure");
-    if (!modal || !box) return;
-
-    // Thu nhỏ và ẩn hộp nội dung, làm mờ background
-    modal.classList.remove("opacity-100");
-    modal.classList.add("opacity-0");
-
-    box.classList.remove("scale-100", "opacity-100");
-    box.classList.add("scale-95", "opacity-0");
-
-    // Đợi chạy xong hiệu ứng transition (200ms) rồi mới thêm hẳn class 'hidden'
-    setTimeout(() => {
-        modal.classList.add("hidden");
-    }, 200);
-}
-
-// BỔ SUNG: Lắng nghe phím ESC để đóng modal
-document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-        closeCsdlModal();
-    }
-});
-
-// --- 10. RUNTIME SETUP ---
+// --- 9. RUNTIME SETUP ---
 document.addEventListener("DOMContentLoaded", () => {
     executeTimeSearch();
 });
-

@@ -67,6 +67,20 @@
         border: 1px solid rgba(255, 255, 255, 0.7);
         box-shadow: 6px 6px 16px #d1dddd;
       }
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(-16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .animate-slide-in-right {
+        animation: slideInRight 0.5s ease-out forwards;
+      }
     </style>
   </head>
   <body class="text-gray-600 font-sans antialiased h-screen">
@@ -134,153 +148,161 @@
       </header>
 
       <main id="appMain" class="flex h-full flex-col gap-4 p-6 overflow-auto">
-        <div>
-          <section
-            id="section-1"
-            class="flex-1 flex flex-col gap-4 p-6 overflow-y-auto custom-scrollbar"
+        <div class="flex items-center justify-between">
+          <h1
+            id="dynamicSectionTitle"
+            class="text-2xl font-bold text-gray-800 tracking-tight"
           >
-            <section
-              class="sticky top-0 z-40 bg-[#f9ffff]/95 backdrop-blur-md pb-4 border-b border-gray-100 flex flex-col gap-4"
+            Tổng Quan Hệ Thống
+          </h1>
+        </div>
+        <section
+          id="section-1"
+          class="section-1 glass-card p-4 rounded-lg neu-flat bg-[#f9ffff] space-y-6"
+        >
+          <div
+            class="bg-[#f9ffff]/95 backdrop-blur-md pb-4 border-b border-gray-100 flex flex-col gap-4"
+          >
+            <div
+              class="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
             >
-              <div class="flex items-center justify-between">
-                <h1
-                  id="dynamicSectionTitle"
-                  class="text-2xl font-bold text-gray-800 tracking-tight"
+              <div
+                class="flex gap-1 bg-slate-100 p-1 rounded-xl text-xs font-medium self-start border border-slate-200"
+              >
+                <button
+                  id="tab-tongquan"
+                  onclick="switchTab('tongquan')"
+                  class="px-4 py-1.5 bg-white rounded-lg shadow-xs text-slate-800 font-bold transition-all duration-150"
                 >
-                  Tổng Quan Hệ Thống
-                </h1>
+                  Tổng quan
+                </button>
+                <button
+                  id="tab-tieuchi"
+                  onclick="switchTab('tieuchi')"
+                  class="px-4 py-1.5 text-slate-500 hover:text-slate-800 rounded-lg transition-all duration-150"
+                >
+                  Tiêu chí chi tiết
+                </button>
+                <button
+                  class="px-4 py-1.5 text-slate-400 cursor-not-allowed opacity-50"
+                  disabled
+                >
+                  Reports
+                </button>
               </div>
 
               <div
-                class="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                class="flex flex-wrap sm:flex-row items-center gap-2 text-sm"
               >
                 <div
-                  class="flex gap-1 bg-slate-100 p-1 rounded-xl text-xs font-medium self-start border border-slate-200"
+                  id="groupFilterWrapper"
+                  class="hidden relative flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200 shadow-2xs transition-all"
                 >
-                  <button
-                    id="tab-tongquan"
-                    onclick="switchTab('tongquan')"
-                    class="px-4 py-1.5 bg-white rounded-lg shadow-xs text-slate-800 font-bold transition-all duration-150"
+                  <i class="fa-solid fa-filter text-teal-600 text-xs"></i>
+                  <select
+                    id="groupSelectFilter"
+                    onchange="filterGroups()"
+                    class="bg-transparent text-xs font-bold text-slate-700 outline-none pr-2 cursor-pointer"
                   >
-                    Tổng quan
-                  </button>
-                  <button
-                    id="tab-tieuchi"
-                    onclick="switchTab('tieuchi')"
-                    class="px-4 py-1.5 text-slate-500 hover:text-slate-800 rounded-lg transition-all duration-150"
-                  >
-                    Tiêu chí chi tiết
-                  </button>
-                  <button
-                    class="px-4 py-1.5 text-slate-400 cursor-not-allowed opacity-50"
-                    disabled
-                  >
-                    Reports
-                  </button>
+                    <option value="all">Tất cả nhóm tiêu chí</option>
+                    <option value="Pháp lý">Pháp lý</option>
+                    <option value="Tài chính">Tài chính</option>
+                    <option value="Hạ tầng">Hạ tầng</option>
+                    <option value="Dữ liệu">Dữ liệu</option>
+                    <option value="Phần mềm">Phần mềm</option>
+                    <option value="ATTT">An toàn thông tin</option>
+                  </select>
                 </div>
 
                 <div
-                  class="flex flex-wrap sm:flex-row items-center gap-2 text-sm"
+                  class="relative flex items-center gap-2 px-3 py-1 rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-all cursor-pointer shadow-2xs"
+                  onclick="this.querySelector('.date-picker').showPicker()"
                 >
-                  <div
-                    id="groupFilterWrapper"
-                    class="hidden relative flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200 shadow-2xs transition-all"
-                  >
-                    <i class="fa-solid fa-filter text-teal-600 text-xs"></i>
-                    <select
-                      id="groupSelectFilter"
-                      onchange="filterGroups()"
-                      class="bg-transparent text-xs font-bold text-slate-700 outline-none pr-2 cursor-pointer"
+                  <i class="fa-regular fa-calendar text-teal-600"></i>
+                  <div class="flex flex-col text-left">
+                    <span
+                      class="text-[9px] text-slate-400 font-bold uppercase leading-none"
+                      >Từ ngày</span
                     >
-                      <option value="all">Tất cả nhóm tiêu chí</option>
-                      <option value="Pháp lý">Pháp lý</option>
-                      <option value="Tài chính">Tài chính</option>
-                      <option value="Hạ tầng">Hạ tầng</option>
-                      <option value="Dữ liệu">Dữ liệu</option>
-                      <option value="Phần mềm">Phần mềm</option>
-                      <option value="ATTT">An toàn thông tin</option>
-                    </select>
+                    <input
+                      type="text"
+                      id="startDateDisplay"
+                      value="01/01/2024"
+                      class="bg-transparent text-xs font-bold text-slate-700 outline-none pointer-events-none pt-0.5 w-24"
+                      readonly
+                    />
+                    <input
+                      type="date"
+                      id="startDatePicker"
+                      value="2024-01-01"
+                      onchange="syncDatePicker(this, 'start')"
+                      class="date-picker absolute opacity-0 pointer-events-none"
+                    />
                   </div>
-
-                  <div
-                    class="relative flex items-center gap-2 px-3 py-1 rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-all cursor-pointer shadow-2xs"
-                    onclick="this.querySelector('.date-picker').showPicker()"
-                  >
-                    <i class="fa-regular fa-calendar text-teal-600"></i>
-                    <div class="flex flex-col text-left">
-                      <span
-                        class="text-[9px] text-slate-400 font-bold uppercase leading-none"
-                        >Từ ngày</span
-                      >
-                      <input
-                        type="text"
-                        id="startDateDisplay"
-                        value="01/01/2024"
-                        class="bg-transparent text-xs font-bold text-slate-700 outline-none pointer-events-none pt-0.5 w-24"
-                        readonly
-                      />
-                      <input
-                        type="date"
-                        id="startDatePicker"
-                        value="2024-01-01"
-                        onchange="syncDatePicker(this, 'start')"
-                        class="date-picker absolute opacity-0 pointer-events-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div
-                    class="relative flex items-center gap-2 px-3 py-1 rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-all cursor-pointer shadow-2xs"
-                    onclick="this.querySelector('.date-picker').showPicker()"
-                  >
-                    <i class="fa-regular fa-calendar text-rose-500"></i>
-                    <div class="flex flex-col text-left">
-                      <span
-                        class="text-[9px] text-slate-400 font-bold uppercase leading-none"
-                        >Đến ngày</span
-                      >
-                      <input
-                        type="text"
-                        id="endDateDisplay"
-                        value="31/12/2025"
-                        class="bg-transparent text-xs font-bold text-slate-700 outline-none pointer-events-none pt-0.5 w-24"
-                        readonly
-                      />
-                      <input
-                        type="date"
-                        id="endDatePicker"
-                        value="2025-12-31"
-                        onchange="syncDatePicker(this, 'end')"
-                        class="date-picker absolute opacity-0 pointer-events-none"
-                      />
-                    </div>
-                  </div>
-
-                  <button
-                    onclick="executeTimeSearch()"
-                    class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold transition-all shadow-sm active:scale-95"
-                  >
-                    <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
-                  </button>
                 </div>
-              </div>
-            </section>
 
-            <div id="dynamicContentBody">
+                <div
+                  class="relative flex items-center gap-2 px-3 py-1 rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-all cursor-pointer shadow-2xs"
+                  onclick="this.querySelector('.date-picker').showPicker()"
+                >
+                  <i class="fa-regular fa-calendar text-rose-500"></i>
+                  <div class="flex flex-col text-left">
+                    <span
+                      class="text-[9px] text-slate-400 font-bold uppercase leading-none"
+                      >Đến ngày</span
+                    >
+                    <input
+                      type="text"
+                      id="endDateDisplay"
+                      value="31/12/2025"
+                      class="bg-transparent text-xs font-bold text-slate-700 outline-none pointer-events-none pt-0.5 w-24"
+                      readonly
+                    />
+                    <input
+                      type="date"
+                      id="endDatePicker"
+                      value="2025-12-31"
+                      onchange="syncDatePicker(this, 'end')"
+                      class="date-picker absolute opacity-0 pointer-events-none"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  onclick="executeTimeSearch()"
+                  class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold transition-all shadow-sm active:scale-95"
+                >
+                  <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="dynamicContentBody">
+            <div
+              id="tab-content-tongquan"
+              class="grid grid-cols-1 gap-4 items-stretch w-full"
+            >
               <div
-                id="tab-content-tongquan"
                 class="grid grid-cols-1 lg:grid-cols-6 gap-4 items-stretch w-full"
               >
-                <div class="col-span-1 lg:col-span-2">
+                <div
+                  id="pieChartContainer"
+                  class="col-span-1 lg:col-span-3 transition-all duration-300"
+                >
                   <div
                     class="p-5 rounded-2xl border border-slate-100 bg-white shadow-xs h-full flex flex-col justify-between relative group"
                   >
                     <button
-                      onclick="openDetailModal('all')"
-                      class="absolute top-4 right-4 w-7 h-7 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 hover:text-slate-700 flex items-center justify-center transition-all z-10"
+                      id="btnTogglePie"
+                      onclick="toggleExpandRow1('all')"
+                      class="absolute top-1/2 -translate-y-1/2 right-[-12px] w-7 h-7 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 hover:text-slate-700 flex items-center justify-center transition-all z-10"
                       title="Mở rộng danh sách"
                     >
-                      <i class="fa-solid fa-expand text-xs"></i>
+                      <i
+                        id="iconTogglePie"
+                        class="fa-solid fa-angles-right text-xs"
+                      ></i>
                     </button>
 
                     <div
@@ -311,9 +333,8 @@
                             </h3>
                           </div>
                         </div>
-
                         <div
-                          onclick="openDetailModal('Đã xây dựng')"
+                          onclick="toggleExpandRow1('Đã xây dựng')"
                           class="p-2.5 rounded-xl bg-emerald-50/50 border border-emerald-100 flex items-center justify-between cursor-pointer hover:bg-emerald-50 transition-all"
                         >
                           <div class="flex items-center gap-2 text-emerald-900">
@@ -326,9 +347,8 @@
                             >0</span
                           >
                         </div>
-
                         <div
-                          onclick="openDetailModal('Đang xây dựng')"
+                          onclick="toggleExpandRow1('Đang xây dựng')"
                           class="p-2.5 rounded-xl bg-amber-50/50 border border-amber-100 flex items-center justify-between cursor-pointer hover:bg-amber-50 transition-all"
                         >
                           <div class="flex items-center gap-2 text-amber-900">
@@ -343,9 +363,8 @@
                             >0</span
                           >
                         </div>
-
                         <div
-                          onclick="openDetailModal('Chưa xây dựng')"
+                          onclick="toggleExpandRow1('Chưa xây dựng')"
                           class="p-2.5 rounded-xl bg-rose-50/50 border border-rose-100 flex items-center justify-between cursor-pointer hover:bg-rose-50 transition-all"
                         >
                           <div class="flex items-center gap-2 text-rose-900">
@@ -361,11 +380,12 @@
                           >
                         </div>
                       </div>
-
                       <div
                         class="sm:col-span-6 flex flex-col items-center justify-center relative min-h-[160px]"
                       >
-                        <div class="w-full max-w-[140px] aspect-square">
+                        <div
+                          class="w-full max-w-[200px] aspect-square cursor-pointer"
+                        >
                           <canvas id="csdlPieChart"></canvas>
                         </div>
                       </div>
@@ -373,119 +393,208 @@
                   </div>
                 </div>
 
-                <div class="col-span-1 lg:col-span-4">
+                <div
+                  id="panelDetailRow1"
+                  class="hidden col-span-1 lg:col-span-3 transition-all duration-300 animate-slide-in-right"
+                >
                   <div
                     class="p-5 rounded-2xl border border-slate-100 bg-white shadow-xs h-full flex flex-col justify-between"
                   >
-                    <div class="flex flex-col gap-0.5 mb-2">
-                      <h3 class="text-slate-800 font-bold text-sm">
-                        Số lượng lũy kế và trừ dần theo tháng
-                      </h3>
-                      <p class="text-[11px] text-slate-400">
-                        Đã/Đang XD tính cộng dồn lũy kế; Chưa XD tính trừ dần từ
-                        tổng số hệ thống
-                      </p>
+                    <div
+                      class="flex items-center justify-between gap-2 pb-2 border-b border-slate-100 bg-slate-50/80 p-3 rounded-xl mb-3"
+                    >
+                      <div class="min-w-[120px]">
+                        <h4
+                          id="panelTitleRow1"
+                          class="font-bold text-xs text-slate-900 truncate"
+                        >
+                          Danh sách chi tiết
+                        </h4>
+                        <p
+                          id="panelSubtitleRow1"
+                          class="text-[9px] text-slate-500 font-medium mt-0.5"
+                        ></p>
+                      </div>
+
+                      <div class="flex-1 max-w-[180px] relative">
+                        <input
+                          type="text"
+                          id="searchRow1"
+                          oninput="handleSearchRow1()"
+                          placeholder="Tìm bộ ngành, CSDL..."
+                          class="w-full pl-7 pr-2 py-1 border border-slate-200 rounded-lg text-[11px] focus:outline-hidden focus:border-blue-500 bg-white"
+                        />
+                        <i
+                          class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[10px]"
+                        ></i>
+                      </div>
+
+                      <button
+                        onclick="closeExpandRow1()"
+                        class="shrink-0 px-2 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 font-bold text-[10px] flex items-center gap-1 transition-all active:scale-95"
+                      >
+                        Thu gọn
+                        <i class="fa-solid fa-angles-left text-[9px]"></i>
+                      </button>
                     </div>
-                    <div class="w-full relative flex-1 min-h-[220px]">
-                      <canvas id="statusBarChart"></canvas>
+                    <div
+                      class="overflow-y-auto flex-1 max-h-[200px] pr-1 custom-scrollbar"
+                    >
+                      <table
+                        class="w-full text-[11px] text-left border-collapse tracking-tight"
+                      >
+                        <thead>
+                          <tr
+                            class="border-b border-slate-200 bg-slate-50 text-slate-500 font-bold sticky top-0 z-10"
+                          >
+                            <th class="p-2 text-center w-8">STT</th>
+                            <th class="p-2 w-20">Bộ ngành</th>
+                            <th class="p-2 w-24">Chủ quản</th>
+                            <th class="p-2">Tên Cơ sở dữ liệu</th>
+                            <th class="p-2 text-center w-20">Hiện trạng</th>
+                          </tr>
+                        </thead>
+                        <tbody
+                          id="tableBodyRow1"
+                          class="divide-y divide-slate-100 text-slate-600"
+                        ></tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div
-                id="tab-content-tieuchi"
-                class="hidden grid grid-cols-2 animate-fade-in gap-4"
-              ></div>
-            </div>
-          </section>
-        </div>
+                class="grid grid-cols-1 lg:grid-cols-6 gap-4 items-stretch w-full"
+              >
+                <div
+                  id="barChartContainer"
+                  class="col-span-1 lg:col-span-6 transition-all duration-300 relative group"
+                >
+                  <div
+                    class="p-5 rounded-2xl border border-slate-100 bg-white shadow-xs h-full flex flex-col justify-between"
+                  >
+                    <div class="flex flex-col gap-0.5 mb-2">
+                      <h3 class="text-slate-800 font-bold text-sm">
+                        Tiến độ xây dựng CSDL
+                      </h3>
+                    </div>
+                    <div class="w-full relative flex-1 min-h-[260px]">
+                      <canvas id="statusBarChart"></canvas>
+                    </div>
+                  </div>
+                </div>
 
+                <div
+                  id="panelDetailRow2"
+                  class="hidden col-span-1 lg:col-span-3 transition-all duration-300 animate-slide-in-right"
+                >
+                  <div
+                    class="p-5 rounded-2xl border border-slate-100 bg-white shadow-xs h-full flex flex-col justify-between"
+                  >
+                    <div
+                      class="flex items-center justify-between gap-2 pb-2 border-b border-slate-100 bg-slate-50/80 p-3 rounded-xl mb-3"
+                    >
+                      <div class="min-w-[120px]">
+                        <h4
+                          id="panelTitleRow2"
+                          class="font-bold text-xs text-slate-900 truncate"
+                        >
+                          Chi tiết mốc tiến độ
+                        </h4>
+                        <p
+                          id="panelSubtitleRow2"
+                          class="text-[9px] text-slate-500 font-medium mt-0.5"
+                        ></p>
+                      </div>
+
+                      <div class="flex-1 max-w-[180px] relative">
+                        <input
+                          type="text"
+                          id="searchRow2"
+                          oninput="handleSearchRow2()"
+                          placeholder="Tìm bộ ngành, CSDL..."
+                          class="w-full pl-7 pr-2 py-1 border border-slate-200 rounded-lg text-[11px] focus:outline-hidden focus:border-blue-500 bg-white"
+                        />
+                        <i
+                          class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[10px]"
+                        ></i>
+                      </div>
+
+                      <button
+                        onclick="closeExpandRow2()"
+                        class="shrink-0 px-2 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 font-bold text-[10px] flex items-center gap-1 transition-all active:scale-95"
+                      >
+                        Thu gọn
+                        <i class="fa-solid fa-angles-left text-[9px]"></i>
+                      </button>
+                    </div>
+                    <div
+                      class="overflow-y-auto flex-1 max-h-[220px] pr-1 custom-scrollbar"
+                    >
+                      <table
+                        class="w-full text-[11px] text-left border-collapse tracking-tight"
+                      >
+                        <thead>
+                          <tr
+                            class="border-b border-slate-200 bg-slate-50 text-slate-500 font-bold sticky top-0 z-10"
+                          >
+                            <th class="p-2 text-center w-8">STT</th>
+                            <th class="p-2 w-20">Bộ ngành</th>
+                            <th class="p-2 w-24">Chủ quản</th>
+                            <th class="p-2">Tên Cơ sở dữ liệu</th>
+                            <th class="p-2 text-center w-20">Hiện trạng</th>
+                          </tr>
+                        </thead>
+                        <tbody
+                          id="tableBodyRow2"
+                          class="divide-y divide-slate-100 text-slate-600"
+                        ></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              id="tab-content-tieuchi"
+              class="hidden grid grid-cols-2 animate-fade-in gap-4"
+            ></div>
+          </div>
+        </section>
+
+        <div class="flex items-center">
+          <h1 id="dynamicSectionTitle" class="text-2xl font-bold text-gray-800">
+            Chi tiết bộ ngành
+          </h1>
+        </div>
         <section
           id="section-2"
-          class="section-2 glass-card p-4 rounded-2xl neu-flat bg-[#f9ffff] space-y-6"
+          class="section-2 glass-card p-4 rounded-lg neu-flat bg-[#f9ffff] space-y-6"
         >
-          <div class="flex items-center">
-            <h1
-              id="dynamicSectionTitle"
-              class="text-2xl font-bold text-gray-800"
-            >
-              Chi tiết bộ ngành
-            </h1>
-          </div>
-
-          <div
-            class="date-picker flex flex-wrap items-center justify-center gap-4"
-          >
-            <div class="relative w-full sm:w-80">
-              <span
-                class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400"
-              >
-                <i class="fa-solid fa-magnifying-glass"></i>
-              </span>
-              <input
-                type="text"
-                placeholder="Search..."
-                class="w-full pl-11 pr-4 py-2.5 rounded-full neu-inset text-sm text-gray-700 placeholder-gray-400 focus:outline-none"
-              />
-            </div>
-
+          <div class="relative w-full max-w-md mx-auto flex items-center">
+            <!-- Icon tìm kiếm ở đầu (Trang trí) -->
             <div
-              class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 text-sm"
+              class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-400"
             >
-              <div
-                class="relative flex items-center gap-2 px-3 py-1.5 rounded-lg neu-inset text-gray-500 bg-white border border-gray-100 hover:border-gray-300 transition-all cursor-pointer group"
-                onclick="this.querySelector('.date-picker').showPicker()"
-              >
-                <i class="fa-regular fa-calendar text-[#0b557a]"></i>
-                <div class="flex flex-col text-left">
-                  <span
-                    class="text-[10px] text-gray-400 font-medium uppercase leading-none"
-                    >Từ ngày</span
-                  >
-                  <input
-                    type="text"
-                    class="date-display bg-transparent text-xs font-semibold text-gray-700 outline-none pointer-events-none pt-0.5 w-28"
-                    readonly=""
-                  />
-                  <input
-                    type="date"
-                    value="2024-08-29"
-                    class="date-picker absolute opacity-0 pointer-events-none"
-                    onchange="updateDateDisplay(this)"
-                  />
-                </div>
-              </div>
-
-              <div
-                class="relative flex items-center gap-2 px-3 py-1.5 rounded-lg neu-inset text-gray-500 bg-white border border-gray-100 hover:border-gray-300 transition-all cursor-pointer group"
-                onclick="this.querySelector('.date-picker').showPicker()"
-              >
-                <i class="fa-regular fa-calendar text-rose-500"></i>
-                <div class="flex flex-col text-left">
-                  <span
-                    class="text-[10px] text-gray-400 font-medium uppercase leading-none"
-                    >Đến ngày</span
-                  >
-                  <input
-                    type="text"
-                    class="date-display bg-transparent text-xs font-semibold text-gray-700 outline-none pointer-events-none pt-0.5 w-28"
-                    readonly=""
-                  />
-                  <input
-                    type="date"
-                    value="2024-09-10"
-                    class="date-picker absolute opacity-0 pointer-events-none"
-                    onchange="updateDateDisplay(this)"
-                  />
-                </div>
-              </div>
-              <button
-                class="flex items-center gap-1 px-4 py-2 rounded-lg bg-green-500 text-white text-sm font-medium hover:bg-green-600 transition-colors"
-              >
-                <i class="fa-solid fa-magnifying-glass"></i>Tìm kiếm
-              </button>
+              <i class="fa-solid fa-magnifying-glass"></i>
             </div>
+
+            <!-- Input -->
+            <input
+              id="tanstackSearch"
+              type="text"
+              placeholder="Tìm kiếm theo Bộ ngành..."
+              class="w-full pl-11 pr-28 py-3 rounded-full border border-gray-200 bg-white text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 shadow-sm transition-all"
+            />
+
+            <!-- Nút bấm đặt lọt lòng phía bên phải -->
+            <button
+              class="absolute right-1.5 inset-y-1.5 px-4 rounded-full bg-teal-600 text-white text-xs font-medium hover:bg-teal-700 active:scale-95 transition-all flex items-center gap-1.5"
+            >
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <span>Tìm kiếm</span>
+            </button>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -530,7 +639,7 @@
                   <input
                     id="tanstackSearch"
                     type="text"
-                    placeholder="Lọc dữ liệu theo Bộ ngành, CSDL..."
+                    placeholder="Lọc dữ liệu theo đơn vị chủ quản, CSDL..."
                     oninput="onTableStateChange()"
                     class="w-full pl-9 pr-3 py-2 rounded-md border border-slate-200 bg-slate-50/50 placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-400 focus-visible:bg-white transition-all text-xs font-medium"
                   />
@@ -711,127 +820,7 @@
         </section>
 
         <div
-          id="chartDetailModal"
-          class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4 transition-all duration-200 opacity-0"
-        >
-          <div
-            id="modalBoxStructure"
-            class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-3xl w-full flex flex-col overflow-hidden transform scale-95 transition-all duration-200 max-h-[80vh]"
-          >
-            <div
-              class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/80"
-            >
-              <div>
-                <h4 id="modalTitle" class="font-bold text-sm text-slate-900">
-                  Danh sách Cơ sở dữ liệu chuyên ngành
-                </h4>
-                <p
-                  id="modalSubtitle"
-                  class="text-[11px] text-slate-500 font-medium mt-0.5"
-                ></p>
-              </div>
-              <button
-                onclick="closeDetailModal()"
-                class="w-6 h-6 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 hover:text-slate-800 flex items-center justify-center transition-all active:scale-90"
-              >
-                <i class="fa-solid fa-xmark text-xs"></i>
-              </button>
-            </div>
-            <div
-              class="p-4 overflow-x-auto overflow-y-auto flex-1 custom-scrollbar max-h-[50vh]"
-            >
-              <table
-                class="w-full text-xs text-left border-collapse tracking-tight"
-              >
-                <thead>
-                  <tr
-                    class="border-b border-slate-200 bg-slate-50 text-slate-500 font-bold"
-                  >
-                    <th class="p-2.5 text-center w-12">STT</th>
-                    <th class="p-2.5 w-40">Bộ ngành / Cơ quan</th>
-                    <th class="p-2.5 w-40">Đơn vị chủ quản</th>
-                    <th class="p-2.5">
-                      Tên Cơ sở dữ liệu chuyên ngành thành phần
-                    </th>
-                    <th class="p-2.5 text-center w-28">Hiện trạng</th>
-                  </tr>
-                </thead>
-                <tbody
-                  id="modalTableBody"
-                  class="divide-y divide-slate-100 text-slate-600"
-                ></tbody>
-              </table>
-            </div>
-            <div
-              class="p-3 border-t border-slate-100 bg-slate-50/50 text-right text-[11px] font-semibold text-slate-400"
-            >
-              Nhấn phím ESC hoặc Click nút đóng để thoát view.
-            </div>
-          </div>
-        </div>
-
-        <div
-          id="csdlDetailModal"
-          class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4 transition-all duration-200 opacity-0"
-        >
-          <div
-            id="csdlBoxStructure"
-            class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-3xl w-full flex flex-col overflow-hidden transform scale-95 transition-all duration-200 max-h-[80vh]"
-          >
-            <div
-              class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/80"
-            >
-              <div>
-                <h4 id="csdlTitle" class="font-bold text-sm text-slate-900">
-                  Danh sách Cơ sở dữ liệu chuyên ngành
-                </h4>
-                <p
-                  id="csdlSubtitle"
-                  class="text-[11px] text-slate-500 font-medium mt-0.5"
-                ></p>
-              </div>
-              <button
-                onclick="closeCsdlModal()"
-                class="w-6 h-6 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 hover:text-slate-800 flex items-center justify-center transition-all active:scale-90"
-              >
-                <i class="fa-solid fa-xmark text-xs"></i>
-              </button>
-            </div>
-            <div
-              class="p-4 overflow-x-auto overflow-y-auto flex-1 custom-scrollbar max-h-[50vh]"
-            >
-              <table
-                class="w-full text-xs text-left border-collapse tracking-tight"
-              >
-                <thead>
-                  <tr
-                    class="border-b border-slate-200 bg-slate-50 text-slate-500 font-bold"
-                  >
-                    <th class="p-2.5 text-center w-12">STT</th>
-                    <th class="p-2.5 w-40">Bộ ngành / Cơ quan</th>
-                    <th class="p-2.5 w-40">Đơn vị chủ quản</th>
-                    <th class="p-2.5">
-                      Tên Cơ sở dữ liệu chuyên ngành thành phần
-                    </th>
-                    <th class="p-2.5 text-center w-28">Hiện trạng</th>
-                  </tr>
-                </thead>
-                <tbody
-                  id="csdlTableBody"
-                  class="divide-y divide-slate-100 text-slate-600"
-                ></tbody>
-              </table>
-            </div>
-            <div
-              class="p-3 border-t border-slate-100 bg-slate-50/50 text-right text-[11px] font-semibold text-slate-400"
-            >
-              Nhấn phím ESC hoặc Click nút đóng để thoát view.
-            </div>
-          </div>
-        </div>
-
-        <div
-          id="shadcnDialogModal"
+          id="chiTietDanhGia"
           class="fixed inset-0 bg-black/60 backdrop-blur-xs z-[9999] hidden flex items-center justify-center p-4 animate-fade-in"
         >
           <div
@@ -934,193 +923,117 @@
 
         <div
           id="ministryDetailModal"
-          class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] hidden flex items-center justify-center p-4"
+          class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden transition-all duration-300"
         >
           <div
-            class="bg-white rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden transform transition-all duration-200 scale-95 opacity-0 flex flex-col"
             id="ministryModalBox"
+            class="w-full max-w-7xl h-[85vh] flex flex-col bg-white rounded-2xl shadow-xl transform scale-95 opacity-0 transition-all duration-300 overflow-hidden"
           >
             <div
-              class="px-6 py-4 bg-slate-50 border-b border-slate-100 flex flex-col gap-1.5"
+              class="px-6 py-4 border-b border-slate-100 flex items-center justify-between flex-shrink-0 bg-white relative"
             >
-              <div class="flex items-center justify-between">
-                <span
-                  class="text-[10px] bg-teal-100 text-teal-800 font-bold px-2 py-0.5 rounded uppercase"
-                  id="modalGroupNameBadge"
-                  >PHÁP LÝ</span
-                >
-                <button
-                  onclick="closeMinistryModal()"
-                  class="text-slate-400 hover:text-slate-600 p-1"
-                >
-                  <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-              </div>
-              <h3
-                class="font-bold text-slate-800 text-sm leading-snug"
-                id="modalCriterionQuestion"
-              >
-                Tiêu chí: ---
-              </h3>
-            </div>
+              <div class="space-y-3 w-full">
+                <!-- Hàng chứa Nhóm tiêu chí (Badge) -->
+                <div class="flex items-center gap-2">
+                  <span
+                    id="modalGroupNameBadge"
+                    class="text-[11px] font-extrabold bg-teal-50 text-teal-700 border border-teal-200/60 px-2.5 py-1 rounded-md uppercase tracking-wider shadow-2xs"
+                  >
+                    PHÁP LÝ
+                  </span>
+                  <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                  <span class="text-[11px] font-medium text-black"
+                    >Chi tiết đánh giá tiêu chí CSDL Bộ ngành</span
+                  >
+                </div>
 
-            <div
-              class="px-6 pt-3 bg-slate-50/50 border-b border-slate-100 flex gap-2"
-            >
-              <button
-                id="btn-popup-passed"
-                onclick="switchPopupTab('passed')"
-                class="px-4 py-2 text-xs font-bold border-b-2 border-teal-500 text-teal-600 transition-all"
-              >
-                Đã đạt
-              </button>
-              <button
-                id="btn-popup-failed"
-                onclick="switchPopupTab('failed')"
-                class="px-4 py-2 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all"
-              >
-                Chưa đạt
-              </button>
-              <button
-                id="btn-popup-all"
-                onclick="switchPopupTab('all')"
-                class="px-4 py-2 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all"
-              >
-                Tổng quan
-              </button>
-            </div>
-
-            <div class="p-6 overflow-y-auto max-h-[50vh]">
-              <div class="overflow-hidden border border-slate-100 rounded-xl">
-                <table class="w-full text-left border-collapse text-xs">
-                  <thead>
-                    <tr
-                      class="bg-slate-100/80 text-slate-500 font-semibold border-b border-slate-200"
-                    >
-                      <th class="p-3">STT</th>
-                      <th class="p-3">Tên Bộ / Ban / Ngành</th>
-                      <th class="p-3">Tên Cơ sở dữ liệu chuyên ngành</th>
-                      <th class="p-3 text-center">Trạng thái</th>
-                    </tr>
-                  </thead>
-                  <tbody
-                    id="ministryTableBody"
-                    class="text-slate-700 divide-y divide-slate-100"
-                  ></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          id="criteriaExpandModal"
-          class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] hidden flex items-center justify-center p-4"
-        >
-          <div
-            class="bg-white rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-95 opacity-0 flex flex-col"
-            id="criteriaModalBox"
-          >
-            <div
-              class="px-5 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between"
-            >
-              <h3 class="font-bold text-slate-800 text-sm">
-                Báo cáo chi tiết chỉ số
-              </h3>
-              <button
-                onclick="closeCriteriaExpandModal()"
-                class="text-slate-400 hover:text-slate-600 p-1"
-              >
-                <i class="fa-solid fa-xmark"></i>
-              </button>
-            </div>
-            <div class="p-6 space-y-4">
-              <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                <p
-                  id="modalActiveCriterion"
-                  class="text-xs font-bold text-slate-800 leading-relaxed"
+                <!-- Hàng chứa Tiêu đề Tiêu chí chính -->
+                <div
+                  id="modalCriterionQuestion"
+                  class="flex items-center justify-center gap-3 p-3.5 bg-slate-50 border border-slate-100 rounded-xl"
                 >
-                  ---
-                </p>
-                <p
-                  id="modalActiveStats"
-                  class="text-[11px] text-teal-600 font-bold mt-1"
-                >
-                  ---
-                </p>
-              </div>
-              <p
-                id="modalDescriptionParagraph"
-                class="text-xs text-slate-500 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100 whitespace-pre-line"
-              >
-                ---
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div
-          id="criteriaExpandModal"
-          class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] hidden flex items-center justify-center p-4"
-        >
-          <div
-            class="bg-white rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-95 opacity-0 flex flex-col"
-            id="criteriaModalBox"
-          >
-            <div
-              class="px-6 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between"
-            >
-              <div class="flex items-center gap-2">
-                <span
-                  class="p-2 bg-teal-50 text-teal-600 rounded-xl text-xs font-bold"
-                  id="modalGroupBadge"
-                  >PHÁP LÝ</span
-                >
-                <h3 class="font-bold text-slate-800 text-sm">
-                  Báo cáo chi tiết nhóm tiêu chí
-                </h3>
+                  <!-- Nội dung HTML động kèm Icon nổi bật sẽ được Javascript render vào đây -->
+                </div>
               </div>
               <button
-                onclick="closeCriteriaExpandModal()"
-                class="text-slate-400 hover:text-slate-600 p-1.5 hover:bg-slate-200/60 rounded-lg transition"
+                onclick="closeMinistryModal()"
+                class="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-all"
               >
                 <i class="fa-solid fa-xmark text-lg"></i>
               </button>
             </div>
-            <div class="p-6 overflow-y-auto max-h-[70vh] space-y-4">
-              <div
-                class="p-4 bg-teal-50/40 rounded-xl border border-teal-100/60"
-              >
-                <h4
-                  class="text-xs font-bold text-slate-400 uppercase tracking-wide"
+
+            <div
+              class="px-6 py-3 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 flex-shrink-0 bg-slate-50/30"
+            >
+              <div class="flex gap-1 border-b sm:border-b-0 border-slate-200">
+                <button
+                  id="btn-popup-passed"
+                  onclick="switchPopupTab('passed')"
+                  class="px-4 py-2 text-xs font-bold border-b-2 border-teal-500 text-teal-600 transition-all"
                 >
-                  Tiêu chí đang kiểm tra
-                </h4>
-                <p
-                  id="modalActiveCriterion"
-                  class="text-sm font-bold text-slate-800 mt-1 leading-relaxed"
+                  Đã đáp ứng
+                </button>
+                <button
+                  id="btn-popup-failed"
+                  onclick="switchPopupTab('failed')"
+                  class="px-4 py-2 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all"
                 >
-                  ---
-                </p>
-                <p
-                  id="modalActiveStats"
-                  class="text-xs text-teal-600 font-bold mt-1"
+                  Chưa đáp ứng
+                </button>
+                <button
+                  id="btn-popup-all"
+                  onclick="switchPopupTab('all')"
+                  class="px-4 py-2 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all"
                 >
-                  Đáp ứng: ---
-                </p>
+                  Tổng quan
+                </button>
               </div>
-              <div>
-                <h4
-                  class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2"
-                >
-                  Diễn giải pháp lý & Quy chuẩn mẫu hành chính
-                </h4>
+
+              <div class="relative w-full sm:max-w-xs shadow-sm rounded-lg">
                 <div
-                  id="modalDescriptionParagraph"
-                  class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200/60 font-medium whitespace-pre-line"
+                  class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400"
                 >
-                  ---
+                  <i class="fa-solid fa-magnifying-glass text-xs"></i>
                 </div>
+                <input
+                  type="text"
+                  id="ministryPopupSearch"
+                  onkeyup="renderPopupTable()"
+                  placeholder="Tìm theo bộ, đơn vị, csdl..."
+                  class="w-full pl-9 pr-3 py-1.5 text-xs border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 placeholder-slate-400 text-slate-700 transition-all"
+                />
+              </div>
+            </div>
+
+            <div class="p-6 overflow-y-auto flex-1 bg-white space-y-4">
+              <div
+                class="overflow-x-auto border border-slate-200 rounded-xl bg-white shadow-sm"
+              >
+                <table
+                  class="w-full min-w-[1100px] text-left border-collapse table-fixed"
+                >
+                  <thead>
+                    <tr
+                      class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold text-[11px] uppercase tracking-wider sticky top-0 z-10"
+                    >
+                      <th class="p-3.5 text-center w-14 bg-slate-50">STT</th>
+                      <th class="p-3.5 w-52 bg-slate-50">Tên Bộ/Ngành</th>
+                      <th class="p-3.5 w-60 bg-slate-50">
+                        Tên đơn vị chủ quản
+                      </th>
+                      <th class="p-3.5 w-72 bg-slate-50">Tên Cơ sở dữ liệu</th>
+                      <th class="p-3.5 text-center w-36 bg-slate-50">
+                        Trạng thái
+                      </th>
+                      <th class="p-3.5 bg-slate-50">Căn cứ</th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    id="ministryTableBody"
+                    class="divide-y divide-slate-100"
+                  ></tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -1130,465 +1043,7 @@
 
     <script src="./js/handleTongQuan.js"></script>
     <script src="./js/handleTieuChi.js"></script>
-    <script src="./js/handleChiTietBoNganhChart.js"></script>
-    <script>
-      // Tập hợp dữ liệu giả lập chuẩn xác cấu trúc nghiệp vụ liên thông CSDL
-      const coreDataSource = [
-        {
-          id: 1,
-          boNganh: "Bộ Quốc phòng",
-          chuQuan: "Cục CNTT",
-          csdl: "CSDL Quản lý Sĩ quan & Lực lượng Dự bị động viên",
-          progress: 85,
-          pl: true,
-          tc: true,
-          ht: true,
-          dl: true,
-          pm: true,
-          attt: false,
-          eval: "Chưa đạt",
-        },
-        {
-          id: 2,
-          boNganh: "Bộ Công an",
-          chuQuan: "Cục Cảnh sát QLHC về TTXH",
-          csdl: "CSDL Quốc gia về Dân cư cơ bản",
-          progress: 100,
-          pl: true,
-          tc: true,
-          ht: true,
-          dl: true,
-          pm: true,
-          attt: true,
-          eval: "Đạt",
-        },
-        {
-          id: 3,
-          boNganh: "Bộ Ngoại giao",
-          chuQuan: "Cục Lãnh sự",
-          csdl: "CSDL Quản lý Thị thực và Hộ chiếu điện tử",
-          progress: 70,
-          pl: true,
-          tc: true,
-          ht: true,
-          dl: false,
-          pm: true,
-          attt: false,
-          eval: "Chưa đạt",
-        },
-        {
-          id: 4,
-          boNganh: "Bộ Nội vụ",
-          chuQuan: "Trung tâm Thông tin",
-          csdl: "CSDL Toàn quốc về Cán bộ, Công chức, Viên chức",
-          progress: 100,
-          pl: true,
-          tc: true,
-          ht: true,
-          dl: true,
-          pm: true,
-          attt: true,
-          eval: "Đạt",
-        },
-        {
-          id: 5,
-          boNganh: "Bộ Tư pháp",
-          chuQuan: "Cục CNTT",
-          csdl: "CSDL Hộ tịch điện tử đồng bộ dữ liệu quốc gia",
-          progress: 95,
-          pl: true,
-          tc: true,
-          ht: true,
-          dl: true,
-          pm: true,
-          attt: true,
-          eval: "Đạt",
-        },
-        {
-          id: 6,
-          boNganh: "Bộ Tài chính",
-          chuQuan: "Tổng cục Thuế",
-          csdl: "CSDL Hóa đơn điện tử và Nghĩa vụ thuế tập trung",
-          progress: 100,
-          pl: true,
-          tc: true,
-          ht: true,
-          dl: true,
-          pm: true,
-          attt: true,
-          eval: "Đạt",
-        },
-        {
-          id: 7,
-          boNganh: "Bộ Công Thương",
-          chuQuan: "Cục Thương mại điện tử",
-          csdl: "CSDL Quản lý Chứng nhận xuất xứ hàng hóa điện tử",
-          progress: 45,
-          pl: false,
-          tc: true,
-          ht: false,
-          dl: true,
-          pm: false,
-          attt: false,
-          eval: "Chưa đạt",
-        },
-        {
-          id: 8,
-          boNganh: "Bộ Nông nghiệp & PTNT",
-          chuQuan: "Cục Thủy sản",
-          csdl: "CSDL Đăng ký tàu cá và Nhật ký khai thác hải sản",
-          progress: 60,
-          pl: true,
-          tc: false,
-          ht: true,
-          dl: false,
-          pm: true,
-          attt: false,
-          eval: "Chưa đạt",
-        },
-        {
-          id: 9,
-          boNganh: "Bộ Xây dựng",
-          chuQuan: "Trung tâm Thông tin",
-          csdl: "CSDL Hệ thống thông tin thị trường bất động sản",
-          progress: 75,
-          pl: true,
-          tc: true,
-          ht: true,
-          dl: false,
-          pm: true,
-          attt: false,
-          eval: "Chưa đạt",
-        },
-        {
-          id: 10,
-          boNganh: "Bộ VHTTDL",
-          chuQuan: "Cục Du lịch Quốc gia",
-          csdl: "CSDL Quản lý Danh mục di sản và cơ sở lữ hành",
-          progress: 35,
-          pl: false,
-          tc: false,
-          ht: true,
-          dl: false,
-          pm: true,
-          attt: false,
-          eval: "Chưa đạt",
-        },
-        {
-          id: 11,
-          boNganh: "Bộ Khoa học & Công nghệ",
-          chuQuan: "Cục Sở hữu trí tuệ",
-          csdl: "CSDL Đăng ký Tài sản trí tuệ và Văn bằng bảo hộ",
-          progress: 80,
-          pl: true,
-          tc: true,
-          ht: true,
-          dl: true,
-          pm: true,
-          attt: false,
-          eval: "Chưa đạt",
-        },
-        {
-          id: 12,
-          boNganh: "Bộ Giáo dục & Đào tạo",
-          chuQuan: "Cục QLCL Giáo dục",
-          csdl: "CSDL Quốc gia về Văn bằng chứng chỉ liên thông",
-          progress: 100,
-          pl: true,
-          tc: true,
-          ht: true,
-          dl: true,
-          pm: true,
-          attt: true,
-          eval: "Đạt",
-        },
-        {
-          id: 13,
-          boNganh: "Bộ Y tế",
-          chuQuan: "Cục Quản lý Dược",
-          csdl: "CSDL Quản lý giá thuốc và hệ thống cung ứng Dược",
-          progress: 55,
-          pl: true,
-          tc: false,
-          ht: false,
-          dl: true,
-          pm: true,
-          attt: false,
-          eval: "Chưa đạt",
-        },
-      ];
-
-      // TanStack Table Core State Simulation Tracker
-      const tableState = {
-        globalFilter: "",
-        statusFilter: "all",
-        advancedFilter: "all",
-        sortDirection: "desc", // desc hoặc asc theo tiến độ
-        currentPage: 1, // Trang hiện tại
-        rowsPerPage: 10, // Số hàng hiển thị mặc định
-      };
-
-      // PHƯƠNG THỨC KẾT XUẤT DỮ LIỆU ĐỘNG (CORE RENDER)
-      function renderTableEngine() {
-        // 1. Thực hiện các bước Filter theo State
-        let filteredData = [...coreDataSource];
-
-        // Lọc theo Global Search
-        if (tableState.globalFilter) {
-          const search = tableState.globalFilter.toLowerCase();
-          filteredData = filteredData.filter(
-            (d) =>
-              d.boNganh.toLowerCase().includes(search) ||
-              d.chuQuan.toLowerCase().includes(search) ||
-              d.csdl.toLowerCase().includes(search),
-          );
-        }
-
-        // Lọc theo trạng thái Đánh giá chung
-        if (tableState.statusFilter !== "all") {
-          filteredData = filteredData.filter(
-            (d) => d.eval === tableState.statusFilter,
-          );
-        }
-
-        // Lọc theo cấu hình nâng cao
-        if (tableState.advancedFilter !== "all") {
-          if (tableState.advancedFilter === "low")
-            filteredData = filteredData.filter((d) => d.progress < 60);
-          else if (tableState.advancedFilter === "high")
-            filteredData = filteredData.filter((d) => d.progress === 100);
-          else if (tableState.advancedFilter === "no-attt")
-            filteredData = filteredData.filter((d) => d.attt === false);
-        }
-
-        // 2. Thực hiện Sort theo State
-        filteredData.sort((a, b) => {
-          return tableState.sortDirection === "asc"
-            ? a.progress - b.progress
-            : b.progress - a.progress;
-        });
-
-        // 3. Tính toán Phân trang
-        const totalRows = filteredData.length;
-        const totalPages = Math.ceil(totalRows / tableState.rowsPerPage) || 1;
-
-        // Khống chế việc tràn số trang khi bộ lọc thay đổi làm giảm tổng số dòng
-        if (tableState.currentPage > totalPages) {
-          tableState.currentPage = totalPages;
-        }
-
-        const startIndex =
-          (tableState.currentPage - 1) * tableState.rowsPerPage;
-        const endIndex = Math.min(
-          startIndex + tableState.rowsPerPage,
-          totalRows,
-        );
-
-        // Cắt mảng dữ liệu để chỉ hiển thị trang hiện tại
-        const paginatedData = filteredData.slice(startIndex, endIndex);
-
-        // 4. Tiến hành đổ dữ liệu ra DOM HTML
-        const tbody = document.getElementById("reactTableBody");
-        tbody.innerHTML = "";
-
-        if (totalRows === 0) {
-          tbody.innerHTML = `<tr><td colspan="13" class="p-8 text-center text-slate-400 font-medium bg-slate-50/50">Không tìm thấy bản ghi dữ liệu phù hợp với cấu hình bộ lọc hiện tại.</td></tr>`;
-
-          // Cập nhật text footer khi rỗng
-          document.getElementById("counterRowsSummary").textContent =
-            "Hiển thị 0 hệ thống CSDL.";
-          updatePaginationUI(1, 1, true, true);
-          return;
-        }
-
-        paginatedData.forEach((row, index) => {
-          const dotValid = `<div class="w-2.5 h-2.5 rounded-full bg-emerald-500 mx-auto" title="Đạt chuẩn"></div>`;
-          const dotInvalid = `<div class="w-2.5 h-2.5 rounded-full bg-rose-200 border border-rose-400/30 mx-auto" title="Chưa đạt / Vướng mắc"></div>`;
-
-          const badgeGeneral =
-            row.eval === "Đạt"
-              ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-semibold">🟢 Đạt chuẩn</span>`
-              : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 text-[11px] font-semibold">🔴 Chưa đạt</span>`;
-
-          const tr = document.createElement("tr");
-          tr.className = "hover:bg-slate-50/70 transition-colors bg-white";
-          // Số thứ tự tăng tiến chính xác theo vị trí thực tế trong danh sách đã lọc
-          const absoluteIndex = startIndex + index + 1;
-
-          tr.innerHTML = `
-          <td class="p-3 text-center font-mono text-slate-400 font-bold">${absoluteIndex}</td>
-          <td class="p-3 font-semibold text-slate-900">${row.boNganh}</td>
-          <td class="p-3 text-slate-500 col-sub-holder">${row.chuQuan}</td>
-          <td class="p-3 text-slate-700 font-medium max-w-sm truncate">${row.csdl}</td>
-          <td class="p-3 text-center font-bold text-slate-900 font-mono">${row.progress}%</td>
-          <td class="p-3 col-sub-criteria">${row.pl ? dotValid : dotInvalid}</td>
-          <td class="p-3 col-sub-criteria">${row.tc ? dotValid : dotInvalid}</td>
-          <td class="p-3 col-sub-criteria">${row.ht ? dotValid : dotInvalid}</td>
-          <td class="p-3 col-sub-criteria">${row.dl ? dotValid : dotInvalid}</td>
-          <td class="p-3 col-sub-criteria">${row.pm ? dotValid : dotInvalid}</td>
-          <td class="p-3 col-sub-criteria">${row.attt ? dotValid : dotInvalid}</td>
-          <td class="p-3 text-center col-sub-eval">${badgeGeneral}</td>
-          <td class="p-3 text-center">
-            <button onclick="openShadcnDialog(${row.id})" class="w-6 h-6 rounded-md border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 hover:text-slate-900 flex items-center justify-center transition-all active:scale-90 shadow-2xs">
-              <i class="fa-solid fa-expand text-[10px]"></i>
-            </button>
-          </td>
-        `;
-          tbody.appendChild(tr);
-        });
-
-        // 5. Đồng bộ văn bản Footer hiển thị kết quả (Ví dụ: Hiển thị từ 1 đến 10 trên tổng số 13 hệ thống CSDL)
-        document.getElementById("counterRowsSummary").textContent =
-          `Hiển thị từ ${startIndex + 1} đến ${endIndex} trên tổng số ${totalRows} hệ thống CSDL được lọc.`;
-
-        // 6. Cập nhật trạng thái các nút phân trang
-        const isPrevDisabled = tableState.currentPage === 1;
-        const isNextDisabled = tableState.currentPage === totalPages;
-        updatePaginationUI(
-          tableState.currentPage,
-          totalPages,
-          isPrevDisabled,
-          isNextDisabled,
-        );
-      }
-
-      // HÀM TIỆN ÍCH CẬP NHẬT TRẠNG THÁI UI PHÂN TRANG
-      function updatePaginationUI(
-        currentPage,
-        totalPages,
-        prevDisabled,
-        nextDisabled,
-      ) {
-        // Do trong HTML của bạn có 2 cụm nút phân trang trùng ID `paginationInfo`, ta cập nhật cho tất cả.
-        const pageInfoElements = document.querySelectorAll("#paginationInfo");
-        pageInfoElements.forEach((el) => {
-          el.textContent = `Trang ${currentPage} / ${totalPages}`;
-        });
-
-        const prevBtn = document.getElementById("prevPageBtn");
-        const nextBtn = document.getElementById("nextPageBtn");
-
-        if (prevBtn) {
-          prevBtn.disabled = prevDisabled;
-        }
-        if (nextBtn) {
-          nextBtn.disabled = nextDisabled;
-        }
-      }
-
-      // EVENT HANDLER ĐỒNG BỘ TRẠNG THÁI TOÀN CỤC (STATE SYNC)
-      function onTableStateChange() {
-        tableState.globalFilter =
-          document.getElementById("tanstackSearch").value;
-        tableState.statusFilter = document.getElementById(
-          "tanstackFilterStatus",
-        ).value;
-        tableState.advancedFilter = document.getElementById(
-          "tanstackFilterAdvanced",
-        ).value;
-        tableState.currentPage = 1; // Reset về trang 1 khi lọc tiêu chí mới
-        renderTableEngine();
-      }
-
-      // XỬ LÝ SỰ KIỆN THAY ĐỔI SỐ HÀNG HIỂN THỊ TRÊN MỘT TRANG
-      function onRowsPerPageChange() {
-        tableState.rowsPerPage = parseInt(
-          document.getElementById("rowsPerPageSelect").value,
-          10,
-        );
-        tableState.currentPage = 1; // Quay về trang đầu tiên
-        renderTableEngine();
-      }
-
-      // DI CHUYỂN QUA LẠI GIỮA CÁC TRANG (Kế thừa từ hàm goToPage gốc của bạn và sửa lại logic đúng)
-      function goToPage(direction) {
-        tableState.currentPage += direction;
-        renderTableEngine();
-      }
-
-      // ĐIỀU KHIỂN SẮP XẾP TIẾN ĐỘ
-      function toggleProgressSort() {
-        tableState.sortDirection =
-          tableState.sortDirection === "desc" ? "asc" : "desc";
-        document.getElementById("sortLabelText").textContent =
-          tableState.sortDirection === "asc" ? "Tăng dần" : "Giảm dần";
-        renderTableEngine();
-      }
-
-      // ẨN / HIỆN CỘT BẢNG THEO LỚP CSS ĐỊNH DANH (COLUMN VISIBILITY COUPLING)
-      function toggleTableCol(colKey, cb) {
-        let selector = "";
-        if (colKey === 4) selector = ".col-sub-holder";
-        else if (colKey === 6) selector = ".col-sub-criteria";
-        else if (colKey === 12) selector = ".col-sub-eval";
-
-        if (!selector) return;
-        document.querySelectorAll(selector).forEach((el) => {
-          el.style.display = cb.checked ? "" : "none";
-        });
-      }
-
-      // DIALOG CONTROLLER (Mở / Đóng popup phóng to xem chi tiết bản ghi dữ liệu)
-      function openShadcnDialog(rowId) {
-        const item = coreDataSource.find((d) => d.id === rowId);
-        if (!item) return;
-
-        document.getElementById("dialogMetaSTT").textContent =
-          `STT-${String(item.id).padStart(2, "0")}`;
-        document.getElementById("dialogMetaCsdlName").textContent = item.csdl;
-        document.getElementById("dialogMetaBoNganh").textContent = item.boNganh;
-        document.getElementById("dialogMetaChuQuan").textContent = item.chuQuan;
-        document.getElementById("dialogProgressText").textContent =
-          `${item.progress}%`;
-        document.getElementById("dialogProgressBar").style.width =
-          `${item.progress}%`;
-
-        const criteriaItems = [
-          { key: "Pháp lý", val: item.pl },
-          { key: "Tài chính", val: item.tc },
-          { key: "Hạ tầng", val: item.ht },
-          { key: "Dữ liệu", val: item.dl },
-          { key: "Phần mềm", val: item.pm },
-          { key: "ATTT", val: item.attt },
-        ];
-
-        const gridBox = document.getElementById("dialogCriteriaGridBox");
-        gridBox.innerHTML = criteriaItems
-          .map(
-            (c) => `
-          <div class="p-2 border rounded-md flex items-center justify-between ${c.val ? "bg-emerald-50/40 border-emerald-200 text-emerald-900" : "bg-slate-50 border-slate-200 text-slate-500"}">
-            <span class="font-medium text-slate-600">${c.key}</span>
-            <span class="font-bold text-[11px]">${c.val ? "✔️ Đạt" : "❌ Chưa"}</span>
-          </div>
-        `,
-          )
-          .join("");
-
-        document.getElementById("dialogGeneralStatusBadge").innerHTML =
-          item.eval === "Đạt"
-            ? `<span class="px-2.5 py-1 bg-slate-900 text-white rounded font-bold text-[11px]">🟢 Hệ thống đạt chuẩn</span>`
-            : `<span class="px-2.5 py-1 bg-slate-100 border border-slate-200 text-slate-800 rounded font-bold text-[11px]">🔴 Cần hoàn thiện thêm</span>`;
-
-        const modal = document.getElementById("shadcnDialogModal");
-        const box = document.getElementById("dialogBoxStructure");
-        modal.classList.remove("hidden");
-        setTimeout(() => {
-          box.classList.remove("scale-95", "opacity-0");
-          box.classList.add("scale-100", "opacity-100");
-        }, 20);
-      }
-
-      function closeShadcnDialog() {
-        document
-          .getElementById("dialogBoxStructure")
-          .classList.add("scale-95", "opacity-0");
-        setTimeout(() => {
-          document.getElementById("shadcnDialogModal").classList.add("hidden");
-        }, 140);
-      }
-
-      // Khởi chạy nền bảng ngay khi hệ thống xử lý xong DOM
-      document.addEventListener("DOMContentLoaded", () => renderTableEngine());
-    </script>
+    <script src="./js/handleChiTietBoNganhBarChart.js"></script>
+    <script src="./js/handleChiTietBoNganhTable.js"></script>
   </body>
 </html>

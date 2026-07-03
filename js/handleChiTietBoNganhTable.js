@@ -1,187 +1,55 @@
 // Tập hợp dữ liệu giả lập chuẩn xác cấu trúc nghiệp vụ liên thông CSDL
 const coreDataSource = [
-    {
-        id: 1,
-        boNganh: "Bộ Quốc phòng",
-        chuQuan: "Cục CNTT",
-        csdl: "CSDL Quản lý Sĩ quan & Lực lượng Dự bị động viên",
-        progress: 85,
-        pl: true,
-        tc: true,
-        ht: true,
-        dl: true,
-        pm: true,
-        attt: false,
-        eval: "Chưa đạt",
-    },
-    {
-        id: 2,
-        boNganh: "Bộ Công an",
-        chuQuan: "Cục Cảnh sát QLHC về TTXH",
-        csdl: "CSDL Quốc gia về Dân cư cơ bản",
-        progress: 100,
-        pl: true,
-        tc: true,
-        ht: true,
-        dl: true,
-        pm: true,
-        attt: true,
-        eval: "Đạt",
-    },
-    {
-        id: 3,
-        boNganh: "Bộ Ngoại giao",
-        chuQuan: "Cục Lãnh sự",
-        csdl: "CSDL Quản lý Thị thực và Hộ chiếu điện tử",
-        progress: 70,
-        pl: true,
-        tc: true,
-        ht: true,
-        dl: false,
-        pm: true,
-        attt: false,
-        eval: "Chưa đạt",
-    },
-    {
-        id: 4,
-        boNganh: "Bộ Nội vụ",
-        chuQuan: "Trung tâm Thông tin",
-        csdl: "CSDL Toàn quốc về Cán bộ, Công chức, Viên chức",
-        progress: 100,
-        pl: true,
-        tc: true,
-        ht: true,
-        dl: true,
-        pm: true,
-        attt: true,
-        eval: "Đạt",
-    },
-    {
-        id: 5,
-        boNganh: "Bộ Tư pháp",
-        chuQuan: "Cục CNTT",
-        csdl: "CSDL Hộ tịch điện tử đồng bộ dữ liệu quốc gia",
-        progress: 95,
-        pl: true,
-        tc: true,
-        ht: true,
-        dl: true,
-        pm: true,
-        attt: true,
-        eval: "Đạt",
-    },
-    {
-        id: 6,
-        boNganh: "Bộ Tài chính",
-        chuQuan: "Tổng cục Thuế",
-        csdl: "CSDL Hóa đơn điện tử và Nghĩa vụ thuế tập trung",
-        progress: 100,
-        pl: true,
-        tc: true,
-        ht: true,
-        dl: true,
-        pm: true,
-        attt: true,
-        eval: "Đạt",
-    },
-    {
-        id: 7,
-        boNganh: "Bộ Công Thương",
-        chuQuan: "Cục Thương mại điện tử",
-        csdl: "CSDL Quản lý Chứng nhận xuất xứ hàng hóa điện tử",
-        progress: 45,
-        pl: false,
-        tc: true,
-        ht: false,
-        dl: true,
-        pm: false,
-        attt: false,
-        eval: "Chưa đạt",
-    },
-    {
-        id: 8,
-        boNganh: "Bộ Nông nghiệp & PTNT",
-        chuQuan: "Cục Thủy sản",
-        csdl: "CSDL Đăng ký tàu cá và Nhật ký khai thác hải sản",
-        progress: 60,
-        pl: true,
-        tc: false,
-        ht: true,
-        dl: false,
-        pm: true,
-        attt: false,
-        eval: "Chưa đạt",
-    },
-    {
-        id: 9,
-        boNganh: "Bộ Xây dựng",
-        chuQuan: "Trung tâm Thông tin",
-        csdl: "CSDL Hệ thống thông tin thị trường bất động sản",
-        progress: 75,
-        pl: true,
-        tc: true,
-        ht: true,
-        dl: false,
-        pm: true,
-        attt: false,
-        eval: "Chưa đạt",
-    },
-    {
-        id: 10,
-        boNganh: "Bộ VHTTDL",
-        chuQuan: "Cục Du lịch Quốc gia",
-        csdl: "CSDL Quản lý Danh mục di sản và cơ sở lữ hành",
-        progress: 35,
-        pl: false,
-        tc: false,
-        ht: true,
-        dl: false,
-        pm: true,
-        attt: false,
-        eval: "Chưa đạt",
-    },
-    {
-        id: 11,
-        boNganh: "Bộ Khoa học & Công nghệ",
-        chuQuan: "Cục Sở hữu trí tuệ",
-        csdl: "CSDL Đăng ký Tài sản trí tuệ và Văn bằng bảo hộ",
-        progress: 80,
-        pl: true,
-        tc: true,
-        ht: true,
-        dl: true,
-        pm: true,
-        attt: false,
-        eval: "Chưa đạt",
-    },
-    {
-        id: 12,
-        boNganh: "Bộ Giáo dục & Đào tạo",
-        chuQuan: "Cục QLCL Giáo dục",
-        csdl: "CSDL Quốc gia về Văn bằng chứng chỉ liên thông",
-        progress: 100,
-        pl: true,
-        tc: true,
-        ht: true,
-        dl: true,
-        pm: true,
-        attt: true,
-        eval: "Đạt",
-    },
-    {
-        id: 13,
-        boNganh: "Bộ Y tế",
-        chuQuan: "Cục Quản lý Dược",
-        csdl: "CSDL Quản lý giá thuốc và hệ thống cung ứng Dược",
-        progress: 55,
-        pl: true,
-        tc: false,
-        ht: false,
-        dl: true,
-        pm: true,
-        attt: false,
-        eval: "Chưa đạt",
-    },
+    { id: 1, boNganh: "Bộ Công an", chuQuan: "Cục Cảnh sát QLHC về TTXH", csdl: "Cơ sở dữ liệu quốc gia về Dân cư", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 2, boNganh: "Bộ Công an", chuQuan: "Cục Cảnh sát Giao thông", csdl: "Cơ sở dữ liệu Đăng ký xe toàn quốc", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 3, boNganh: "Bộ Công an", chuQuan: "Cục Cảnh sát QLHC về TTXH", csdl: "Cơ sở dữ liệu Căn cước công dân", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 4, boNganh: "Bộ Tư pháp", chuQuan: "Cục Công nghệ thông tin", csdl: "Cơ sở dữ liệu Hộ tịch điện tử toàn quốc", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 5, boNganh: "Bộ Tư pháp", chuQuan: "Cục Đăng ký quốc gia Giao dịch bảo đảm", csdl: "Cơ sở dữ liệu Giao dịch bảo đảm", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 6, boNganh: "Bộ Kế hoạch & Đầu tư", chuQuan: "Cục Quản lý đăng ký kinh doanh", csdl: "Cơ sở dữ liệu quốc gia về Đăng ký doanh nghiệp", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 7, boNganh: "Bộ Kế hoạch & Đầu tư", chuQuan: "Cục Quản lý Đấu thầu", csdl: "Hệ thống mạng đấu thầu quốc gia", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 8, boNganh: "Bộ Tài chính", chuQuan: "Tổng cục Thuế", csdl: "Cơ sở dữ liệu quốc gia về Thuế", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 9, boNganh: "Bộ Tài chính", chuQuan: "Tổng cục Hải quan", csdl: "Cơ sở dữ liệu Hải quan tích hợp", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 10, boNganh: "Bộ Tài chính", chuQuan: "Kho bạc Nhà nước", csdl: "Hệ thống thông tin Quản lý Ngân sách và Kho bạc (TABMIS)", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 11, boNganh: "Bộ Tài nguyên & Môi trường", chuQuan: "Cục Chuyển đổi số và Dữ liệu TNMT", csdl: "Cơ sở dữ liệu đất đai quốc gia", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 12, boNganh: "Bộ Tài nguyên & Môi trường", chuQuan: "Cục Viễn thám quốc gia", csdl: "Cơ sở dữ liệu ảnh viễn thám quốc gia", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 13, boNganh: "Bộ Lao động - TB & XH", chuQuan: "Trung tâm Thông tin", csdl: "Cơ sở dữ liệu An sinh xã hội", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 14, boNganh: "Bộ Lao động - TB & XH", chuQuan: "Cục Việc làm", csdl: "Cơ sở dữ liệu Người lao động và Việc làm", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 15, boNganh: "Bộ Y tế", chuQuan: "Cục Công nghệ thông tin", csdl: "Cơ sở dữ liệu Hồ sơ sức khỏe điện tử", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 16, boNganh: "Bộ Y tế", chuQuan: "Cục Quản lý Dược", csdl: "Hệ thống cơ sở dữ liệu Dược quốc gia", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 17, boNganh: "Bộ Giáo dục & Đào tạo", chuQuan: "Cục Công nghệ thông tin", csdl: "Cơ sở dữ liệu toàn ngành về Giáo dục mầm non và Phổ thông", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 18, boNganh: "Bộ Giáo dục & Đào tạo", chuQuan: "Cục Công nghệ thông tin", csdl: "Cơ sở dữ liệu về Giáo dục đại học (HEMIS)", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 19, boNganh: "Bộ Giao thông vận tải", chuQuan: "Cục Đường bộ Việt Nam", csdl: "Cơ sở dữ liệu Giấy phép lái xe quốc gia", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 20, boNganh: "Bộ Giao thông vận tải", chuQuan: "Cục Đăng kiểm Việt Nam", csdl: "Cơ sở dữ liệu Phương tiện giao thông cơ giới đường bộ", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 21, boNganh: "Bộ Thông tin & Truyền thông", chuQuan: "Cục Phát thanh, truyền hình và thông tin điện tử", csdl: "Cơ sở dữ liệu Quản lý thông tin mạng xã hội", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 22, boNganh: "Bộ Thông tin & Truyền thông", chuQuan: "Cục Tần số vô tuyến điện", csdl: "Cơ sở dữ liệu Quản lý cấp phép tần số vô tuyến điện", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 23, boNganh: "Bộ Nội vụ", chuQuan: "Trung tâm Thông tin", csdl: "Cơ sở dữ liệu quốc gia về Cán bộ, công chức, viên chức", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 24, boNganh: "Bộ Nội vụ", chuQuan: "Cục Văn thư và Lưu trữ nhà nước", csdl: "Hệ thống quản lý tài liệu lưu trữ điện tử", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 25, boNganh: "Bộ Xây dựng", chuQuan: "Trung tâm Thông tin", csdl: "Cơ sở dữ liệu quốc gia về Hoạt động xây dựng", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 26, boNganh: "Bộ Nông nghiệp & PTNT", chuQuan: "Cục Trồng trọt", csdl: "Cơ sở dữ liệu Mã số vùng trồng quốc gia", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 27, boNganh: "Bộ Nông nghiệp & PTNT", chuQuan: "Cục Chăn nuôi", csdl: "Cơ sở dữ liệu Đăng ký thức ăn chăn nuôi", progress: 40, pl: true, tc: true, ht: false, dl: false, pm: false, attt: false, eval: "Chưa đạt" }, // startDaXong: null
+    { id: 28, boNganh: "Bộ Văn hóa, Thể thao & Du lịch", chuQuan: "Cục Du lịch Quốc gia Việt Nam", csdl: "Cơ sở dữ liệu Cơ sở lưu trú du lịch", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 29, boNganh: "Bộ Công Thương", chuQuan: "Cục Thương mại điện tử và Kinh tế số", csdl: "Cơ sở dữ liệu Doanh nghiệp Thương mại điện tử", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 30, boNganh: "Bộ Tư pháp", chuQuan: "Cục Lý lịch tư pháp quốc gia", csdl: "Cơ sở dữ liệu Lý lịch tư pháp", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 31, boNganh: "Bảo hiểm Xã hội Việt Nam", chuQuan: "Trung tâm Công nghệ thông tin", csdl: "Cơ sở dữ liệu quốc gia về Bảo hiểm", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 32, boNganh: "Ngân hàng Nhà nước", chuQuan: "Cục Công nghệ thông tin", csdl: "Cơ sở dữ liệu thông tin tín dụng khách hàng vay", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 33, boNganh: "Thanh tra Chính phủ", chuQuan: "Trung tâm Thông tin", csdl: "Cơ sở dữ liệu quốc gia về Khiếu nại, Tố cáo", progress: 30, pl: true, tc: false, ht: false, dl: false, pm: false, attt: false, eval: "Chưa đạt" }, // startDaXong: null
+    { id: 34, boNganh: "Thanh tra Chính phủ", chuQuan: "Cục Bản kê khai", csdl: "Cơ sở dữ liệu quốc gia về Kiểm soát tài sản, thu nhập", progress: 20, pl: true, tc: false, ht: false, dl: false, pm: false, attt: false, eval: "Chưa đạt" }, // startDaXong: null
+    { id: 35, boNganh: "Bộ Ngoại giao", chuQuan: "Cục Lãnh sự", csdl: "Cơ sở dữ liệu Cấp phát hộ chiếu ngoại giao, công vụ", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 36, boNganh: "Bộ Ngoại giao", chuQuan: "Cục Lãnh sự", csdl: "Hệ thống thông tin Quản lý Xuất nhập cảnh ngành Ngoại giao", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 37, boNganh: "Bộ Khoa học & Công nghệ", chuQuan: "Cục Sở hữu trí tuệ", csdl: "Cơ sở dữ liệu quốc gia về Sở hữu công nghiệp", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 38, boNganh: "Ủy ban Dân tộc", chuQuan: "Trung tâm Thông tin", csdl: "Cơ sở dữ liệu về Thống kê các dân tộc thiểu số", progress: 15, pl: true, tc: false, ht: false, dl: false, pm: false, attt: false, eval: "Chưa đạt" }, // startDaXong: null
+    { id: 39, boNganh: "Văn phòng Chính phủ", chuQuan: "Cổng Dịch vụ công Quốc gia", csdl: "Cơ sở dữ liệu theo dõi trạng thái hồ sơ Dịch vụ công", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 40, boNganh: "Bộ Công an", chuQuan: "Cục Cảnh sát PCCC và CNCH", csdl: "Cơ sở dữ liệu Thống kê An toàn phòng cháy chữa cháy", progress: 50, pl: true, tc: true, ht: false, dl: false, pm: false, attt: false, eval: "Chưa đạt" }, // startDaXong: null
+    { id: 41, boNganh: "Bộ Tư pháp", chuQuan: "Cục Quốc tịch, chứng thực", csdl: "Cơ sở dữ liệu Quản lý Quốc tịch Việt Nam", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 42, boNganh: "Bộ Tài chính", chuQuan: "Cục Quản lý giá", csdl: "Cơ sở dữ liệu quốc gia về Giá công sản và hàng hóa", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 43, boNganh: "Bộ Y tế", chuQuan: "Cục Quản lý Khám chữa bệnh", csdl: "Cơ sở dữ liệu Giấy phép hành nghề Y - Dược toàn quốc", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 44, boNganh: "Bộ Giao thông vận tải", chuQuan: "Cục Hàng hải Việt Nam", csdl: "Hệ thống thông tin Thuyền viên và Tàu biển", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 45, boNganh: "Bộ Xây dựng", chuQuan: "Cục Quản lý nhà và Thị trường BĐS", csdl: "Cơ sở dữ liệu về Nhà ở và Thị trường bất động sản", progress: 35, pl: true, tc: false, ht: false, dl: false, pm: false, attt: false, eval: "Chưa đạt" }, // startDaXong: null
+    { id: 46, boNganh: "Bộ Thông tin & Truyền thông", chuQuan: "Cục Viễn thông", csdl: "Cơ sở dữ liệu Quản lý thông tin thuê bao di động", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 47, boNganh: "Bộ Tài nguyên & Môi trường", chuQuan: "Cục Quản lý tài nguyên nước", csdl: "Cơ sở dữ liệu Cấp phép tài nguyên nước quốc gia", progress: 25, pl: true, tc: false, ht: false, dl: false, pm: false, attt: false, eval: "Chưa đạt" }, // startDaXong: null
+    { id: 48, boNganh: "Bộ Công Thương", chuQuan: "Cục Điều tiết điện lực", csdl: "Cơ sở dữ liệu Quản lý cấp phép hoạt động điện lực", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 49, boNganh: "Bộ Giáo dục & Đào tạo", chuQuan: "Cục Quản lý chất lượng", csdl: "Cơ sở dữ liệu Văn bằng chứng chỉ hệ thống giáo dục", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
+    { id: 50, boNganh: "Bộ Công an", chuQuan: "Cục Cảnh sát điều tra tội phạm về ma túy", csdl: "Cơ sở dữ liệu Quản lý đối tượng sử dụng ma túy", progress: 10, pl: true, tc: false, ht: false, dl: false, pm: false, attt: false, eval: "Chưa đạt" } // startDaXong: null
 ];
 
 // TanStack Table Core State Simulation Tracker
@@ -193,6 +61,38 @@ const tableState = {
     currentPage: 1, // Trang hiện tại
     rowsPerPage: 10, // Số hàng hiển thị mặc định
 };
+
+// Hàm gom dữ liệu tổng hợp động cho trục Chart để tránh khai báo cứng (Hardcode)
+function generateMinistryDataRaw() {
+    const mapData = {};
+    coreDataSource.forEach(item => {
+        if (!mapData[item.boNganh]) {
+            mapData[item.boNganh] = { name: item.boNganh, passed: 0, processing: 0, failed: 0 };
+        }
+        if (item.progress === 100) mapData[item.boNganh].passed += 1;
+        else if (item.progress >= 40) mapData[item.boNganh].processing += 1;
+        else mapData[item.boNganh].failed += 1;
+    });
+    return Object.values(mapData);
+}
+const ministryDataRaw = generateMinistryDataRaw();
+
+// Hoàn thiện cấu trúc Hàm OnTableStateChange tích hợp đa nhiệm tìm kiếm liên thông
+function onTableStateChange() {
+    const searchValue = document.getElementById("tanstackSearch").value;
+
+    // 1. Đồng bộ hóa State cho bộ lọc bảng
+    tableState.globalFilter = searchValue;
+    tableState.statusFilter = document.getElementById("tanstackFilterStatus").value;
+    tableState.advancedFilter = document.getElementById("tanstackFilterAdvanced").value;
+    tableState.currentPage = 1;
+
+    // 2. Chạy Engine xử lý lọc & vẽ lại Table giao diện
+    renderTableEngine();
+
+    // 3. ĐỒNG BỘ SANG CHART: Render rút gọn lại các cột trên Chart theo từ khóa
+    initMultipleBarChart(searchValue);
+}
 
 // PHƯƠNG THỨC KẾT XUẤT DỮ LIỆU ĐỘNG (CORE RENDER)
 function renderTableEngine() {
@@ -435,7 +335,7 @@ function openShadcnDialog(rowId) {
             ? `<span class="px-2.5 py-1 bg-slate-900 text-white rounded font-bold text-[11px]">🟢 Hệ thống đạt chuẩn</span>`
             : `<span class="px-2.5 py-1 bg-slate-100 border border-slate-200 text-slate-800 rounded font-bold text-[11px]">🔴 Cần hoàn thiện thêm</span>`;
 
-    const modal = document.getElementById("shadcnDialogModal");
+    const modal = document.getElementById("chiTietDanhGia");
     const box = document.getElementById("dialogBoxStructure");
     modal.classList.remove("hidden");
     setTimeout(() => {
@@ -449,7 +349,7 @@ function closeShadcnDialog() {
         .getElementById("dialogBoxStructure")
         .classList.add("scale-95", "opacity-0");
     setTimeout(() => {
-        document.getElementById("shadcnDialogModal").classList.add("hidden");
+        document.getElementById("chiTietDanhGia").classList.add("hidden");
     }, 140);
 }
 
