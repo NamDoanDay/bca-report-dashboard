@@ -112,7 +112,7 @@ function initPieChart() {
             datasets: [
                 {
                     data: [17, 8, 1],
-                    backgroundColor: ["#10b981", "#f59e0b", "#ef4444"],
+                    backgroundColor: ["#10b981", "#ffea00", "#eb1919"],
                     borderWidth: 1,
                 },
             ],

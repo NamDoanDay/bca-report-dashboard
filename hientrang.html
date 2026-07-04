@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Uxerflow Email Client</title>
+    <title>Hiện trạng</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
@@ -48,6 +48,20 @@
         border: 1px solid rgba(255, 255, 255, 0.7);
         box-shadow: 6px 6px 16px #d1dddd;
       }
+      /* Thanh cuộn gọn đẹp cho danh sách */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 5px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
     </style>
   </head>
   <body
@@ -59,8 +73,8 @@
     >
       <div class="flex items-end gap-0 bg-gray-100 rounded-tr-xl">
         <a
-          href="./index2.html"
-          class="relative z-10 flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-blue-500 bg-white border border-gray-200 border-b-transparent rounded-tr-2xl shadow-[0_-4px_12px_-4px_rgba(0,0,0,0.05)] transition-all duration-150"
+          href="./index.html"
+          class="group flex items-center gap-2 px-5 py-2.5 text-sm font-medium hover:bg-white rounded-t-xl"
         >
           <i class="fa-solid fa-chart-simple text-base text-blue-500"></i>
           <span>Thống kê báo cáo</span>
@@ -68,7 +82,7 @@
 
         <a
           href="./hientrang.html"
-          class="group flex items-center gap-2 px-5 py-2.5 text-sm font-medium hover:bg-white rounded-t-xl"
+          class="relative z-10 flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-blue-500 bg-white border border-gray-200 border-b-transparent rounded-t-2xl shadow-[0_-4px_12px_-4px_rgba(0,0,0,0.05)] transition-all duration-150"
         >
           <i class="group-hover:text-blue-500 fa-solid fa-folder text-base"></i>
           <span class="group-hover:text-blue-500">Chi tiết hiện trạng</span>
@@ -114,10 +128,12 @@
       <aside
         class="hidden lg:flex flex-col w-60 bg-slate-50 border-r border-slate-200 p-2 justify-between h-full flex-shrink-0"
       >
-        <div class="tab-1">
-          <div class="flex items-center justify-between gap-2 mb-4">
+        <div class="tab-1 flex flex-col h-full overflow-hidden">
+          <div
+            class="flex items-center justify-between gap-2 mb-4 flex-shrink-0"
+          >
             <div
-              class="relative w-full h-10 border rounded-lg border-slate-200 focus-within:ring-1 focus-within:ring-teal-600 focus-within:border-teal-600"
+              class="relative w-full h-10 border rounded-lg border-slate-200 focus-within:ring-1 focus-within:ring-teal-600 focus-within:border-teal-600 bg-white"
             >
               <span
                 class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400"
@@ -125,12 +141,12 @@
                 <i class="fa-solid fa-magnifying-glass"></i>
               </span>
               <input
+                id="search-ministry"
                 type="text"
-                placeholder="Tìm kiếm..."
+                placeholder="Tìm kiếm bộ ngành..."
                 class="w-full h-full pl-11 pr-4 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none"
               />
             </div>
-
             <button
               class="bg-[#115e59] h-10 rounded-lg px-4 flex items-center justify-center shadow-sm hover:bg-[#134e4a] transition flex-shrink-0"
             >
@@ -138,179 +154,93 @@
             </button>
           </div>
 
-          <nav class="space-y-1 mb-6">
+          <nav
+            id="ministry-list"
+            class="space-y-1 flex-1 overflow-y-auto custom-scrollbar pr-1 mb-6"
+          >
             <div
-              class="flex items-center justify-between px-3 py-1 text-xs font-bold tracking-wider uppercase mb-1"
+              class="flex items-center justify-between px-3 py-1 text-xs font-bold tracking-wider uppercase mb-1 sticky top-0 bg-slate-50 z-10 text-slate-400"
             >
               Tên Bộ Ngành
               <i class="fa-solid fa-chevron-down"></i>
             </div>
-            <a
-              href="#"
-              class="flex items-center justify-between px-3 py-2 bg-white rounded-lg text-slate-900 font-medium shadow-sm"
+
+            <button
+              data-ministry="bo-cong-an"
+              class="ministry-item w-full flex items-center justify-between px-3 py-2 bg-white rounded-lg text-slate-900 font-medium shadow-sm border border-transparent hover:border-slate-200 transition text-left outline-none"
             >
-              <div class="flex items-center gap-3">
-                <i class="fa-solid fa-building"></i> Bộ Công An
+              <div class="flex items-center gap-3 pointer-events-none">
+                <i class="fa-solid fa-building text-teal-600"></i> Bộ Công An
               </div>
               <span
-                class="text-xs font-semibold bg-slate-100 px-2 py-0.5 rounded-full"
+                class="text-xs font-semibold bg-slate-100 px-2 py-0.5 rounded-full pointer-events-none"
                 >5</span
               >
-            </a>
-            <a
-              href="#"
-              class="flex items-center justify-between gap-3 px-3 py-2 text-slate-500 hover:bg-slate-100 rounded-lg transition"
+            </button>
+
+            <button
+              data-ministry="bo-tai-chinh"
+              class="ministry-item w-full flex items-center justify-between gap-3 px-3 py-2 text-slate-500 hover:bg-slate-100 rounded-lg transition text-left outline-none"
             >
-              <div class="flex items-center gap-3">
-                <i class="fa-solid fa-building"></i> Bộ NNMT
-              </div>
-              <span
-                class="text-xs font-semibold bg-slate-100 px-2 py-0.5 rounded-full"
-                >3</span
-              >
-            </a>
-            <a
-              href="#"
-              class="flex items-center justify-between gap-3 px-3 py-2 text-slate-500 hover:bg-slate-100 rounded-lg transition"
-            >
-              <div class="flex items-center gap-3">
+              <div class="flex items-center gap-3 pointer-events-none">
                 <i class="fa-solid fa-building"></i> Bộ Tài Chính
               </div>
               <span
-                class="text-xs font-semibold bg-slate-100 px-2 py-0.5 rounded-full"
+                class="text-xs font-semibold bg-slate-100 px-2 py-0.5 rounded-full pointer-events-none"
                 >4</span
               >
-            </a>
-            <a
-              href="#"
-              class="flex items-center justify-between gap-3 px-3 py-2 text-slate-500 hover:bg-slate-100 rounded-lg transition"
-            >
-              <div class="flex items-center gap-3">
-                <i class="fa-solid fa-building"></i> Bộ Văn Hóa
-              </div>
-              <span
-                class="text-xs font-semibold bg-slate-100 px-2 py-0.5 rounded-full"
-                >6</span
-              >
-            </a>
+            </button>
           </nav>
-
-          <hr class="border-slate-200 my-4" />
-
-          <div>
-            <div
-              class="flex items-center justify-between px-3 py-1 text-xs font-semibold text-slate-400 tracking-wider uppercase mb-1"
-            >
-              Labels <i data-lucide="plus" class="w-3 h-3 cursor-pointer"></i>
-            </div>
-            <div class="space-y-1">
-              <a
-                href="#"
-                class="flex items-center justify-between px-3 py-1.5 text-slate-600 hover:bg-slate-100 rounded-lg"
-              >
-                <div class="flex items-center gap-2.5">
-                  <span class="w-2 h-2 rounded-full bg-orange-400"></span>
-                  Marketing
-                </div>
-                <span class="text-xs text-slate-400">35</span>
-              </a>
-              <a
-                href="#"
-                class="flex items-center justify-between px-3 py-1.5 text-slate-600 hover:bg-slate-100 rounded-lg"
-              >
-                <div class="flex items-center gap-2.5">
-                  <span class="w-2 h-2 rounded-full bg-blue-400"></span> Finance
-                </div>
-                <span class="text-xs text-slate-400">20</span>
-              </a>
-              <a
-                href="#"
-                class="flex items-center justify-between px-3 py-1.5 text-slate-600 hover:bg-slate-100 rounded-lg"
-              >
-                <div class="flex items-center gap-2.5">
-                  <span class="w-2 h-2 rounded-full bg-purple-400"></span>
-                  Operation
-                </div>
-                <span class="text-xs text-slate-400">14</span>
-              </a>
-            </div>
-          </div>
         </div>
       </aside>
 
       <section
-        class="w-80 bg-white border-r border-slate-200 flex flex-col h-full"
+        class="w-80 bg-white border-r border-slate-200 flex flex-col h-full flex-shrink-0"
       >
-        <div class="p-2 border-b border-slate-100 flex flex-col gap-3">
+        <div
+          class="p-2 border-b border-slate-100 flex flex-col gap-3 flex-shrink-0"
+        >
           <div class="flex items-center gap-2">
             <div
               class="relative flex-1 h-9 bg-slate-50 border border-slate-200 rounded-xl focus-within:ring-1 focus-within:ring-teal-600 focus-within:border-teal-600"
             >
               <i
-                data-lucide="search"
-                class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"
+                class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 fa-solid fa-magnifying-glass"
               ></i>
               <input
+                id="search-unit-db"
                 type="text"
-                placeholder="Search"
+                placeholder="Tìm tên đơn vị hoặc CSDL..."
                 class="w-full h-full bg-transparent pl-9 pr-4 rounded-xl focus:outline-none text-sm text-slate-700 placeholder-slate-400"
               />
             </div>
-
             <button
               class="h-9 px-3.5 bg-[#115e59] hover:bg-[#134e4a] text-white rounded-xl flex items-center justify-center shadow-sm transition flex-shrink-0"
             >
-              <i data-lucide="search" class="w-4 h-4"></i>
+              <i class="fa-solid fa-magnifying-glass"></i>
             </button>
           </div>
         </div>
 
-        <div class="flex-1 overflow-y-auto divide-y divide-slate-100">
+        <div
+          class="flex-1 overflow-y-auto custom-scrollbar divide-y divide-slate-100"
+        >
           <div class="p-2 bg-slate-50/50">
             <div
-              class="neu-inset rounded-lg text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 py-1 mb-1 flex items-center gap-1"
+              class="neu-inset rounded-lg text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 py-1 mb-1 flex items-end gap-1"
             >
-              <i data-lucide="pin" class="w-3 h-3 transform rotate-45"></i>
+              <i
+                class="w-3 h-3 transform rotate-45 fa-solid fa-thumbtack text-teal-600"
+              ></i>
               <span>Đã ghim</span>
             </div>
-            <details
-              class="group bg-white border border-slate-100 rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden"
-              open
-            >
-              <summary
-                class="p-3 hover:bg-slate-50 cursor-pointer flex gap-3 items-center justify-between select-none outline-none"
+            <div id="pinned-container" class="space-y-1">
+              <p
+                class="text-slate-400 text-[11px] p-2 italic text-center empty-msg"
               >
-                <div class="flex gap-3 items-center min-w-0">
-                  <div class="min-w-0">
-                    <h4 class="font-semibold text-slate-800 text-xs truncate">
-                      C12 - Trung tâm dữ liệu quốc gia
-                    </h4>
-                  </div>
-                </div>
-                <i
-                  data-lucide="chevron-down"
-                  class="w-4 h-4 text-slate-400 transition-transform duration-200 group-open:rotate-180"
-                ></i>
-              </summary>
-
-              <div
-                class="bg-slate-50/50 border-t border-slate-100 p-2 space-y-1"
-              >
-                <a
-                  href="#"
-                  class="flex items-center gap-3 p-2.5 hover:bg-white hover:shadow-sm rounded-lg text-xs text-slate-600 transition"
-                >
-                  <span
-                    class="w-5 h-5 rounded-full bg-slate-200 text-slate-700 font-medium flex items-center justify-center text-[10px]"
-                    >1</span
-                  >
-                  <span class="font-medium truncate"
-                    >Cơ sở dữ liệu tội phạm</span
-                  >
-                  <i class="fa-solid fa-database"></i>
-                </a>
-              </div>
-            </details>
+                Chưa có cơ sở dữ liệu nào được ghim
+              </p>
+            </div>
           </div>
 
           <div class="p-2">
@@ -321,10 +251,12 @@
               <span>Đơn vị chủ quản / CSDL</span>
             </div>
 
-            <div class="space-y-2 p-2">
+            <div id="unit-list-container" class="space-y-2 p-1">
               <details
-                class="group bg-white border border-slate-100 rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden"
+                class="unit-card group bg-white border border-slate-100 rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden"
                 open
+                data-belong-ministry="bo-cong-an"
+                data-unit-name="c12 trung tam du lieu quoc gia"
               >
                 <summary
                   class="p-3 hover:bg-slate-50 cursor-pointer flex gap-3 items-center justify-between select-none outline-none"
@@ -332,11 +264,12 @@
                   <div class="flex gap-3 items-center min-w-0">
                     <span
                       class="w-8 h-8 rounded-lg bg-teal-50 text-teal-700 font-bold flex items-center justify-center text-xs flex-shrink-0"
+                      >C12</span
                     >
-                      C12
-                    </span>
                     <div class="min-w-0">
-                      <h4 class="font-semibold text-slate-800 text-xs truncate">
+                      <h4
+                        class="unit-title font-semibold text-slate-800 text-xs truncate"
+                      >
                         C12 - Trung tâm dữ liệu quốc gia
                       </h4>
                       <p class="text-slate-400 text-[11px] mt-0.5">
@@ -353,50 +286,91 @@
                 <div
                   class="bg-slate-50/50 border-t border-slate-100 p-2 space-y-1"
                 >
-                  <a
-                    href="#"
-                    class="flex items-center gap-3 p-2.5 hover:bg-white hover:shadow-sm rounded-lg text-xs text-slate-600 transition"
+                  <div
+                    class="db-item flex items-center justify-between p-2.5 hover:bg-white hover:shadow-sm rounded-lg text-xs text-slate-600 transition"
+                    data-db-id="csdl-toi-pham"
+                    data-db-name="co so du lieu toi pham"
                   >
-                    <span
-                      class="w-5 h-5 rounded-full bg-slate-200 text-slate-700 font-medium flex items-center justify-center text-[10px]"
-                      >1</span
-                    >
-                    <span class="font-medium truncate"
-                      >Cơ sở dữ liệu tội phạm</span
-                    >
-                    <i class="fa-solid fa-database"></i>
-                  </a>
-                  <a
-                    href="#"
-                    class="flex items-center gap-3 p-2.5 hover:bg-white hover:shadow-sm rounded-lg text-xs text-slate-600 transition"
+                    <div class="flex items-center gap-3 min-w-0 flex-1">
+                      <span
+                        class="w-5 h-5 rounded-full bg-slate-200 text-slate-700 font-medium flex items-center justify-center text-[10px] flex-shrink-0"
+                        >1</span
+                      >
+                      <span class="font-medium truncate db-text"
+                        >Cơ sở dữ liệu tội phạm</span
+                      >
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0 ml-2">
+                      <i
+                        class="fa-solid fa-database text-[10px] text-slate-400"
+                      ></i>
+                      <button
+                        class="pin-btn p-1 text-slate-300 hover:text-teal-600 transition"
+                        title="Ghim cơ sở dữ liệu"
+                      >
+                        <i class="fa-solid fa-thumbtack text-[11px]"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class="db-item flex items-center justify-between p-2.5 hover:bg-white hover:shadow-sm rounded-lg text-xs text-slate-600 transition"
+                    data-db-id="csdl-an-ninh"
+                    data-db-name="co so du lieu an ninh"
                   >
-                    <span
-                      class="w-5 h-5 rounded-full bg-slate-200 text-slate-700 font-medium flex items-center justify-center text-[10px]"
-                      >2</span
-                    >
-                    <span class="font-medium truncate"
-                      >Cơ sở dữ liệu an ninh</span
-                    >
-                    <i class="fa-solid fa-database"></i>
-                  </a>
-                  <a
-                    href="#"
-                    class="flex items-center gap-3 p-2.5 hover:bg-white hover:shadow-sm rounded-lg text-xs text-slate-600 transition"
+                    <div class="flex items-center gap-3 min-w-0 flex-1">
+                      <span
+                        class="w-5 h-5 rounded-full bg-slate-200 text-slate-700 font-medium flex items-center justify-center text-[10px] flex-shrink-0"
+                        >2</span
+                      >
+                      <span class="font-medium truncate db-text"
+                        >Cơ sở dữ liệu an ninh</span
+                      >
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0 ml-2">
+                      <i
+                        class="fa-solid fa-database text-[10px] text-slate-400"
+                      ></i>
+                      <button
+                        class="pin-btn p-1 text-slate-300 hover:text-teal-600 transition"
+                        title="Ghim cơ sở dữ liệu"
+                      >
+                        <i class="fa-solid fa-thumbtack text-[11px]"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class="db-item flex items-center justify-between p-2.5 hover:bg-white hover:shadow-sm rounded-lg text-xs text-slate-600 transition"
+                    data-db-id="csdl-dan-cu"
+                    data-db-name="co so du lieu dan cu"
                   >
-                    <span
-                      class="w-5 h-5 rounded-full bg-slate-200 text-slate-700 font-medium flex items-center justify-center text-[10px]"
-                      >3</span
-                    >
-                    <span class="font-medium truncate"
-                      >Cơ sở dữ liệu dân cư</span
-                    >
-                    <i class="fa-solid fa-database"></i>
-                  </a>
+                    <div class="flex items-center gap-3 min-w-0 flex-1">
+                      <span
+                        class="w-5 h-5 rounded-full bg-slate-200 text-slate-700 font-medium flex items-center justify-center text-[10px] flex-shrink-0"
+                        >3</span
+                      >
+                      <span class="font-medium truncate db-text"
+                        >Cơ sở dữ liệu dân cư</span
+                      >
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0 ml-2">
+                      <i
+                        class="fa-solid fa-database text-[10px] text-slate-400"
+                      ></i>
+                      <button
+                        class="pin-btn p-1 text-slate-300 hover:text-teal-600 transition"
+                        title="Ghim cơ sở dữ liệu"
+                      >
+                        <i class="fa-solid fa-thumbtack text-[11px]"></i>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </details>
 
               <details
-                class="group bg-white border border-slate-100 rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden"
+                class="unit-card group bg-white border border-slate-100 rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden"
+                data-belong-ministry="bo-cong-an"
+                data-unit-name="a05 cuc an ninh mang"
               >
                 <summary
                   class="p-3 hover:bg-slate-50 cursor-pointer flex gap-3 items-center justify-between select-none outline-none"
@@ -404,15 +378,16 @@
                   <div class="flex gap-3 items-center min-w-0">
                     <span
                       class="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 font-bold flex items-center justify-center text-xs flex-shrink-0"
+                      >A05</span
                     >
-                      A05
-                    </span>
                     <div class="min-w-0">
-                      <h4 class="font-semibold text-slate-800 text-xs truncate">
+                      <h4
+                        class="unit-title font-semibold text-slate-800 text-xs truncate"
+                      >
                         A05 - Cục An ninh mạng
                       </h4>
                       <p class="text-slate-400 text-[11px] mt-0.5">
-                        2 Cơ sở dữ liệu
+                        1 Cơ sở dữ liệu
                       </p>
                     </div>
                   </div>
@@ -421,36 +396,94 @@
                     class="w-4 h-4 text-slate-400 transition-transform duration-200 group-open:rotate-180"
                   ></i>
                 </summary>
-
                 <div
                   class="bg-slate-50/50 border-t border-slate-100 p-2 space-y-1"
                 >
-                  <a
-                    href="#"
-                    class="flex items-center gap-3 p-2.5 hover:bg-white hover:shadow-sm rounded-lg text-xs text-slate-600 transition"
+                  <div
+                    class="db-item flex items-center justify-between p-2.5 hover:bg-white hover:shadow-sm rounded-lg text-xs text-slate-600 transition"
+                    data-db-id="csdl-attt"
+                    data-db-name="co so du lieu an toan thong tin"
                   >
+                    <div class="flex items-center gap-3 min-w-0 flex-1">
+                      <span
+                        class="w-5 h-5 rounded-full bg-slate-200 text-slate-700 font-medium flex items-center justify-center text-[10px] flex-shrink-0"
+                        >1</span
+                      >
+                      <span class="font-medium truncate db-text"
+                        >Cơ sở dữ liệu an toàn thông tin</span
+                      >
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0 ml-2">
+                      <i
+                        class="fa-solid fa-database text-[10px] text-slate-400"
+                      ></i>
+                      <button
+                        class="pin-btn p-1 text-slate-300 hover:text-teal-600 transition"
+                      >
+                        <i class="fa-solid fa-thumbtack text-[11px]"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </details>
+
+              <details
+                class="unit-card group bg-white border border-slate-100 rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden"
+                data-belong-ministry="bo-tai-chinh"
+                data-unit-name="tct tong cuc thue"
+              >
+                <summary
+                  class="p-3 hover:bg-slate-50 cursor-pointer flex gap-3 items-center justify-between select-none outline-none"
+                >
+                  <div class="flex gap-3 items-center min-w-0">
                     <span
-                      class="w-5 h-5 rounded-full bg-slate-200 text-slate-700 font-medium flex items-center justify-center text-[10px]"
-                      >1</span
+                      class="w-8 h-8 rounded-lg bg-red-50 text-red-700 font-bold flex items-center justify-center text-xs flex-shrink-0"
+                      >TCT</span
                     >
-                    <span class="font-medium truncate"
-                      >Cơ sở dữ liệu an toàn thông tin</span
-                    >
-                    <i class="fa-solid fa-database"></i>
-                  </a>
-                  <a
-                    href="#"
-                    class="flex items-center gap-3 p-2.5 hover:bg-white hover:shadow-sm rounded-lg text-xs text-slate-600 transition"
+                    <div class="min-w-0">
+                      <h4
+                        class="unit-title font-semibold text-slate-800 text-xs truncate"
+                      >
+                        Tổng cục Thuế
+                      </h4>
+                      <p class="text-slate-400 text-[11px] mt-0.5">
+                        1 Cơ sở dữ liệu
+                      </p>
+                    </div>
+                  </div>
+                  <i
+                    data-lucide="chevron-down"
+                    class="w-4 h-4 text-slate-400 transition-transform duration-200 group-open:rotate-180"
+                  ></i>
+                </summary>
+                <div
+                  class="bg-slate-50/50 border-t border-slate-100 p-2 space-y-1"
+                >
+                  <div
+                    class="db-item flex items-center justify-between p-2.5 hover:bg-white hover:shadow-sm rounded-lg text-xs text-slate-600 transition"
+                    data-db-id="csdl-hddt"
+                    data-db-name="csdl hoa don dien tu"
                   >
-                    <span
-                      class="w-5 h-5 rounded-full bg-slate-200 text-slate-700 font-medium flex items-center justify-center text-[10px]"
-                      >2</span
-                    >
-                    <span class="font-medium truncate"
-                      >Hệ thống giám sát sự cố</span
-                    >
-                    <i class="fa-solid fa-database"></i>
-                  </a>
+                    <div class="flex items-center gap-3 min-w-0 flex-1">
+                      <span
+                        class="w-5 h-5 rounded-full bg-slate-200 text-slate-700 font-medium flex items-center justify-center text-[10px] flex-shrink-0"
+                        >1</span
+                      >
+                      <span class="font-medium truncate db-text"
+                        >CSDL Hóa đơn điện tử</span
+                      >
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0 ml-2">
+                      <i
+                        class="fa-solid fa-database text-[10px] text-slate-400"
+                      ></i>
+                      <button
+                        class="pin-btn p-1 text-slate-300 hover:text-teal-600 transition"
+                      >
+                        <i class="fa-solid fa-thumbtack text-[11px]"></i>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </details>
             </div>
@@ -951,9 +984,6 @@
     </main>
 
     <script>
-      lucide.createIcons();
-    </script>
-    <script>
       document.addEventListener("DOMContentLoaded", () => {
         const nodes = document.querySelectorAll(".timeline-node");
         const popup = document.getElementById("timeline-popup");
@@ -993,7 +1023,7 @@
     </script>
     <script src="https://unpkg.com/jszip/dist/jszip.min.js"></script>
     <script src="https://unpkg.com/docx-preview/dist/docx-preview.min.js"></script>
-
+    <script src="./js/handleHienTrang.js"></script>
     <script>
       let isPreviewOpen = true;
       let currentFileUrl = ""; // Biến lưu trữ file đang được xem hiện tại
@@ -1144,6 +1174,200 @@
           modal.classList.add("hidden");
         }, 200);
       }
+    </script>
+    <script>
+      // Khởi tạo Lucide Icon
+      lucide.createIcons();
+
+      // Hàm chuẩn hóa loại bỏ dấu tiếng Việt để tìm kiếm chính xác
+      function cleanText(str) {
+        str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+        str = str.replace(/è|é|ẹ|ả|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+        str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+        str = str.replace(/ò|á|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+        str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+        str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+        str = str.replace(/đ/g, "d");
+        return str.toLowerCase().trim();
+      }
+
+      // --- LOGIC SEARCH BOX 1: TÌM THEO BỘ (CHỈ TÁC ĐỘNG ASIDE) ---
+      const searchMinistryInput = document.getElementById("search-ministry");
+      const ministryItems = document.querySelectorAll(".ministry-item");
+
+      searchMinistryInput.addEventListener("input", function () {
+        const keyword = cleanText(this.value);
+        ministryItems.forEach((item) => {
+          const text = cleanText(item.textContent);
+          if (text.includes(keyword)) {
+            item.classList.remove("hidden");
+            item.classList.add("flex");
+          } else {
+            item.classList.remove("flex");
+            item.classList.add("hidden");
+          }
+        });
+      });
+
+      // --- LOGIC SEARCH BOX 2 & ĐIỀU HƯỚNG BỘ LỌC (TÁC ĐỘNG SECTION GIỮA) ---
+      let activeMinistryId = "bo-cong-an"; // Bộ mặc định ban đầu
+
+      function applySectionFilter() {
+        const searchKeyword = cleanText(
+          document.getElementById("search-unit-db").value,
+        );
+        const unitCards = document.querySelectorAll(".unit-card");
+
+        unitCards.forEach((card) => {
+          const belongToMinistry = card.getAttribute("data-belong-ministry");
+          const unitName = card.getAttribute("data-unit-name");
+
+          // 1. Kiểm tra xem thẻ unit có thuộc Bộ đang kích hoạt không
+          const isCorrectMinistry = belongToMinistry === activeMinistryId;
+
+          // 2. Kiểm tra bộ lọc từ khóa của Đơn vị hoặc CSDL con
+          let isUnitNameMatch = unitName.includes(searchKeyword);
+          const subDbItems = card.querySelectorAll(".db-item");
+          let hasAnyMatchingDb = false;
+
+          subDbItems.forEach((db) => {
+            const dbName = db.getAttribute("data-db-name");
+            // Nếu từ khóa khớp tên CSDL hoặc khớp tên đơn vị cha thì hiển thị CSDL đó
+            if (dbName.includes(searchKeyword) || isUnitNameMatch) {
+              db.classList.remove("hidden");
+              db.classList.add("flex");
+              hasAnyMatchingDb = true;
+            } else {
+              db.classList.remove("flex");
+              db.classList.add("hidden");
+            }
+          });
+
+          // Điều kiện hiển thị cuối cùng của Thẻ Đơn vị (Details)
+          if (isCorrectMinistry && (isUnitNameMatch || hasAnyMatchingDb)) {
+            card.classList.remove("hidden");
+            // Tự động bung rộng thẻ khi người dùng gõ tìm kiếm sâu
+            if (searchKeyword !== "") {
+              card.setAttribute("open", "");
+            }
+          } else {
+            card.classList.add("hidden");
+          }
+        });
+      }
+
+      // Đăng ký sự kiện chuyển Bộ khi click button ở cột Aside trái
+      ministryItems.forEach((btn) => {
+        btn.addEventListener("click", function () {
+          ministryItems.forEach((i) => {
+            i.classList.remove(
+              "bg-white",
+              "text-slate-900",
+              "font-medium",
+              "shadow-sm",
+            );
+            i.classList.add("text-slate-500");
+          });
+          this.classList.add(
+            "bg-white",
+            "text-slate-900",
+            "font-medium",
+            "shadow-sm",
+          );
+          this.classList.remove("text-slate-500");
+
+          activeMinistryId = this.getAttribute("data-ministry");
+          applySectionFilter();
+        });
+      });
+
+      // Gắn sự kiện lắng nghe cho ô Tìm kiếm Box 2
+      document
+        .getElementById("search-unit-db")
+        .addEventListener("input", applySectionFilter);
+
+      // --- LOGIC QUAN TRỌNG: CHỨC NĂNG GHIM (PIN) CSDL ---
+      const pinnedContainer = document.getElementById("pinned-container");
+
+      // Sử dụng Event Delegation lắng nghe nút ghim ở danh sách gốc
+      document.addEventListener("click", function (e) {
+        const pinBtn = e.target.closest(".pin-btn");
+        if (!pinBtn) return;
+
+        const dbItem = pinBtn.closest(".db-item");
+        const dbId = dbItem.getAttribute("data-db-id");
+        const dbTitle = dbItem.querySelector(".db-text").textContent;
+
+        const existsInPinned = pinnedContainer.querySelector(
+          `[data-pinned-id="${dbId}"]`,
+        );
+
+        if (existsInPinned) {
+          // Trạng thái: Đã ghim -> Click để BỎ GHIM
+          existsInPinned.remove();
+          pinBtn.classList.remove("text-teal-600");
+          pinBtn.classList.add("text-slate-300");
+        } else {
+          // Trạng thái: Chưa ghim -> Click để THỰC HIỆN GHIM
+          const emptyMsg = pinnedContainer.querySelector(".empty-msg");
+          if (emptyMsg) emptyMsg.classList.add("hidden");
+
+          // Đổi màu icon đinh ghim gốc sang màu xanh hoạt động
+          pinBtn.classList.remove("text-slate-300");
+          pinBtn.classList.add("text-teal-600");
+
+          // Tạo cấu trúc thẻ ghim mới trên khu vực Đã ghim
+          const pinnedEl = document.createElement("div");
+          pinnedEl.setAttribute("data-pinned-id", dbId);
+          pinnedEl.className =
+            "flex items-center justify-between p-2 bg-white border border-teal-50 hover:shadow-sm rounded-lg text-xs text-slate-600 transition duration-150";
+          pinnedEl.innerHTML = `
+          <div class="flex items-center gap-3 min-w-0 flex-1">
+            <i class="fa-solid fa-thumbtack text-teal-600 transform rotate-45 text-[10px] flex-shrink-0"></i>
+            <span class="font-medium truncate text-slate-800">${dbTitle}</span>
+          </div>
+          <button class="unpin-action-btn p-1 text-teal-500 hover:text-red-500 transition ml-2" title="Bỏ ghim">
+            <i class="fa-solid fa-circle-xmark"></i>
+          </button>
+        `;
+          pinnedContainer.appendChild(pinnedEl);
+        }
+        checkEmptyPinnedState();
+      });
+
+      // Lắng nghe sự kiện gỡ ghim trực tiếp bằng nút X ở khu vực Đã ghim trên đầu
+      pinnedContainer.addEventListener("click", function (e) {
+        const unpinBtn = e.target.closest(".unpin-action-btn");
+        if (!unpinBtn) return;
+
+        const pinnedItem = unpinBtn.closest("[data-pinned-id]");
+        const dbId = pinnedItem.getAttribute("data-pinned-id");
+
+        // Tìm lại phần tử gốc bên dưới để trả lại màu xám mặc định
+        const originalDbItem = document.querySelector(`[data-db-id="${dbId}"]`);
+        if (originalDbItem) {
+          const originalPinBtn = originalDbItem.querySelector(".pin-btn");
+          originalPinBtn.classList.remove("text-teal-600");
+          originalPinBtn.classList.add("text-slate-300");
+        }
+
+        pinnedItem.remove();
+        checkEmptyPinnedState();
+      });
+
+      // Kiểm tra vùng ghim trống để hiển thị text thông báo phù hợp
+      function checkEmptyPinnedState() {
+        const items = pinnedContainer.querySelectorAll("[data-pinned-id]");
+        const emptyMsg = pinnedContainer.querySelector(".empty-msg");
+        if (items.length === 0) {
+          if (emptyMsg) emptyMsg.classList.remove("hidden");
+        } else {
+          if (emptyMsg) emptyMsg.classList.add("hidden");
+        }
+      }
+
+      // Chạy khởi tạo danh sách lần đầu tiên
+      applySectionFilter();
     </script>
   </body>
 </html>

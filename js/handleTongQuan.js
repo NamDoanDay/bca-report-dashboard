@@ -155,7 +155,7 @@ function renderPieChart(da, dang, chua) {
             labels: ["Đã xây dựng", "Đang xây dựng", "Chưa xây dựng"],
             datasets: [{
                 data: [da, dang, chua],
-                backgroundColor: ["#10b981", "#f59e0b", "#f43f5e"],
+                backgroundColor: ["#10b981", "#ffea00", "#eb1919"],
             }],
         },
         options: {
@@ -242,9 +242,9 @@ function renderMultipleBarChart(labels, timeSteps, daArr, dangArr, chuaArr) {
         data: {
             labels: labels,
             datasets: [
-                { label: "Đã xây dựng", data: daArr, backgroundColor: "#10b981" },
-                { label: "Đang xây dựng", data: dangArr, backgroundColor: "#f59e0b" },
-                { label: "Chưa xây dựng", data: chuaArr, backgroundColor: "#f43f5e" },
+                { label: "Đã xây dựng", data: daArr, backgroundColor: "#10b981", borderRadius: 4 },
+                { label: "Đang xây dựng", data: dangArr, backgroundColor: "#ffea00", borderRadius: 4 },
+                { label: "Chưa xây dựng", data: chuaArr, backgroundColor: "#eb1919", borderRadius: 4 },
             ],
         },
         options: {

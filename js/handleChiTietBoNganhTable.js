@@ -1,357 +1,480 @@
-// Tập hợp dữ liệu giả lập chuẩn xác cấu trúc nghiệp vụ liên thông CSDL
-const coreDataSource = [
-    { id: 1, boNganh: "Bộ Công an", chuQuan: "Cục Cảnh sát QLHC về TTXH", csdl: "Cơ sở dữ liệu quốc gia về Dân cư", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 2, boNganh: "Bộ Công an", chuQuan: "Cục Cảnh sát Giao thông", csdl: "Cơ sở dữ liệu Đăng ký xe toàn quốc", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 3, boNganh: "Bộ Công an", chuQuan: "Cục Cảnh sát QLHC về TTXH", csdl: "Cơ sở dữ liệu Căn cước công dân", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 4, boNganh: "Bộ Tư pháp", chuQuan: "Cục Công nghệ thông tin", csdl: "Cơ sở dữ liệu Hộ tịch điện tử toàn quốc", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 5, boNganh: "Bộ Tư pháp", chuQuan: "Cục Đăng ký quốc gia Giao dịch bảo đảm", csdl: "Cơ sở dữ liệu Giao dịch bảo đảm", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 6, boNganh: "Bộ Kế hoạch & Đầu tư", chuQuan: "Cục Quản lý đăng ký kinh doanh", csdl: "Cơ sở dữ liệu quốc gia về Đăng ký doanh nghiệp", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 7, boNganh: "Bộ Kế hoạch & Đầu tư", chuQuan: "Cục Quản lý Đấu thầu", csdl: "Hệ thống mạng đấu thầu quốc gia", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 8, boNganh: "Bộ Tài chính", chuQuan: "Tổng cục Thuế", csdl: "Cơ sở dữ liệu quốc gia về Thuế", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 9, boNganh: "Bộ Tài chính", chuQuan: "Tổng cục Hải quan", csdl: "Cơ sở dữ liệu Hải quan tích hợp", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 10, boNganh: "Bộ Tài chính", chuQuan: "Kho bạc Nhà nước", csdl: "Hệ thống thông tin Quản lý Ngân sách và Kho bạc (TABMIS)", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 11, boNganh: "Bộ Tài nguyên & Môi trường", chuQuan: "Cục Chuyển đổi số và Dữ liệu TNMT", csdl: "Cơ sở dữ liệu đất đai quốc gia", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 12, boNganh: "Bộ Tài nguyên & Môi trường", chuQuan: "Cục Viễn thám quốc gia", csdl: "Cơ sở dữ liệu ảnh viễn thám quốc gia", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 13, boNganh: "Bộ Lao động - TB & XH", chuQuan: "Trung tâm Thông tin", csdl: "Cơ sở dữ liệu An sinh xã hội", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 14, boNganh: "Bộ Lao động - TB & XH", chuQuan: "Cục Việc làm", csdl: "Cơ sở dữ liệu Người lao động và Việc làm", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 15, boNganh: "Bộ Y tế", chuQuan: "Cục Công nghệ thông tin", csdl: "Cơ sở dữ liệu Hồ sơ sức khỏe điện tử", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 16, boNganh: "Bộ Y tế", chuQuan: "Cục Quản lý Dược", csdl: "Hệ thống cơ sở dữ liệu Dược quốc gia", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 17, boNganh: "Bộ Giáo dục & Đào tạo", chuQuan: "Cục Công nghệ thông tin", csdl: "Cơ sở dữ liệu toàn ngành về Giáo dục mầm non và Phổ thông", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 18, boNganh: "Bộ Giáo dục & Đào tạo", chuQuan: "Cục Công nghệ thông tin", csdl: "Cơ sở dữ liệu về Giáo dục đại học (HEMIS)", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 19, boNganh: "Bộ Giao thông vận tải", chuQuan: "Cục Đường bộ Việt Nam", csdl: "Cơ sở dữ liệu Giấy phép lái xe quốc gia", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 20, boNganh: "Bộ Giao thông vận tải", chuQuan: "Cục Đăng kiểm Việt Nam", csdl: "Cơ sở dữ liệu Phương tiện giao thông cơ giới đường bộ", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 21, boNganh: "Bộ Thông tin & Truyền thông", chuQuan: "Cục Phát thanh, truyền hình và thông tin điện tử", csdl: "Cơ sở dữ liệu Quản lý thông tin mạng xã hội", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 22, boNganh: "Bộ Thông tin & Truyền thông", chuQuan: "Cục Tần số vô tuyến điện", csdl: "Cơ sở dữ liệu Quản lý cấp phép tần số vô tuyến điện", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 23, boNganh: "Bộ Nội vụ", chuQuan: "Trung tâm Thông tin", csdl: "Cơ sở dữ liệu quốc gia về Cán bộ, công chức, viên chức", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 24, boNganh: "Bộ Nội vụ", chuQuan: "Cục Văn thư và Lưu trữ nhà nước", csdl: "Hệ thống quản lý tài liệu lưu trữ điện tử", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 25, boNganh: "Bộ Xây dựng", chuQuan: "Trung tâm Thông tin", csdl: "Cơ sở dữ liệu quốc gia về Hoạt động xây dựng", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 26, boNganh: "Bộ Nông nghiệp & PTNT", chuQuan: "Cục Trồng trọt", csdl: "Cơ sở dữ liệu Mã số vùng trồng quốc gia", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 27, boNganh: "Bộ Nông nghiệp & PTNT", chuQuan: "Cục Chăn nuôi", csdl: "Cơ sở dữ liệu Đăng ký thức ăn chăn nuôi", progress: 40, pl: true, tc: true, ht: false, dl: false, pm: false, attt: false, eval: "Chưa đạt" }, // startDaXong: null
-    { id: 28, boNganh: "Bộ Văn hóa, Thể thao & Du lịch", chuQuan: "Cục Du lịch Quốc gia Việt Nam", csdl: "Cơ sở dữ liệu Cơ sở lưu trú du lịch", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 29, boNganh: "Bộ Công Thương", chuQuan: "Cục Thương mại điện tử và Kinh tế số", csdl: "Cơ sở dữ liệu Doanh nghiệp Thương mại điện tử", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 30, boNganh: "Bộ Tư pháp", chuQuan: "Cục Lý lịch tư pháp quốc gia", csdl: "Cơ sở dữ liệu Lý lịch tư pháp", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 31, boNganh: "Bảo hiểm Xã hội Việt Nam", chuQuan: "Trung tâm Công nghệ thông tin", csdl: "Cơ sở dữ liệu quốc gia về Bảo hiểm", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 32, boNganh: "Ngân hàng Nhà nước", chuQuan: "Cục Công nghệ thông tin", csdl: "Cơ sở dữ liệu thông tin tín dụng khách hàng vay", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 33, boNganh: "Thanh tra Chính phủ", chuQuan: "Trung tâm Thông tin", csdl: "Cơ sở dữ liệu quốc gia về Khiếu nại, Tố cáo", progress: 30, pl: true, tc: false, ht: false, dl: false, pm: false, attt: false, eval: "Chưa đạt" }, // startDaXong: null
-    { id: 34, boNganh: "Thanh tra Chính phủ", chuQuan: "Cục Bản kê khai", csdl: "Cơ sở dữ liệu quốc gia về Kiểm soát tài sản, thu nhập", progress: 20, pl: true, tc: false, ht: false, dl: false, pm: false, attt: false, eval: "Chưa đạt" }, // startDaXong: null
-    { id: 35, boNganh: "Bộ Ngoại giao", chuQuan: "Cục Lãnh sự", csdl: "Cơ sở dữ liệu Cấp phát hộ chiếu ngoại giao, công vụ", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 36, boNganh: "Bộ Ngoại giao", chuQuan: "Cục Lãnh sự", csdl: "Hệ thống thông tin Quản lý Xuất nhập cảnh ngành Ngoại giao", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 37, boNganh: "Bộ Khoa học & Công nghệ", chuQuan: "Cục Sở hữu trí tuệ", csdl: "Cơ sở dữ liệu quốc gia về Sở hữu công nghiệp", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 38, boNganh: "Ủy ban Dân tộc", chuQuan: "Trung tâm Thông tin", csdl: "Cơ sở dữ liệu về Thống kê các dân tộc thiểu số", progress: 15, pl: true, tc: false, ht: false, dl: false, pm: false, attt: false, eval: "Chưa đạt" }, // startDaXong: null
-    { id: 39, boNganh: "Văn phòng Chính phủ", chuQuan: "Cổng Dịch vụ công Quốc gia", csdl: "Cơ sở dữ liệu theo dõi trạng thái hồ sơ Dịch vụ công", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 40, boNganh: "Bộ Công an", chuQuan: "Cục Cảnh sát PCCC và CNCH", csdl: "Cơ sở dữ liệu Thống kê An toàn phòng cháy chữa cháy", progress: 50, pl: true, tc: true, ht: false, dl: false, pm: false, attt: false, eval: "Chưa đạt" }, // startDaXong: null
-    { id: 41, boNganh: "Bộ Tư pháp", chuQuan: "Cục Quốc tịch, chứng thực", csdl: "Cơ sở dữ liệu Quản lý Quốc tịch Việt Nam", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 42, boNganh: "Bộ Tài chính", chuQuan: "Cục Quản lý giá", csdl: "Cơ sở dữ liệu quốc gia về Giá công sản và hàng hóa", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 43, boNganh: "Bộ Y tế", chuQuan: "Cục Quản lý Khám chữa bệnh", csdl: "Cơ sở dữ liệu Giấy phép hành nghề Y - Dược toàn quốc", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 44, boNganh: "Bộ Giao thông vận tải", chuQuan: "Cục Hàng hải Việt Nam", csdl: "Hệ thống thông tin Thuyền viên và Tàu biển", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 45, boNganh: "Bộ Xây dựng", chuQuan: "Cục Quản lý nhà và Thị trường BĐS", csdl: "Cơ sở dữ liệu về Nhà ở và Thị trường bất động sản", progress: 35, pl: true, tc: false, ht: false, dl: false, pm: false, attt: false, eval: "Chưa đạt" }, // startDaXong: null
-    { id: 46, boNganh: "Bộ Thông tin & Truyền thông", chuQuan: "Cục Viễn thông", csdl: "Cơ sở dữ liệu Quản lý thông tin thuê bao di động", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 47, boNganh: "Bộ Tài nguyên & Môi trường", chuQuan: "Cục Quản lý tài nguyên nước", csdl: "Cơ sở dữ liệu Cấp phép tài nguyên nước quốc gia", progress: 25, pl: true, tc: false, ht: false, dl: false, pm: false, attt: false, eval: "Chưa đạt" }, // startDaXong: null
-    { id: 48, boNganh: "Bộ Công Thương", chuQuan: "Cục Điều tiết điện lực", csdl: "Cơ sở dữ liệu Quản lý cấp phép hoạt động điện lực", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 49, boNganh: "Bộ Giáo dục & Đào tạo", chuQuan: "Cục Quản lý chất lượng", csdl: "Cơ sở dữ liệu Văn bằng chứng chỉ hệ thống giáo dục", progress: 100, pl: true, tc: true, ht: true, dl: true, pm: true, attt: true, eval: "Đạt" },
-    { id: 50, boNganh: "Bộ Công an", chuQuan: "Cục Cảnh sát điều tra tội phạm về ma túy", csdl: "Cơ sở dữ liệu Quản lý đối tượng sử dụng ma túy", progress: 10, pl: true, tc: false, ht: false, dl: false, pm: false, attt: false, eval: "Chưa đạt" } // startDaXong: null
-];
+document.addEventListener("DOMContentLoaded", () => {
+    if (typeof window.initMultipleBarChart === "function") window.initMultipleBarChart();
 
-// TanStack Table Core State Simulation Tracker
-const tableState = {
-    globalFilter: "",
-    statusFilter: "all",
-    advancedFilter: "all",
-    sortDirection: "desc", // desc hoặc asc theo tiến độ
-    currentPage: 1, // Trang hiện tại
-    rowsPerPage: 10, // Số hàng hiển thị mặc định
+    if (window.coreDataSource && window.coreDataSource.length > 0) {
+        if (typeof window.renderTableEngine === "function") window.renderTableEngine();
+    }
+});
+
+// 1. ĐỊNH NGHĨA DỮ LIỆU TIÊU CHÍ THÀNH PHẦN CHI TIẾT
+const criteriaData1 = {
+    "Pháp lý": [
+        { id: 1, q: "Đã có cơ sở pháp lý để triển khai xây dựng CSDL?", passed: 75 },
+        { id: 2, q: "Đã ban hành quy trình thu thập, tạo lập dữ liệu?", passed: 60 },
+        { id: 3, q: "Đã ban hành danh mục trường thông tin của CSDL?", passed: 45 },
+    ],
+    "Tài chính": [
+        { id: 4, q: "Đã đăng ký nhu cầu vốn triển khai?", passed: 80 },
+        { id: 5, q: "Đã được bố trí kinh phí triển khai?", passed: 55 },
+    ],
+    "Hạ tầng": [
+        { id: 6, q: "CSDL đã được triển khai trên hạ tầng tập trung?", passed: 70 },
+        { id: 7, q: "Hạ tầng đang vận hành tại TTDL đạt tiêu chuẩn?", passed: 65 },
+    ],
+    "Dữ liệu": [
+        { id: 8, q: "Dữ liệu bảo đảm 'đúng'?", passed: 85 },
+        { id: 9, q: "Dữ liệu bảo đảm 'đủ'?", passed: 78 },
+        { id: 10, q: "Dữ liệu bảo đảm 'sạch'?", passed: 62 },
+        { id: 11, q: "Dữ liệu bảo đảm 'sống'?", passed: 40 },
+    ],
+    "Phần mềm": [
+        { id: 12, q: "Có phần mềm ứng dụng nội bộ xử lý nghiệp vụ?", passed: 90 },
+        { id: 13, q: "Hỗ trợ bóc tách dữ liệu tự động?", passed: 70 }
+    ],
+    "ATTT": [
+        { id: 14, q: "Hệ thống được phê duyệt hồ sơ cấp độ ATTT?", passed: 100 },
+        { id: 15, q: "Đã triển khai giám sát SOC đầy đủ?", passed: 50 }
+    ]
 };
 
-// Hàm gom dữ liệu tổng hợp động cho trục Chart để tránh khai báo cứng (Hardcode)
-function generateMinistryDataRaw() {
-    const mapData = {};
-    coreDataSource.forEach(item => {
-        if (!mapData[item.boNganh]) {
-            mapData[item.boNganh] = { name: item.boNganh, passed: 0, processing: 0, failed: 0 };
+window.tableState = {
+    boNganhFilter: "",
+    subGlobalFilter: "",
+    statusFilter: "all",
+    advancedFilter: "all",
+    sortDirection: "desc",
+    currentPage: 1,
+    rowsPerPage: 10,
+    hiddenColumns: {
+        chuQuan: false,
+        tieuChiCon: false,
+        danhGiaChung: false
+    }
+};
+
+let _internalCoreData = window.coreDataSource || [];
+Object.defineProperty(window, 'coreDataSource', {
+    get: function () { return _internalCoreData; },
+    set: function (newData) {
+        _internalCoreData = newData;
+        if (typeof window.renderTableEngine === "function") {
+            window.renderTableEngine();
         }
-        if (item.progress === 100) mapData[item.boNganh].passed += 1;
-        else if (item.progress >= 40) mapData[item.boNganh].processing += 1;
-        else mapData[item.boNganh].failed += 1;
-    });
-    return Object.values(mapData);
-}
-const ministryDataRaw = generateMinistryDataRaw();
+    },
+    configurable: true
+});
 
-// Hoàn thiện cấu trúc Hàm OnTableStateChange tích hợp đa nhiệm tìm kiếm liên thông
-function onTableStateChange() {
-    const searchValue = document.getElementById("tanstackSearch").value;
+window.renderTableEngine = function () {
+    const dataSource = window.coreDataSource || [];
+    if (!dataSource || dataSource.length === 0) {
+        const tbody = document.getElementById("reactTableBody");
+        if (tbody) {
+            tbody.innerHTML = `<tr><td colspan="13" class="p-8 text-center text-slate-400 font-medium bg-slate-50/50"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Đang tải dữ liệu cấu phần dữ liệu...</td></tr>`;
+        }
+        return;
+    }
 
-    // 1. Đồng bộ hóa State cho bộ lọc bảng
-    tableState.globalFilter = searchValue;
-    tableState.statusFilter = document.getElementById("tanstackFilterStatus").value;
-    tableState.advancedFilter = document.getElementById("tanstackFilterAdvanced").value;
-    tableState.currentPage = 1;
+    let filteredData = [...dataSource];
 
-    // 2. Chạy Engine xử lý lọc & vẽ lại Table giao diện
-    renderTableEngine();
+    if (window.tableState.boNganhFilter) {
+        const keywordBoNganh = window.tableState.boNganhFilter.toLowerCase().trim();
+        filteredData = filteredData.filter(d => d.boNganh && d.boNganh.toLowerCase().includes(keywordBoNganh));
+    }
 
-    // 3. ĐỒNG BỘ SANG CHART: Render rút gọn lại các cột trên Chart theo từ khóa
-    initMultipleBarChart(searchValue);
-}
-
-// PHƯƠNG THỨC KẾT XUẤT DỮ LIỆU ĐỘNG (CORE RENDER)
-function renderTableEngine() {
-    // 1. Thực hiện các bước Filter theo State
-    let filteredData = [...coreDataSource];
-
-    // Lọc theo Global Search
-    if (tableState.globalFilter) {
-        const search = tableState.globalFilter.toLowerCase();
-        filteredData = filteredData.filter(
-            (d) =>
-                d.boNganh.toLowerCase().includes(search) ||
-                d.chuQuan.toLowerCase().includes(search) ||
-                d.csdl.toLowerCase().includes(search),
+    if (window.tableState.subGlobalFilter) {
+        const keywordSub = window.tableState.subGlobalFilter.toLowerCase().trim();
+        filteredData = filteredData.filter(d =>
+            (d.chuQuan && d.chuQuan.toLowerCase().includes(keywordSub)) ||
+            (d.csdl && d.csdl.toLowerCase().includes(keywordSub))
         );
     }
 
-    // Lọc theo trạng thái Đánh giá chung
-    if (tableState.statusFilter !== "all") {
-        filteredData = filteredData.filter(
-            (d) => d.eval === tableState.statusFilter,
-        );
+    if (window.tableState.statusFilter !== "all") {
+        filteredData = filteredData.filter(d => d.statusType === window.tableState.statusFilter);
     }
 
-    // Lọc theo cấu hình nâng cao
-    if (tableState.advancedFilter !== "all") {
-        if (tableState.advancedFilter === "low")
-            filteredData = filteredData.filter((d) => d.progress < 60);
-        else if (tableState.advancedFilter === "high")
-            filteredData = filteredData.filter((d) => d.progress === 100);
-        else if (tableState.advancedFilter === "no-attt")
-            filteredData = filteredData.filter((d) => d.attt === false);
-    }
-
-    // 2. Thực hiện Sort theo State
     filteredData.sort((a, b) => {
-        return tableState.sortDirection === "asc"
-            ? a.progress - b.progress
-            : b.progress - a.progress;
+        return window.tableState.sortDirection === "asc" ? (a.progress || 0) - (b.progress || 0) : (b.progress || 0) - (a.progress || 0);
     });
 
-    // 3. Tính toán Phân trang
     const totalRows = filteredData.length;
-    const totalPages = Math.ceil(totalRows / tableState.rowsPerPage) || 1;
+    const totalPages = Math.ceil(totalRows / window.tableState.rowsPerPage) || 1;
+    if (window.tableState.currentPage > totalPages) window.tableState.currentPage = totalPages;
 
-    // Khống chế việc tràn số trang khi bộ lọc thay đổi làm giảm tổng số dòng
-    if (tableState.currentPage > totalPages) {
-        tableState.currentPage = totalPages;
-    }
-
-    const startIndex =
-        (tableState.currentPage - 1) * tableState.rowsPerPage;
-    const endIndex = Math.min(
-        startIndex + tableState.rowsPerPage,
-        totalRows,
-    );
-
-    // Cắt mảng dữ liệu để chỉ hiển thị trang hiện tại
+    const startIndex = (window.tableState.currentPage - 1) * window.tableState.rowsPerPage;
+    const endIndex = Math.min(startIndex + window.tableState.rowsPerPage, totalRows);
     const paginatedData = filteredData.slice(startIndex, endIndex);
 
-    // 4. Tiến hành đổ dữ liệu ra DOM HTML
     const tbody = document.getElementById("reactTableBody");
+    if (!tbody) return;
     tbody.innerHTML = "";
 
     if (totalRows === 0) {
-        tbody.innerHTML = `<tr><td colspan="13" class="p-8 text-center text-slate-400 font-medium bg-slate-50/50">Không tìm thấy bản ghi dữ liệu phù hợp với cấu hình bộ lọc hiện tại.</td></tr>`;
-
-        // Cập nhật text footer khi rỗng
-        document.getElementById("counterRowsSummary").textContent =
-            "Hiển thị 0 hệ thống CSDL.";
-        updatePaginationUI(1, 1, true, true);
+        tbody.innerHTML = `<tr><td colspan="13" class="p-8 text-center text-slate-400 font-medium bg-slate-50/50">Không tìm thấy bản ghi dữ liệu phù hợp.</td></tr>`;
         return;
     }
 
     paginatedData.forEach((row, index) => {
-        const dotValid = `<div class="w-2.5 h-2.5 rounded-full bg-emerald-500 mx-auto" title="Đạt chuẩn"></div>`;
-        const dotInvalid = `<div class="w-2.5 h-2.5 rounded-full bg-rose-200 border border-rose-400/30 mx-auto" title="Chưa đạt / Vướng mắc"></div>`;
+        // Tích hợp icon mắt ẩn, tự động hiện/ẩn hoán đổi với dấu chấm tròn khi hover vào ô
+        const dotValid = `
+            <div class="relative flex items-center justify-center w-6 h-6 mx-auto">
+                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-2xs group-hover:opacity-0 group-hover:scale-50 transition-all duration-150"></div>
+                <i class="fa-solid fa-eye text-emerald-600 text-xs absolute opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-150"></i>
+            </div>
+        `;
 
-        const badgeGeneral =
-            row.eval === "Đạt"
-                ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-semibold">🟢 Đạt chuẩn</span>`
-                : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 text-[11px] font-semibold">🔴 Chưa đạt</span>`;
+        const dotInvalid = `
+            <div class="relative flex items-center justify-center w-6 h-6 mx-auto">
+                <div class="w-2.5 h-2.5 rounded-full bg-rose-200 border border-rose-400/30 shadow-2xs group-hover:opacity-0 group-hover:scale-50 transition-all duration-150"></div>
+                <i class="fa-solid fa-eye text-rose-500 text-xs absolute opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-150"></i>
+            </div>
+        `;
+
+        let badgeGeneral = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-semibold">🟢 Đã xây dựng</span>`;
+        let textProgress = "Đã xong";
+
+        if (row.statusType === "processing") {
+            badgeGeneral = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-[11px] font-semibold">🟡 Đang xây dựng</span>`;
+            textProgress = `${row.progress || 0}%`;
+        } else if (row.statusType === "failed") {
+            badgeGeneral = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200 text-[11px] font-semibold">🔴 Chưa xây dựng</span>`;
+            textProgress = "Chưa làm";
+        }
+
+        // Tạo chuỗi an toàn mã hóa JSON để truyền trực tiếp vào thẻ onclick dạng đối tượng
+        const rowDataString = JSON.stringify(row).replace(/"/g, '&quot;');
 
         const tr = document.createElement("tr");
-        tr.className = "hover:bg-slate-50/70 transition-colors bg-white";
-        // Số thứ tự tăng tiến chính xác theo vị trí thực tế trong danh sách đã lọc
-        const absoluteIndex = startIndex + index + 1;
-
+        tr.className = "hover:bg-slate-50/70 transition-colors bg-white border-b border-slate-100";
         tr.innerHTML = `
-          <td class="p-3 text-center font-mono text-slate-400 font-bold">${absoluteIndex}</td>
-          <td class="p-3 font-semibold text-slate-900">${row.boNganh}</td>
-          <td class="p-3 text-slate-500 col-sub-holder">${row.chuQuan}</td>
-          <td class="p-3 text-slate-700 font-medium max-w-sm truncate">${row.csdl}</td>
-          <td class="p-3 text-center font-bold text-slate-900 font-mono">${row.progress}%</td>
-          <td class="p-3 col-sub-criteria">${row.pl ? dotValid : dotInvalid}</td>
-          <td class="p-3 col-sub-criteria">${row.tc ? dotValid : dotInvalid}</td>
-          <td class="p-3 col-sub-criteria">${row.ht ? dotValid : dotInvalid}</td>
-          <td class="p-3 col-sub-criteria">${row.dl ? dotValid : dotInvalid}</td>
-          <td class="p-3 col-sub-criteria">${row.pm ? dotValid : dotInvalid}</td>
-          <td class="p-3 col-sub-criteria">${row.attt ? dotValid : dotInvalid}</td>
-          <td class="p-3 text-center col-sub-eval">${badgeGeneral}</td>
-          <td class="p-3 text-center">
-            <button onclick="openShadcnDialog(${row.id})" class="w-6 h-6 rounded-md border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 hover:text-slate-900 flex items-center justify-center transition-all active:scale-90 shadow-2xs">
-              <i class="fa-solid fa-expand text-[10px]"></i>
-            </button>
-          </td>
+            <td class="p-3 text-center font-mono text-slate-400 font-bold">${startIndex + index + 1}</td>
+            <td class="p-3 font-semibold text-slate-900 bo-nganh-cell">${row.boNganh || ''}</td>
+            <td class="p-3 text-slate-500 col-sub-holder ${window.tableState.hiddenColumns.chuQuan ? 'hidden' : ''}">${row.chuQuan || ''}</td>
+            <td class="p-3 text-slate-700 font-medium max-w-sm truncate">${row.csdl || ''}</td>
+            <td class="p-3 text-center font-bold text-slate-900 font-mono">${textProgress}</td>
+            
+            <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" 
+                onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'pl')" title="Xem chi tiết tiêu chí Pháp lý">
+                ${row.pl ? dotValid : dotInvalid}
+            </td>
+            
+            <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" 
+                onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'tc')" title="Xem chi tiết tiêu chí Tài chính">
+                ${row.tc ? dotValid : dotInvalid}
+            </td>
+            
+            <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" 
+                onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'ht')" title="Xem chi tiết tiêu chí Hạ tầng">
+                ${row.ht ? dotValid : dotInvalid}
+            </td>
+            
+            <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" 
+                onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'dl')" title="Xem chi tiết tiêu chí Dữ liệu">
+                ${row.dl ? dotValid : dotInvalid}
+            </td>
+            
+            <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" 
+                onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'pm')" title="Xem chi tiết tiêu chí Phần mềm">
+                ${row.pm ? dotValid : dotInvalid}
+            </td>
+            
+            <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" 
+                onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'attt')" title="Xem chi tiết tiêu chí ATTT">
+                ${row.attt ? dotValid : dotInvalid}
+            </td>
+
+            <td class="p-3 text-center col-sub-eval ${window.tableState.hiddenColumns.danhGiaChung ? 'hidden' : ''}">${badgeGeneral}</td>
+            <td class="p-3 text-center">
+                <button onclick="openShadcnDialog(${row.id})" class="w-6 h-6 rounded-md border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 hover:text-slate-900 flex items-center justify-center transition-all shadow-2xs mx-auto">
+                    <i class="fa-solid fa-expand text-[10px]"></i>
+                </button>
+            </td>
         `;
         tbody.appendChild(tr);
     });
 
-    // 5. Đồng bộ văn bản Footer hiển thị kết quả (Ví dụ: Hiển thị từ 1 đến 10 trên tổng số 13 hệ thống CSDL)
-    document.getElementById("counterRowsSummary").textContent =
-        `Hiển thị từ ${startIndex + 1} đến ${endIndex} trên tổng số ${totalRows} hệ thống CSDL được lọc.`;
-
-    // 6. Cập nhật trạng thái các nút phân trang
-    const isPrevDisabled = tableState.currentPage === 1;
-    const isNextDisabled = tableState.currentPage === totalPages;
-    updatePaginationUI(
-        tableState.currentPage,
-        totalPages,
-        isPrevDisabled,
-        isNextDisabled,
-    );
-}
-
-// HÀM TIỆN ÍCH CẬP NHẬT TRẠNG THÁI UI PHÂN TRANG
-function updatePaginationUI(
-    currentPage,
-    totalPages,
-    prevDisabled,
-    nextDisabled,
-) {
-    // Do trong HTML của bạn có 2 cụm nút phân trang trùng ID `paginationInfo`, ta cập nhật cho tất cả.
-    const pageInfoElements = document.querySelectorAll("#paginationInfo");
-    pageInfoElements.forEach((el) => {
-        el.textContent = `Trang ${currentPage} / ${totalPages}`;
-    });
-
-    const prevBtn = document.getElementById("prevPageBtn");
-    const nextBtn = document.getElementById("nextPageBtn");
-
-    if (prevBtn) {
-        prevBtn.disabled = prevDisabled;
+    const counterRows = document.getElementById("counterRowsSummary");
+    if (counterRows) {
+        counterRows.textContent = `Hiển thị từ ${startIndex + 1} đến ${endIndex} trên tổng số ${totalRows} hệ thống CSDL được lọc.`;
     }
-    if (nextBtn) {
-        nextBtn.disabled = nextDisabled;
+};
+window.toggleProgressSort = function () {
+    window.tableState.sortDirection = window.tableState.sortDirection === "desc" ? "asc" : "desc";
+    const label = document.getElementById("sortLabelText");
+    if (label) label.textContent = window.tableState.sortDirection === "desc" ? "Giảm dần" : "Tăng dần";
+    window.renderTableEngine();
+};
+
+window.toggleColumnMenuDropdown = function (event) {
+    if (event) event.stopPropagation();
+    const dropdown = document.getElementById("columnDisplayDropdownMenu");
+    if (dropdown) dropdown.classList.toggle("hidden");
+};
+
+window.toggleTableColDynamic = function (type, checkbox) {
+    if (!window.tableState.hiddenColumns.hasOwnProperty(type)) return;
+    window.tableState.hiddenColumns[type] = !checkbox.checked;
+
+    if (type === "chuQuan") {
+        document.querySelectorAll("th.col-sub-holder").forEach(el => el.classList.toggle("hidden", !checkbox.checked));
+    } else if (type === "tieuChiCon") {
+        document.querySelectorAll("th.col-sub-criteria").forEach(el => el.classList.toggle("hidden", !checkbox.checked));
+    } else if (type === "danhGiaChung") {
+        document.querySelectorAll("th.col-sub-eval").forEach(el => el.classList.toggle("hidden", !checkbox.checked));
     }
-}
+    window.renderTableEngine();
+};
 
-// EVENT HANDLER ĐỒNG BỘ TRẠNG THÁI TOÀN CỤC (STATE SYNC)
-function onTableStateChange() {
-    tableState.globalFilter =
-        document.getElementById("tanstackSearch").value;
-    tableState.statusFilter = document.getElementById(
-        "tanstackFilterStatus",
-    ).value;
-    tableState.advancedFilter = document.getElementById(
-        "tanstackFilterAdvanced",
-    ).value;
-    tableState.currentPage = 1; // Reset về trang 1 khi lọc tiêu chí mới
-    renderTableEngine();
-}
+document.addEventListener("click", () => {
+    const dropdown = document.getElementById("columnDisplayDropdownMenu");
+    if (dropdown) dropdown.classList.add("hidden");
+});
 
-// XỬ LÝ SỰ KIỆN THAY ĐỔI SỐ HÀNG HIỂN THỊ TRÊN MỘT TRANG
-function onRowsPerPageChange() {
-    tableState.rowsPerPage = parseInt(
-        document.getElementById("rowsPerPageSelect").value,
-        10,
-    );
-    tableState.currentPage = 1; // Quay về trang đầu tiên
-    renderTableEngine();
-}
+window.onTableStateChange = function () {
+    const subInput = document.getElementById("donViCSDLSearchInput");
+    window.tableState.subGlobalFilter = subInput ? subInput.value : "";
+    window.tableState.currentPage = 1;
+    window.renderTableEngine();
+};
 
-// DI CHUYỂN QUA LẠI GIỮA CÁC TRANG (Kế thừa từ hàm goToPage gốc của bạn và sửa lại logic đúng)
-function goToPage(direction) {
-    tableState.currentPage += direction;
-    renderTableEngine();
-}
+// Khởi tạo bộ lưu trữ cache toàn cục
+let activeCriteriaCache = null;
 
-// ĐIỀU KHIỂN SẮP XẾP TIẾN ĐỘ
-function toggleProgressSort() {
-    tableState.sortDirection =
-        tableState.sortDirection === "desc" ? "asc" : "desc";
-    document.getElementById("sortLabelText").textContent =
-        tableState.sortDirection === "asc" ? "Tăng dần" : "Giảm dần";
-    renderTableEngine();
-}
+/**
+ * Hàm cầu nối trung gian hỗ trợ mở nhanh Sub-Popup trực tiếp từ Table Cell
+ */
+window.openSubPopupFromTable = function (rowObj, fieldCode) {
+    if (!rowObj || !fieldCode) return;
 
-// ẨN / HIỆN CỘT BẢNG THEO LỚP CSS ĐỊNH DANH (COLUMN VISIBILITY COUPLING)
-function toggleTableCol(colKey, cb) {
-    let selector = "";
-    if (colKey === 4) selector = ".col-sub-holder";
-    else if (colKey === 6) selector = ".col-sub-criteria";
-    else if (colKey === 12) selector = ".col-sub-eval";
+    // Nạp dữ liệu dòng được chọn vào cache trước để sub-popup đọc căn cứ pháp lý lý thuyết/thực tế
+    activeCriteriaCache = rowObj;
 
-    if (!selector) return;
-    document.querySelectorAll(selector).forEach((el) => {
-        el.style.display = cb.checked ? "" : "none";
-    });
-}
+    const mapping = {
+        pl: { key: "Pháp lý", icon: "fa-scale-balanced" },
+        tc: { key: "Tài chính", icon: "fa-coins" },
+        ht: { key: "Hạ tầng", icon: "fa-server" },
+        dl: { key: "Dữ liệu", icon: "fa-database" },
+        pm: { key: "Phần mềm", icon: "fa-laptop-code" },
+        attt: { key: "ATTT", icon: "fa-shield-halved" }
+    };
 
-// DIALOG CONTROLLER (Mở / Đóng popup phóng to xem chi tiết bản ghi dữ liệu)
-function openShadcnDialog(rowId) {
-    const item = coreDataSource.find((d) => d.id === rowId);
+    const target = mapping[fieldCode];
+    if (!target) return;
+
+    const isPassed = rowObj[fieldCode] ? 1 : 0;
+
+    // Kích hoạt hiển thị popup chi tiết tiêu chí trực tiếp lên màn hình
+    if (typeof window.openSubPopup === "function") {
+        window.openSubPopup(target.key, isPassed, target.icon);
+    }
+};
+
+window.openShadcnDialog = function (rowId) {
+    const dataSource = window.coreDataSource || [];
+    const item = dataSource.find((d) => d.id === rowId);
     if (!item) return;
 
-    document.getElementById("dialogMetaSTT").textContent =
-        `STT-${String(item.id).padStart(2, "0")}`;
-    document.getElementById("dialogMetaCsdlName").textContent = item.csdl;
-    document.getElementById("dialogMetaBoNganh").textContent = item.boNganh;
-    document.getElementById("dialogMetaChuQuan").textContent = item.chuQuan;
-    document.getElementById("dialogProgressText").textContent =
-        `${item.progress}%`;
-    document.getElementById("dialogProgressBar").style.width =
-        `${item.progress}%`;
+    const modal = document.getElementById("chiTietDanhGia");
+    if (!modal) return;
 
-    const criteriaItems = [
-        { key: "Pháp lý", val: item.pl },
-        { key: "Tài chính", val: item.tc },
-        { key: "Hạ tầng", val: item.ht },
-        { key: "Dữ liệu", val: item.dl },
-        { key: "Phần mềm", val: item.pm },
-        { key: "ATTT", val: item.attt },
+    // Lưu dữ liệu tổng của item hiện tại vào cache
+    activeCriteriaCache = item;
+
+    // Đồng bộ cấu hình kích thước giao diện chính
+    const modalContentContainer = modal.querySelector('.bg-white, [class*="bg-white"]');
+    if (modalContentContainer) {
+        modalContentContainer.classList.remove("max-w-md", "max-w-lg", "max-w-xl", "max-w-2xl", "max-w-3xl", "max-w-4xl");
+        modalContentContainer.className = "bg-white w-full max-w-5xl h-[80vh] max-h-[85vh] rounded-2xl shadow-xl border border-slate-100 flex flex-col overflow-hidden transition-all duration-200 relative animate-in fade-in zoom-in-95";
+    }
+
+    if (document.getElementById("dialogMetaSTT")) document.getElementById("dialogMetaSTT").innerHTML = `<i class="fa-solid fa-fingerprint mr-1"></i>STT-${String(item.id).padStart(2, "0")}`;
+    if (document.getElementById("dialogMetaCsdlName")) document.getElementById("dialogMetaCsdlName").textContent = item.csdl;
+
+    const elBoNganh = document.getElementById("dialogMetaBoNghanh") || document.getElementById("dialogMetaBoNganh");
+    if (elBoNganh) elBoNganh.innerHTML = `<i class="fa-solid fa-building text-slate-400 mr-2"></i><span class="text-slate-500 inline-block w-24">Bộ ban ngành:</span><span class="font-semibold text-slate-800">${item.boNganh}</span>`;
+    if (document.getElementById("dialogMetaChuQuan")) document.getElementById("dialogMetaChuQuan").innerHTML = `<i class="fa-solid fa-users text-slate-400 mr-2"></i><span class="text-slate-500 inline-block w-24">Đơn vị chủ quản:</span><span class="font-medium text-slate-700">${item.chuQuan}</span>`;
+
+    let progressValue = item.progress || 0;
+    let progressColorClass = "bg-amber-500";
+
+    const elProgText = document.getElementById("dialogProgressText");
+    if (elProgText) {
+        if (item.statusType === "passed") {
+            elProgText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>Đã hoàn thành`;
+            progressColorClass = "bg-emerald-500";
+        } else if (item.statusType === "failed") {
+            elProgText.innerHTML = `<i class="fa-solid fa-circle-minus text-rose-500 mr-1"></i>Chưa làm`;
+            progressColorClass = "bg-slate-200";
+            progressValue = 0;
+        } else {
+            elProgText.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-amber-500 mr-1"></i>Tiến độ: ${progressValue}%`;
+            progressColorClass = "bg-amber-500";
+        }
+    }
+
+    const progressBar = document.getElementById("dialogProgressBar");
+    if (progressBar) {
+        progressBar.className = `h-full rounded-full transition-all duration-500 ${progressColorClass}`;
+        progressBar.style.width = `${progressValue}%`;
+    }
+
+    const criteriaConfig = [
+        { key: "Pháp lý", val: item.pl, icon: "fa-scale-balanced" },
+        { key: "Tài chính", val: item.tc, icon: "fa-coins" },
+        { key: "Hạ tầng", val: item.ht, icon: "fa-server" },
+        { key: "Dữ liệu", val: item.dl, icon: "fa-database" },
+        { key: "Phần mềm", val: item.pm, icon: "fa-laptop-code" },
+        { key: "ATTT", val: item.attt, icon: "fa-shield-halved" },
     ];
 
     const gridBox = document.getElementById("dialogCriteriaGridBox");
-    gridBox.innerHTML = criteriaItems
-        .map(
-            (c) => `
-          <div class="p-2 border rounded-md flex items-center justify-between ${c.val ? "bg-emerald-50/40 border-emerald-200 text-emerald-900" : "bg-slate-50 border-slate-200 text-slate-500"}">
-            <span class="font-medium text-slate-600">${c.key}</span>
-            <span class="font-bold text-[11px]">${c.val ? "✔️ Đạt" : "❌ Chưa"}</span>
-          </div>
-        `,
-        )
-        .join("");
+    if (gridBox) {
+        gridBox.style.display = "grid";
+        gridBox.style.gridTemplateColumns = "repeat(3, minmax(0, 1fr))";
+        gridBox.style.gap = "14px";
 
-    document.getElementById("dialogGeneralStatusBadge").innerHTML =
-        item.eval === "Đạt"
-            ? `<span class="px-2.5 py-1 bg-slate-900 text-white rounded font-bold text-[11px]">🟢 Hệ thống đạt chuẩn</span>`
-            : `<span class="px-2.5 py-1 bg-slate-100 border border-slate-200 text-slate-800 rounded font-bold text-[11px]">🔴 Cần hoàn thiện thêm</span>`;
+        gridBox.innerHTML = criteriaConfig.map((c) => {
+            const bgClass = c.val
+                ? "bg-emerald-50/60 hover:bg-emerald-50 border-emerald-200 text-emerald-900 shadow-2xs"
+                : "bg-rose-50/40 hover:bg-rose-50/70 border-rose-100 text-slate-500";
 
-    const modal = document.getElementById("chiTietDanhGia");
-    const box = document.getElementById("dialogBoxStructure");
+            const statusBadge = c.val
+                ? "<span class='px-2 py-0.5 rounded bg-emerald-500 text-white text-[10px] font-bold'><i class='fa-solid fa-check mr-1'></i> Đạt</span>"
+                : "<span class='px-2 py-0.5 rounded bg-rose-400 text-white text-[10px] font-bold'><i class='fa-solid fa-xmark mr-1'></i> Chưa đạt</span>";
+
+            return `
+                <div onclick="openSubPopup('${c.key}', ${c.val ? 1 : 0}, '${c.icon}')" 
+                     class="border rounded-xl p-4 flex items-center justify-between cursor-pointer select-none transition-all duration-150 hover:scale-[1.01] active:scale-[0.99] group ${bgClass}">
+                    <div class="flex items-center gap-3 truncate">
+                        <div class="w-9 h-9 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-700 shadow-3xs group-hover:text-slate-900 transition-colors shrink-0">
+                            <i class="fa-solid ${c.icon} text-base"></i>
+                        </div>
+                        <div class="flex flex-col text-left truncate">
+                            <span class="font-bold text-sm text-slate-800 leading-tight">${c.key}</span>
+                            <span class="text-[11px] text-slate-400 mt-0.5 font-medium">Bấm xem chi tiết</span>
+                        </div>
+                    </div>
+                    <div class="shrink-0 pl-1">
+                        ${statusBadge}
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    const generalBadge = document.getElementById("dialogGeneralStatusBadge");
+    if (generalBadge) {
+        generalBadge.innerHTML =
+            item.statusType === "passed" ? `<span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full font-bold text-[11px]"><i class="fa-solid fa-circle text-[8px] mr-1.5 align-middle"></i>Đã xây dựng</span>` :
+                (item.statusType === "failed" ? `<span class="px-3 py-1 bg-rose-50 text-rose-700 border border-rose-200 rounded-full font-bold text-[11px]"><i class="fa-solid fa-circle text-[8px] mr-1.5 align-middle"></i>Chưa xây dựng</span>` :
+                    `<span class="px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full font-bold text-[11px]"><i class="fa-solid fa-circle text-[8px] mr-1.5 align-middle"></i>Đang xây dựng</span>`);
+    }
+
     modal.classList.remove("hidden");
-    setTimeout(() => {
-        box.classList.remove("scale-95", "opacity-0");
-        box.classList.add("scale-100", "opacity-100");
-    }, 20);
-}
+};
+
+// ==========================================
+// HÀM XỬ LÝ QUẢN LÝ POPUP PHỤ TIÊU CHÍ CHI TIẾT
+// ==========================================
+
+window.openSubPopup = function (criteriaKey, isPassed, iconClass) {
+    if (!activeCriteriaCache) return;
+
+    const subPopup = document.getElementById("popupTieuChiChiTiet");
+    const headerTitle = document.getElementById("subPopupHeaderTitle");
+    const bodyContent = document.getElementById("subPopupBodyContent");
+
+    if (!subPopup || !headerTitle || !bodyContent) return;
+
+    // 1. Tạo Header cho Popup phụ
+    const badgeStatus = isPassed
+        ? "<span class='px-2 py-0.5 rounded-md bg-emerald-500 text-white text-[10px] font-bold'><i class='fa-solid fa-check mr-1'></i> Đạt tiêu chuẩn</span>"
+        : "<span class='px-2 py-0.5 rounded-md bg-rose-400 text-white text-[10px] font-bold'><i class='fa-solid fa-xmark mr-1'></i> Chưa đáp ứng</span>";
+
+    headerTitle.innerHTML = `
+        <div class="w-8 h-8 rounded-lg bg-slate-200/60 border border-slate-200 flex items-center justify-center text-slate-800">
+            <i class="fa-solid ${iconClass} text-sm"></i>
+        </div>
+        <div class="flex items-center gap-2">
+            <h5 class="font-bold text-slate-900 text-sm">Tiêu chí: ${criteriaKey}</h5>
+            ${badgeStatus}
+        </div>
+    `;
+
+    // 2. Lấy danh sách văn bản căn cứ pháp lý & Tiêu chí thành phần (Sửa đổi đồng bộ criteriaData1)
+    const subList = criteriaData1[criteriaKey] || [];
+    const basisArray = activeCriteriaCache.legalBasis && activeCriteriaCache.legalBasis.length > 0
+        ? activeCriteriaCache.legalBasis
+        : [`Căn cứ văn bản chỉ đạo hệ thống & Quy chuẩn vận hành kỹ thuật liên quan đến phân hệ ${criteriaKey}.`];
+
+    const basisHtml = basisArray.map(b => `
+        <div class="text-slate-600 font-medium text-[12px] leading-relaxed py-0.5 text-left">
+            <i class="fa-solid fa-bookmark text-amber-500 mr-2"></i>${b}
+        </div>
+    `).join("");
+
+    const subItemsHtml = subList.map(sub => `
+        <div class="p-3 border border-slate-100 rounded-xl bg-slate-50/50 hover:bg-slate-50 transition-colors space-y-2">
+            <div class="flex flex-col gap-2 text-left">
+                <p class="text-xs font-semibold text-slate-800 leading-normal">
+                    <i class="fa-regular fa-circle-question text-slate-400 mr-1.5"></i>${sub.q}
+                </p>
+                <span class="text-[10px] font-bold ${isPassed ? 'text-emerald-700 bg-emerald-50 border-emerald-100' : 'text-slate-400 bg-slate-100 border-slate-200'} px-2 py-0.5 rounded-md border self-start">
+                    Mức độ đáp ứng: ${isPassed ? sub.passed + '%' : '0%'}
+                </span>
+            </div>
+        </div>
+    `).join("");
+
+    // 3. Đổ dữ liệu vào vùng nội dung
+    bodyContent.innerHTML = `
+        <div class="p-3.5 bg-amber-50/40 border border-amber-100 rounded-xl space-y-1.5 animate-in fade-in-50 duration-200">
+            <span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 block text-left"><i class="fa-solid fa-scroll mr-1"></i>Hồ sơ tài liệu / Căn cứ pháp lý</span>
+            <div class="space-y-1">${basisHtml}</div>
+        </div>
+        
+        <div class="space-y-2.5">
+            <span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 block text-left"><i class="fa-solid fa-list-check mr-1"></i>Danh mục tiêu chí thành phần kiểm tra</span>
+            <div class="space-y-2">${subItemsHtml || '<p class="text-slate-400 italic">Không có dữ liệu tiêu chí con.</p>'}</div>
+        </div>
+    `;
+
+    subPopup.classList.remove("hidden");
+};
+
+// Đóng Popup phụ độc lập
+window.closeSubPopup = function () {
+    const subPopup = document.getElementById("popupTieuChiChiTiet");
+    if (subPopup) subPopup.classList.add("hidden");
+};
+
+// Hàm xử lý khi bấm ra vùng trống bên ngoài của Sub Popup để Close
+window.handleSubPopupBackdropClick = function (event) {
+    const subPopup = document.getElementById("popupTieuChiChiTiet");
+    if (event.target === subPopup) {
+        closeSubPopup();
+    }
+};
+
+// BỔ SUNG SỰ KIỆN PHÍM TẮT: NHẤN ESC ĐỂ TỰ ĐỘNG ĐÓNG POPUP
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" || event.keyCode === 27) {
+        // Ưu tiên đóng popup phụ trước
+        const subPopup = document.getElementById("popupTieuChiChiTiet");
+        if (subPopup && !subPopup.classList.contains("hidden")) {
+            closeSubPopup();
+            return;
+        }
+        // Sau đó đóng popup lớn
+        const mainModal = document.getElementById("chiTietDanhGia");
+        if (mainModal && !mainModal.classList.contains("hidden")) {
+            closeShadcnDialog();
+        }
+    }
+});
 
 function closeShadcnDialog() {
-    document
-        .getElementById("dialogBoxStructure")
-        .classList.add("scale-95", "opacity-0");
-    setTimeout(() => {
-        document.getElementById("chiTietDanhGia").classList.add("hidden");
-    }, 140);
+    const modal = document.getElementById("chiTietDanhGia");
+    if (modal) modal.classList.add("hidden");
+    activeCriteriaCache = null; // giải phóng bộ nhớ tạm
 }
-
-// Khởi chạy nền bảng ngay khi hệ thống xử lý xong DOM
-document.addEventListener("DOMContentLoaded", () => renderTableEngine());
