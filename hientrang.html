@@ -148,6 +148,7 @@
               />
             </div>
             <button
+              id="btn-search-ministry"
               class="bg-[#115e59] h-10 rounded-lg px-4 flex items-center justify-center shadow-sm hover:bg-[#134e4a] transition flex-shrink-0"
             >
               <i class="text-white fa-solid fa-magnifying-glass"></i>
@@ -554,27 +555,56 @@
           class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-slate-900"
         ></div>
       </div>
-
       <section class="flex-1 bg-white flex flex-col h-full overflow-hidden">
+        <div
+          class="px-4 pt-4 flex flex-wrap items-center gap-1.5 text-[11px] font-medium flex-shrink-0 bg-white"
+        >
+          <span
+            id="reportUnitBadge"
+            class="px-2 py-0.5 bg-teal-50 text-teal-700 rounded-md border border-teal-600/10 font-bold flex items-center gap-1"
+          >
+            <i class="fa-solid fa-city text-[10px]"></i> Cục Cảnh sát QLHC về
+            TTXH (C06)
+          </span>
+          <i class="fa-solid fa-angle-right text-slate-300 text-[10px]"></i>
+          <span
+            id="reportDbBadge"
+            class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md font-semibold flex items-center gap-1"
+          >
+            <i class="fa-solid fa-database text-[10px]"></i> Cơ sở dữ liệu quốc
+            gia về Dân cư
+          </span>
+        </div>
+
         <div
           class="p-4 border-b border-slate-100 flex items-center justify-between flex-shrink-0"
         >
           <div class="flex items-center gap-4 text-slate-400">
-            <h3 class="text-bold">Ngày 01/01/2024</h3>
+            <h3 class="text-bold" id="reportDateHeader">Ngày 01/01/2024</h3>
             <i data-lucide="chevron-right" class="w-4 h-4"></i>
-            <h3>Văn bản báo cáo tổng kết quý III</h3>
+            <h3 id="reportTitleHeader">Vavan bản báo cáo tổng kết quý III</h3>
           </div>
-          <div class="flex items-center gap-3 text-slate-400">
-            <span class="text-xs">1 from 340</span>
+          <div
+            id="reportNavigation"
+            class="flex items-center gap-3 text-slate-400"
+          >
+            <span id="timelinePaginationText" class="text-xs select-none"
+              >0 Trong 0</span
+            >
             <div class="flex gap-1">
-              <button class="p-1 hover:bg-slate-100 rounded">
-                <i data-lucide="chevron-left" class="w-4 h-4"></i>
+              <button
+                id="btnPrevTimeline"
+                onclick="navigateTimeline(-1)"
+                class="p-1 hover:bg-slate-100 rounded disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed transition"
+              >
+                <i class="fa-solid fa-caret-left"></i>
               </button>
-              <button class="p-1 hover:bg-slate-100 rounded">
-                <i data-lucide="chevron-right" class="w-4 h-4"></i>
-              </button>
-              <button class="p-1 hover:bg-slate-100 rounded">
-                <i class="fa-solid fa-list"></i>
+              <button
+                id="btnNextTimeline"
+                onclick="navigateTimeline(1)"
+                class="p-1 hover:bg-slate-100 rounded disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed transition"
+              >
+                <i class="fa-solid fa-caret-right"></i>
               </button>
             </div>
             <button
@@ -821,7 +851,7 @@
               tục hành chính. <br />- Mặt khác, tuy đã có hệ thống VNLIS tập
               trung tại Trung ương, tuy nhiên việc tồn tại nhiều hệ thống vận
               hành song song tại địa phương (như VBDLIS, VNPT-iLIS,.. đã đầu tư
-              từ trước) đang làm phân tán công cụ điều hành, hạn chế khả năng
+              tư trước) đang làm phân tán công cụ điều hành, hạn chế khả năng
               quản lý tập trung, thống nhất ở tầm quốc gia, đòi hỏi phải có kết
               luận chỉ đạo dứt điểm về mô hình và nền tảng vận hành thống nhất.
             </p>
@@ -868,27 +898,6 @@
                     class="text-xs font-medium text-slate-800 group-hover:text-teal-600 transition-colors"
                   >
                     hientrang.html
-                  </p>
-                  <span class="text-[10px] text-slate-400"
-                    >Click để xem nhanh</span
-                  >
-                </div>
-              </div>
-
-              <div
-                onclick="loadInlinePreview('statistic.html')"
-                class="flex items-center gap-2 border border-slate-200 rounded-xl p-2 pr-4 bg-slate-50 cursor-pointer hover:bg-white hover:border-teal-500 hover:shadow-sm transition group"
-              >
-                <div
-                  class="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-[10px] group-hover:bg-orange-600 group-hover:text-white transition-colors"
-                >
-                  HTML
-                </div>
-                <div>
-                  <p
-                    class="text-xs font-medium text-slate-800 group-hover:text-teal-600 transition-colors"
-                  >
-                    statistic.html
                   </p>
                   <span class="text-[10px] text-slate-400"
                     >Click để xem nhanh</span
@@ -1023,7 +1032,7 @@
     </script>
     <script src="https://unpkg.com/jszip/dist/jszip.min.js"></script>
     <script src="https://unpkg.com/docx-preview/dist/docx-preview.min.js"></script>
-    <script src="./js/handleHienTrang.js"></script>
+    <script src="./js/hienTrang/handleHienTrang.js"></script>
     <script>
       let isPreviewOpen = true;
       let currentFileUrl = ""; // Biến lưu trữ file đang được xem hiện tại
@@ -1174,200 +1183,6 @@
           modal.classList.add("hidden");
         }, 200);
       }
-    </script>
-    <script>
-      // Khởi tạo Lucide Icon
-      lucide.createIcons();
-
-      // Hàm chuẩn hóa loại bỏ dấu tiếng Việt để tìm kiếm chính xác
-      function cleanText(str) {
-        str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
-        str = str.replace(/è|é|ẹ|ả|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
-        str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
-        str = str.replace(/ò|á|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
-        str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
-        str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
-        str = str.replace(/đ/g, "d");
-        return str.toLowerCase().trim();
-      }
-
-      // --- LOGIC SEARCH BOX 1: TÌM THEO BỘ (CHỈ TÁC ĐỘNG ASIDE) ---
-      const searchMinistryInput = document.getElementById("search-ministry");
-      const ministryItems = document.querySelectorAll(".ministry-item");
-
-      searchMinistryInput.addEventListener("input", function () {
-        const keyword = cleanText(this.value);
-        ministryItems.forEach((item) => {
-          const text = cleanText(item.textContent);
-          if (text.includes(keyword)) {
-            item.classList.remove("hidden");
-            item.classList.add("flex");
-          } else {
-            item.classList.remove("flex");
-            item.classList.add("hidden");
-          }
-        });
-      });
-
-      // --- LOGIC SEARCH BOX 2 & ĐIỀU HƯỚNG BỘ LỌC (TÁC ĐỘNG SECTION GIỮA) ---
-      let activeMinistryId = "bo-cong-an"; // Bộ mặc định ban đầu
-
-      function applySectionFilter() {
-        const searchKeyword = cleanText(
-          document.getElementById("search-unit-db").value,
-        );
-        const unitCards = document.querySelectorAll(".unit-card");
-
-        unitCards.forEach((card) => {
-          const belongToMinistry = card.getAttribute("data-belong-ministry");
-          const unitName = card.getAttribute("data-unit-name");
-
-          // 1. Kiểm tra xem thẻ unit có thuộc Bộ đang kích hoạt không
-          const isCorrectMinistry = belongToMinistry === activeMinistryId;
-
-          // 2. Kiểm tra bộ lọc từ khóa của Đơn vị hoặc CSDL con
-          let isUnitNameMatch = unitName.includes(searchKeyword);
-          const subDbItems = card.querySelectorAll(".db-item");
-          let hasAnyMatchingDb = false;
-
-          subDbItems.forEach((db) => {
-            const dbName = db.getAttribute("data-db-name");
-            // Nếu từ khóa khớp tên CSDL hoặc khớp tên đơn vị cha thì hiển thị CSDL đó
-            if (dbName.includes(searchKeyword) || isUnitNameMatch) {
-              db.classList.remove("hidden");
-              db.classList.add("flex");
-              hasAnyMatchingDb = true;
-            } else {
-              db.classList.remove("flex");
-              db.classList.add("hidden");
-            }
-          });
-
-          // Điều kiện hiển thị cuối cùng của Thẻ Đơn vị (Details)
-          if (isCorrectMinistry && (isUnitNameMatch || hasAnyMatchingDb)) {
-            card.classList.remove("hidden");
-            // Tự động bung rộng thẻ khi người dùng gõ tìm kiếm sâu
-            if (searchKeyword !== "") {
-              card.setAttribute("open", "");
-            }
-          } else {
-            card.classList.add("hidden");
-          }
-        });
-      }
-
-      // Đăng ký sự kiện chuyển Bộ khi click button ở cột Aside trái
-      ministryItems.forEach((btn) => {
-        btn.addEventListener("click", function () {
-          ministryItems.forEach((i) => {
-            i.classList.remove(
-              "bg-white",
-              "text-slate-900",
-              "font-medium",
-              "shadow-sm",
-            );
-            i.classList.add("text-slate-500");
-          });
-          this.classList.add(
-            "bg-white",
-            "text-slate-900",
-            "font-medium",
-            "shadow-sm",
-          );
-          this.classList.remove("text-slate-500");
-
-          activeMinistryId = this.getAttribute("data-ministry");
-          applySectionFilter();
-        });
-      });
-
-      // Gắn sự kiện lắng nghe cho ô Tìm kiếm Box 2
-      document
-        .getElementById("search-unit-db")
-        .addEventListener("input", applySectionFilter);
-
-      // --- LOGIC QUAN TRỌNG: CHỨC NĂNG GHIM (PIN) CSDL ---
-      const pinnedContainer = document.getElementById("pinned-container");
-
-      // Sử dụng Event Delegation lắng nghe nút ghim ở danh sách gốc
-      document.addEventListener("click", function (e) {
-        const pinBtn = e.target.closest(".pin-btn");
-        if (!pinBtn) return;
-
-        const dbItem = pinBtn.closest(".db-item");
-        const dbId = dbItem.getAttribute("data-db-id");
-        const dbTitle = dbItem.querySelector(".db-text").textContent;
-
-        const existsInPinned = pinnedContainer.querySelector(
-          `[data-pinned-id="${dbId}"]`,
-        );
-
-        if (existsInPinned) {
-          // Trạng thái: Đã ghim -> Click để BỎ GHIM
-          existsInPinned.remove();
-          pinBtn.classList.remove("text-teal-600");
-          pinBtn.classList.add("text-slate-300");
-        } else {
-          // Trạng thái: Chưa ghim -> Click để THỰC HIỆN GHIM
-          const emptyMsg = pinnedContainer.querySelector(".empty-msg");
-          if (emptyMsg) emptyMsg.classList.add("hidden");
-
-          // Đổi màu icon đinh ghim gốc sang màu xanh hoạt động
-          pinBtn.classList.remove("text-slate-300");
-          pinBtn.classList.add("text-teal-600");
-
-          // Tạo cấu trúc thẻ ghim mới trên khu vực Đã ghim
-          const pinnedEl = document.createElement("div");
-          pinnedEl.setAttribute("data-pinned-id", dbId);
-          pinnedEl.className =
-            "flex items-center justify-between p-2 bg-white border border-teal-50 hover:shadow-sm rounded-lg text-xs text-slate-600 transition duration-150";
-          pinnedEl.innerHTML = `
-          <div class="flex items-center gap-3 min-w-0 flex-1">
-            <i class="fa-solid fa-thumbtack text-teal-600 transform rotate-45 text-[10px] flex-shrink-0"></i>
-            <span class="font-medium truncate text-slate-800">${dbTitle}</span>
-          </div>
-          <button class="unpin-action-btn p-1 text-teal-500 hover:text-red-500 transition ml-2" title="Bỏ ghim">
-            <i class="fa-solid fa-circle-xmark"></i>
-          </button>
-        `;
-          pinnedContainer.appendChild(pinnedEl);
-        }
-        checkEmptyPinnedState();
-      });
-
-      // Lắng nghe sự kiện gỡ ghim trực tiếp bằng nút X ở khu vực Đã ghim trên đầu
-      pinnedContainer.addEventListener("click", function (e) {
-        const unpinBtn = e.target.closest(".unpin-action-btn");
-        if (!unpinBtn) return;
-
-        const pinnedItem = unpinBtn.closest("[data-pinned-id]");
-        const dbId = pinnedItem.getAttribute("data-pinned-id");
-
-        // Tìm lại phần tử gốc bên dưới để trả lại màu xám mặc định
-        const originalDbItem = document.querySelector(`[data-db-id="${dbId}"]`);
-        if (originalDbItem) {
-          const originalPinBtn = originalDbItem.querySelector(".pin-btn");
-          originalPinBtn.classList.remove("text-teal-600");
-          originalPinBtn.classList.add("text-slate-300");
-        }
-
-        pinnedItem.remove();
-        checkEmptyPinnedState();
-      });
-
-      // Kiểm tra vùng ghim trống để hiển thị text thông báo phù hợp
-      function checkEmptyPinnedState() {
-        const items = pinnedContainer.querySelectorAll("[data-pinned-id]");
-        const emptyMsg = pinnedContainer.querySelector(".empty-msg");
-        if (items.length === 0) {
-          if (emptyMsg) emptyMsg.classList.remove("hidden");
-        } else {
-          if (emptyMsg) emptyMsg.classList.add("hidden");
-        }
-      }
-
-      // Chạy khởi tạo danh sách lần đầu tiên
-      applySectionFilter();
     </script>
   </body>
 </html>
