@@ -9,6 +9,15 @@ window.coreDataSource = [
         pl: true, tc: true, ht: true, dl: true, pm: true, attt: true
     },
     {
+        id: 11,
+        boNganh: "Bộ Công An",
+        chuQuan: "Trung tâm Dữ liệu quốc gia (C12)",
+        csdl: "Cơ sở dữ liệu quốc gia tổng hợp",
+        statusType: "passed", // Đã xây dựng
+        progress: 100,
+        pl: true, tc: true, ht: true, dl: true, pm: true, attt: true
+    },
+    {
         id: 2,
         boNganh: "Bộ Công An",
         chuQuan: "Cục Cảnh sát giao thông (C08)",
@@ -36,9 +45,27 @@ window.coreDataSource = [
         pl: true, tc: true, ht: true, dl: true, pm: true, attt: true
     },
     {
+        id: 41,
+        boNganh: "Bộ Tư Pháp",
+        chuQuan: "Cục Tư Pháp quốc gia",
+        csdl: "Cơ sở dữ liệu Tư pháp điện tử toàn quốc",
+        statusType: "processing",
+        progress: 80,
+        pl: true, tc: true, ht: true, dl: true, pm: true, attt: true
+    },
+    {
         id: 5,
         boNganh: "Bộ Tư Pháp",
         chuQuan: "Cục Đăng ký quốc gia giao dịch bảo đảm",
+        csdl: "Cơ sở dữ liệu Giao dịch bảo đảm",
+        statusType: "failed", // Chưa xây dựng
+        progress: 0,
+        pl: false, tc: false, ht: false, dl: false, pm: false, attt: false
+    },
+    {
+        id: 51,
+        boNganh: "Bộ Tư Pháp",
+        chuQuan: "Cục Đăng ký Tư pháp quốc gia",
         csdl: "Cơ sở dữ liệu Giao dịch bảo đảm",
         statusType: "failed", // Chưa xây dựng
         progress: 0,
@@ -60,6 +87,15 @@ window.coreDataSource = [
         csdl: "Hệ thống thông tin quốc gia về Đầu tư nước ngoài",
         statusType: "processing",
         progress: 45,
+        pl: true, tc: false, ht: true, dl: false, pm: false, attt: false
+    },
+    {
+        id: 7,
+        boNganh: "Bộ Kế hoạch & Đầu tư",
+        chuQuan: "Vụ Quản lý các khu đầu tư",
+        csdl: "CSDL về Đầu tư nước ngoài",
+        statusType: "failed",
+        progress: 0,
         pl: true, tc: false, ht: true, dl: false, pm: false, attt: false
     },
     {
@@ -90,6 +126,15 @@ window.coreDataSource = [
         pl: true, tc: true, ht: true, dl: true, pm: true, attt: true
     },
     {
+        id: 101,
+        boNganh: "Bộ Tài nguyên & Môi trường",
+        chuQuan: "CSDL Thông tin dữ liệu tài nguyên môi trường",
+        csdl: "Cơ sở dữ liệu Môi trường quốc gia",
+        statusType: "failed",
+        progress: 0,
+        pl: true, tc: true, ht: true, dl: true, pm: true, attt: true
+    },
+    {
         id: 11,
         boNganh: "Bộ Giáo dục & Đào tạo",
         chuQuan: "Cục Quản lý chất lượng",
@@ -97,6 +142,42 @@ window.coreDataSource = [
         statusType: "failed",
         progress: 0,
         pl: false, tc: false, ht: false, dl: false, pm: false, attt: false
+    },
+    {
+        id: 100,
+        boNganh: "Bộ Giáo dục & Đào tạo",
+        chuQuan: "Cục sách giáo khoa và thiết bị giáo dục",
+        csdl: "CSDL chứng chỉ thiết bị giáo dục quốc gia",
+        statusType: "passed",
+        progress: 100,
+        pl: true, tc: true, ht: true, dl: true, pm: true, attt: true
+    },
+    {
+        id: 101,
+        boNganh: "Bộ Giáo dục & Đào tạo",
+        chuQuan: "Cục sức khỏe học đường",
+        csdl: "CSDL sức khỏe học đường quốc gia",
+        statusType: "processing",
+        progress: 40,
+        pl: true, tc: true, ht: true, dl: true, pm: true, attt: true
+    },
+    {
+        id: 102,
+        boNganh: "Bộ Giáo dục & Đào tạo",
+        chuQuan: "Cục chứng chỉ và văn bằng quốc gia",
+        csdl: "CSDL chứng chỉ và văn bằng quốc gia",
+        statusType: "processing",
+        progress: 40,
+        pl: true, tc: true, ht: true, dl: true, pm: true, attt: true
+    },
+    {
+        id: 102,
+        boNganh: "Bộ Giáo dục & Đào tạo",
+        chuQuan: "Cục tài liệu học quốc gia",
+        csdl: "CSDL tài liệu học quốc gia",
+        statusType: "failed",
+        progress: 0,
+        pl: true, tc: true, ht: true, dl: true, pm: true, attt: true
     }
 ];
 

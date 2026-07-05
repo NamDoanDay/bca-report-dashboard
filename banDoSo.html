@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bản đồ số tiến độ triển khai cơ sở dữ liệu quốc gia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* ── SYSTEM & CONTAINER RESET ───────────────────────────── */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: #031525;
+        color: #e2f1ff;
+        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden; /* Khóa cuộn trang chính để dồn nội dung vào Scroll nội bộ */
+      }
+
+      h1 {
+        text-align: center;
+        color: #00e5ff;
+        text-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        font-size: 22px;
+        letter-spacing: 1px;
+        flex-shrink: 0;
+      }
+
+      /* ── DASHBOARD LAYOUT WINDOW FLEX ───────────────────────── */
+      .dashboard-container {
+        display: flex;
+        gap: 20px;
+        flex: 1;
+        height: calc(
+          100vh - 60px
+        ); /* Tự động tính toán khớp khít màn hình còn lại */
+        min-height: 660px;
+      }
+
+      /* ── SIDEBAR TIẾN ĐỘ 34 ĐỊA PHƯƠNG (TRÁI) ────────────────── */
+      .sidebar {
+        flex: 0 0 320px;
+        background: rgba(6, 38, 54, 0.8);
+        border: 1px solid #005975;
+        border-radius: 4px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      .sidebar h2 {
+        font-size: 16px;
+        color: #00e5ff;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+        flex-shrink: 0;
+      }
+
+      #province-list {
+        flex: 1;
+        overflow-y: auto; /* Kích hoạt scroll bar độc lập khi danh sách dài */
+        padding-right: 5px;
+      }
+
+      /* Tùy biến thanh cuộn chuẩn Cyberpunk */
+      #province-list::-webkit-scrollbar,
+      .info-panels::-webkit-scrollbar {
+        width: 5px;
+      }
+      #province-list::-webkit-scrollbar-thumb,
+      .info-panels::-webkit-scrollbar-thumb {
+        background: #005975;
+        border-radius: 4px;
+      }
+      #province-list::-webkit-scrollbar-thumb:hover,
+      .info-panels::-webkit-scrollbar-thumb:hover {
+        background: #00e5ff;
+      }
+
+      .province-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 12px;
+        margin-bottom: 6px;
+        background: rgba(16, 52, 84, 0.2);
+        border: 1px solid transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 13px;
+      }
+      .province-item:hover,
+      .province-item.active {
+        background: rgba(0, 229, 255, 0.1);
+        border-color: #00e5ff;
+        color: #fff;
+      }
+      .province-item .csdl-count {
+        font-weight: 600;
+      }
+      .province-item.updating .csdl-count {
+        color: #8ab4f8;
+        font-weight: normal;
+        font-size: 11px;
+      }
+      .province-item.done .csdl-count {
+        color: #00e5ff;
+      }
+
+      /* ── MAIN CONTENT (BẢN ĐỒ + THÔNG TIN CHI TIẾT) ────────── */
+      .main-content {
+        flex: 2;
+        background: rgba(6, 38, 54, 0.8);
+        border: 1px solid #005975;
+        border-radius: 4px;
+        padding: 20px;
+        display: flex;
+        position: relative;
+        height: 100%;
+        min-height: 660px;
+        gap: 20px;
+      }
+
+      .main-content h2 {
+        position: absolute;
+        top: 15px;
+        left: 20px;
+        font-size: 16px;
+        color: #00e5ff;
+        margin: 0;
+        text-transform: uppercase;
+      }
+
+      /* Vùng chứa bản đồ */
+      .map-container {
+        flex: 1.2;
+        margin-top: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: calc(100% - 40px);
+      }
+
+      #map-container {
+        width: 100%;
+        height: 100%;
+      }
+      #map-container svg {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Thao tác hover đường dẫn SVG */
+      .province,
+      path[id^="VN"] {
+        fill: #103454;
+        stroke: #031525;
+        stroke-width: 1;
+        cursor: pointer;
+        transition:
+          fill 0.2s ease,
+          filter 0.2s ease;
+      }
+      .province:hover,
+      path[id^="VN"]:hover,
+      .selected-map {
+        fill: #00e5ff !important;
+        filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.6));
+      }
+
+      /* Mã phân cấp dải màu bản đồ */
+      .active-1 {
+        fill: #133a5c;
+      }
+      .active-2 {
+        fill: #105285;
+      }
+      .active-3 {
+        fill: #146ba3;
+      }
+      .active-4 {
+        fill: #0294df;
+      }
+      .active-5 {
+        fill: #00e5ff;
+      }
+
+      /* Hộp thông tin chi tiết (Chi tiết trạng thái + Tiêu chí chuyên sâu) */
+      .info-panels {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 40px;
+        height: calc(100% - 40px);
+        overflow-y: auto; /* Tạo cuộn khi nội dung bảng thông tin vượt khung */
+        padding-right: 5px;
+      }
+
+      .info-box {
+        background: rgba(3, 27, 38, 0.9);
+        border: 1px solid #00e5ff;
+        box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+        border-radius: 4px;
+        padding: 15px;
+        flex-shrink: 0;
+      }
+
+      .info-box h3 {
+        margin-top: 0;
+        font-size: 13px;
+        color: #fff;
+        border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+        padding-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* Grid trạng thái chi tiết */
+      .status-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .status-tag {
+        padding: 8px 10px;
+        border-radius: 3px;
+        font-size: 11.5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 500;
+      }
+      .st-khai-thac {
+        background: rgba(40, 167, 69, 0.12);
+        border: 1px solid rgba(40, 167, 69, 0.3);
+        color: #2ebf53;
+      }
+      .st-xaydung {
+        background: rgba(255, 193, 7, 0.12);
+        border: 1px solid rgba(255, 193, 7, 0.3);
+        color: #ffd014;
+      }
+      .st-chua-dung {
+        background: rgba(220, 53, 69, 0.12);
+        border: 1px solid rgba(220, 53, 69, 0.3);
+        color: #e43b4c;
+      }
+      .st-chua-tk {
+        background: rgba(108, 117, 125, 0.15);
+        border: 1px solid rgba(108, 117, 125, 0.3);
+        color: #ced4da;
+      }
+      .status-tag strong {
+        font-size: 13px;
+      }
+
+      /* List tiêu chí */
+      .criteria-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 10px;
+      }
+      .criteria-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 8px;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 3px;
+        font-size: 12px;
+      }
+      .crit-done {
+        color: #00ffcc;
+        font-weight: 500;
+      }
+      .crit-doing {
+        color: #ffcc00;
+        font-weight: 500;
+      }
+      .crit-not {
+        color: #ff5252;
+        font-weight: 500;
+      }
+
+      /* Giao diện Tooltip chuột */
+      .province-tooltip {
+        position: fixed;
+        padding: 8px 12px;
+        background: rgba(3, 27, 38, 0.95);
+        border: 1px solid #00e5ff;
+        box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+        color: #fff;
+        border-radius: 4px;
+        font-size: 12px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.1s ease;
+        z-index: 9999;
+      }
+      .province-tooltip.show {
+        opacity: 1;
+      }
+      .province-tooltip strong {
+        color: #00e5ff;
+        display: block;
+        margin-bottom: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <header
+      id="appHeader"
+      class="sticky top-0 z-50 bg-black-50 pt-1 flex justify-between items-center shrink-0"
+    >
+      <div class="flex items-end gap-0 bg-black-100 rounded-tr-xl">
+        <a
+          href="./index.html"
+          class="group flex items-center gap-2 px-5 py-2.5 text-sm font-medium hover:bg-white rounded-t-xl"
+        >
+          <i
+            class="group-hover:text-blue-500 fa-solid fa-chart-simple text-base text-blue-500"
+          ></i>
+          <span class="group-hover:text-blue-500">Thống kê báo cáo</span>
+        </a>
+        <a
+          href="./banDoSo.html"
+          class="relative z-10 flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-blue-500 bg-white border border-gray-200 border-b-transparent rounded-t-2xl shadow-[0_-4px_12px_-4px_rgba(0,0,0,0.05)] transition-all duration-150"
+        >
+          <i class="group-hover:text-blue-500 fa-solid fa-folder text-base"></i>
+          <span class="group-hover:text-blue-500">Bản đồ số</span>
+        </a>
+        <a
+          href="./hientrang.html"
+          class="group flex items-center gap-2 px-5 py-2.5 text-sm font-medium hover:bg-white rounded-t-xl"
+        >
+          <i class="text-blue-500 fa-solid fa-folder text-base"></i>
+          <span class="text-blue-500">Chi tiết hiện trạng</span>
+        </a>
+      </div>
+      <div class="flex items-center justify-between sm:justify-end gap-6 pr-8">
+        <div class="flex items-center gap-1">
+          <span class="text-xs font-medium text-gray-500">Dark mode</span>
+          <div
+            class="w-10 h-5 bg-gray-200 rounded-full p-0.5 cursor-pointer neu-inset relative"
+          >
+            <div
+              class="w-4 h-4 bg-white rounded-full shadow-md transform translate-x-0 transition duration-200"
+            ></div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button
+            class="w-9 h-9 rounded-full flex items-center justify-center text-gray-500 neu-flat hover:text-gray-700 relative"
+          >
+            <i class="fa-solid fa-bell"></i>
+            <span
+              class="absolute top-1 right-1 w-2 h-2 bg-red-400 rounded-full"
+            ></span>
+          </button>
+          <button
+            class="w-9 h-9 rounded-full flex items-center justify-center text-gray-500 neu-flat hover:text-gray-700 relative"
+          >
+            <i class="fa-solid fa-gear w-5"></i>
+          </button>
+          <button
+            class="w-9 h-9 rounded-full overflow-hidden neu-flat flex items-center justify-center hover:text-gray-700 relative"
+          >
+            <i class="fa-solid fa-user"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="p-6">
+      <h1>Bản đồ số tiến độ triển khai cơ sở dữ liệu quốc gia</h1>
+
+      <div class="dashboard-container">
+        <div class="sidebar">
+          <h2>Tiến độ 34 Địa phương</h2>
+          <div id="province-list"></div>
+        </div>
+
+        <div class="main-content">
+          <div class="map-container">
+            <div id="map-container"></div>
+          </div>
+
+          <div class="info-panels">
+            <div class="info-box">
+              <h3 id="box-title-status">Trạng thái chi tiết - Đà Nẵng</h3>
+              <div class="status-grid">
+                <div class="status-tag st-khai-thac">
+                  <span>✔ Đã khai thác:</span>
+                  <strong id="st-khai-thac-val">8</strong>
+                </div>
+                <div class="status-tag st-xaydung">
+                  <span>⚙ Đang xây dựng:</span>
+                  <strong id="st-xaydung-val">3</strong>
+                </div>
+                <div class="status-tag st-chua-dung">
+                  <span>⏸ Chưa sử dụng:</span>
+                  <strong id="st-chua-dung-val">1</strong>
+                </div>
+                <div class="status-tag st-chua-tk">
+                  <span>🔒 Chưa triển khai:</span>
+                  <strong id="st-chua-tk-val">3</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-box">
+              <h3 id="box-title-evaluation">
+                Đánh giá 8 tiêu chí chuyên sâu - Đà Nẵng
+              </h3>
+              <ul class="criteria-list">
+                <li class="criteria-item">
+                  1. Pháp lý
+                  <span class="crit-done" id="c1">● Đã hoàn thiện</span>
+                </li>
+                <li class="criteria-item">
+                  2. Tài chính
+                  <span class="crit-doing" id="c2">● Đang hoàn thiện</span>
+                </li>
+                <li class="criteria-item">
+                  3. Hạ tầng
+                  <span class="crit-not" id="c3">● Chưa hoàn thiện</span>
+                </li>
+                <li class="criteria-item">
+                  4. Dữ liệu
+                  <span class="crit-done" id="c4">● Đã hoàn thiện</span>
+                </li>
+                <li class="criteria-item">
+                  5. Phần mềm
+                  <span class="crit-doing" id="c5">● Đang hoàn thiện</span>
+                </li>
+                <li class="criteria-item">
+                  6. An ninh an toàn
+                  <span class="crit-not" id="c6">● Chưa hoàn thiện</span>
+                </li>
+                <li class="criteria-item">
+                  7. Ứng dụng kết nối chia sẻ
+                  <span class="crit-done" id="c7">● Đã hoàn thiện</span>
+                </li>
+                <li class="criteria-item">
+                  8. Thủ tục hành chính
+                  <span class="crit-done" id="c8">● Đã hoàn thiện</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="province-tooltip" class="province-tooltip" role="tooltip"></div>
+    </main>
+
+    <script>
+      // Database cấu trúc mẫu tương ứng với giao diện hình ảnh của bạn
+      const PROVINCES_DATA = {
+        "Hà Nội": {
+          max: 15,
+          current: 12,
+          kt: 8,
+          xd: 3,
+          cd: 1,
+          ctk: 3,
+          criteria: [1, 1, 2, 1, 2, 3, 1, 1],
+        },
+        "Hải Phòng": {
+          max: 15,
+          current: 11,
+          kt: 7,
+          xd: 2,
+          cd: 1,
+          ctk: 5,
+          criteria: [1, 2, 2, 1, 2, 3, 2, 1],
+        },
+        Huế: {
+          max: 15,
+          current: 10,
+          kt: 6,
+          xd: 2,
+          cd: 1,
+          ctk: 6,
+          criteria: [1, 2, 3, 2, 2, 3, 1, 1],
+        },
+        "Đà Nẵng": {
+          max: 15,
+          current: 12,
+          kt: 8,
+          xd: 3,
+          cd: 1,
+          ctk: 3,
+          criteria: [1, 2, 3, 1, 2, 3, 1, 1],
+        },
+        "Cần Thơ": {
+          max: 15,
+          current: 11,
+          kt: 7,
+          xd: 2,
+          cd: 1,
+          ctk: 5,
+          criteria: [1, 1, 3, 1, 2, 3, 2, 1],
+        },
+        "Quảng Ninh": {
+          max: 15,
+          current: 14,
+          kt: 10,
+          xd: 2,
+          cd: 1,
+          ctk: 2,
+          criteria: [1, 2, 2, 1, 2, 3, 1, 1],
+        },
+        "TP. Hồ Chí Minh": {
+          max: 15,
+          current: 14,
+          kt: 9,
+          xd: 3,
+          cd: 1,
+          ctk: 2,
+          criteria: [1, 1, 1, 1, 2, 2, 1, 1],
+        },
+        "Cao Bằng": {
+          max: 15,
+          current: null,
+          kt: 0,
+          xd: 0,
+          cd: 0,
+          ctk: 15,
+          criteria: [3, 3, 3, 3, 3, 3, 3, 3],
+        },
+        "Lạng Sơn": {
+          max: 15,
+          current: null,
+          kt: 0,
+          xd: 0,
+          cd: 0,
+          ctk: 15,
+          criteria: [3, 3, 3, 3, 3, 3, 3, 3],
+        },
+        "Nghệ An": {
+          max: 15,
+          current: null,
+          kt: 0,
+          xd: 0,
+          cd: 0,
+          ctk: 15,
+          criteria: [3, 3, 3, 3, 3, 3, 3, 3],
+        },
+        "Tuyên Quang": {
+          max: 15,
+          current: null,
+          kt: 0,
+          xd: 0,
+          cd: 0,
+          ctk: 15,
+          criteria: [3, 3, 3, 3, 3, 3, 3, 3],
+        },
+        "Lào Cai": {
+          max: 15,
+          current: null,
+          kt: 0,
+          xd: 0,
+          cd: 0,
+          ctk: 15,
+          criteria: [3, 3, 3, 3, 3, 3, 3, 3],
+        },
+        "Thái Nguyên": {
+          max: 15,
+          current: null,
+          kt: 0,
+          xd: 0,
+          cd: 0,
+          ctk: 15,
+          criteria: [3, 3, 3, 3, 3, 3, 3, 3],
+        },
+        "Phú Thọ": {
+          max: 15,
+          current: null,
+          kt: 0,
+          xd: 0,
+          cd: 0,
+          ctk: 15,
+          criteria: [3, 3, 3, 3, 3, 3, 3, 3],
+        },
+        "Bắc Ninh": {
+          max: 15,
+          current: null,
+          kt: 0,
+          xd: 0,
+          cd: 0,
+          ctk: 15,
+          criteria: [3, 3, 3, 3, 3, 3, 3, 3],
+        },
+        "Hưng Yên": {
+          max: 15,
+          current: null,
+          kt: 0,
+          xd: 0,
+          cd: 0,
+          ctk: 15,
+          criteria: [3, 3, 3, 3, 3, 3, 3, 3],
+        },
+        "Ninh Bình": {
+          max: 15,
+          current: null,
+          kt: 0,
+          xd: 0,
+          cd: 0,
+          ctk: 15,
+          criteria: [3, 3, 3, 3, 3, 3, 3, 3],
+        },
+        "Thanh Hóa": {
+          max: 15,
+          current: null,
+          kt: 0,
+          xd: 0,
+          cd: 0,
+          ctk: 15,
+          criteria: [3, 3, 3, 3, 3, 3, 3, 3],
+        },
+        "Hà Tĩnh": {
+          max: 15,
+          current: null,
+          kt: 0,
+          xd: 0,
+          cd: 0,
+          ctk: 15,
+          criteria: [3, 3, 3, 3, 3, 3, 3, 3],
+        },
+      };
+
+      // Dictionary chuyển đổi ngược SimpleMaps Key
+      const MAP_MAPPING = {
+        "VN-HN": "Hà Nội",
+        "VN-HP": "Hải Phòng",
+        "VN-TT": "Huế",
+        "VN-DN": "Đà Nẵng",
+        "VN-CT": "Cần Thơ",
+        "VN-QN": "Quảng Ninh",
+        "VN-SG": "TP. Hồ Chí Minh",
+        "VN-CB": "Cao Bằng",
+        "VN-LS": "Lạng Sơn",
+        "VN-NA": "Nghệ An",
+        "VN-TQ": "Tuyên Quang",
+        "VN-LC": "Lào Cai",
+        "VN-TN": "Thái Nguyên",
+        "VN-PT": "Phú Thọ",
+        "VN-BN": "Bắc Ninh",
+        "VN-HY": "Hưng Yên",
+        "VN-NB": "Ninh Bình",
+        "VN-TH": "Thanh Hóa",
+        "VN-HT": "Hà Tĩnh",
+      };
+
+      const CRIT_CONFIG = {
+        1: { text: "● Đã hoàn thiện", cls: "crit-done" },
+        2: { text: "● Đang hoàn thiện", cls: "crit-doing" },
+        3: { text: "● Chưa hoàn thiện", cls: "crit-not" },
+      };
+
+      let activeProvinceName = "Đà Nẵng"; // Tỉnh mặc định chọn
+
+      // 1. Render dữ liệu cho Sidebar
+      function initSidebar() {
+        const container = document.getElementById("province-list");
+        container.innerHTML = "";
+
+        Object.keys(PROVINCES_DATA).forEach((name) => {
+          const item = PROVINCES_DATA[name];
+          const row = document.createElement("div");
+          row.classList.add("province-item");
+          if (name === activeProvinceName) row.classList.add("active");
+
+          if (item.current === null) {
+            row.classList.add("updating");
+            row.innerHTML = `<span>${name}</span><span class="csdl-count">🔄 Đang cập nhật CSDL</span>`;
+          } else {
+            row.classList.add("done");
+            row.innerHTML = `<span>${name}</span><span class="csdl-count">⚪ ${item.current}/${item.max} CSDL</span>`;
+          }
+
+          row.addEventListener("click", () => switchProvince(name));
+          container.appendChild(row);
+        });
+      }
+
+      // 2. Cập nhật dữ liệu bảng thông tin chi tiết
+      function renderInfoBoxes(name) {
+        const data = PROVINCES_DATA[name];
+        if (!data) return;
+
+        document.getElementById("box-title-status").textContent =
+          `Trạng thái chi tiết - ${name} (${data.current !== null ? data.current + "/" + data.max + " CSDL" : "Đang cập nhật"})`;
+        document.getElementById("box-title-evaluation").textContent =
+          `Đánh giá 8 tiêu chí chuyên sâu - ${name}`;
+
+        document.getElementById("st-khai-thac-val").textContent = data.kt;
+        document.getElementById("st-xaydung-val").textContent = data.xd;
+        document.getElementById("st-chua-dung-val").textContent = data.cd;
+        document.getElementById("st-chua-tk-val").textContent = data.ctk;
+
+        data.criteria.forEach((val, i) => {
+          const node = document.getElementById(`c${i + 1}`);
+          if (node) {
+            node.textContent = CRIT_CONFIG[val].text;
+            node.className = CRIT_CONFIG[val].cls;
+          }
+        });
+      }
+
+      // Helper trích xuất tên địa phương từ thẻ SVG
+      function getProvinceNameFromPath(pathElement) {
+        if (pathElement.dataset && pathElement.dataset.province) {
+          return pathElement.dataset.province;
+        }
+        return MAP_MAPPING[pathElement.id] || null;
+      }
+
+      // 3. Đổ màu lớp bản đồ SVG dựa trên phần trăm tiến độ
+      function applyMapColorizing() {
+        document.querySelectorAll("#map-container path").forEach((path) => {
+          const name = getProvinceNameFromPath(path);
+          path.classList.remove(
+            "active-1",
+            "active-2",
+            "active-3",
+            "active-4",
+            "active-5",
+            "selected-map",
+          );
+
+          if (name) {
+            if (name === activeProvinceName) path.classList.add("selected-map");
+            const item = PROVINCES_DATA[name];
+            if (item && item.current !== null) {
+              const ratio = item.current / item.max;
+              if (ratio >= 0.9) path.classList.add("active-5");
+              else if (ratio >= 0.75) path.classList.add("active-4");
+              else if (ratio >= 0.6) path.classList.add("active-3");
+              else path.classList.add("active-2");
+            } else {
+              path.classList.add("active-1");
+            }
+          }
+        });
+      }
+
+      // 4. Hàm điều khiển trung tâm khi chuyển đổi địa phương
+      function switchProvince(name) {
+        activeProvinceName = name;
+
+        // Đổi Class Active ở Sidebar
+        document.querySelectorAll(".province-item").forEach((el) => {
+          if (el.querySelector("span").textContent === name)
+            el.classList.add("active");
+          else el.classList.remove("active");
+        });
+
+        renderInfoBoxes(name);
+        applyMapColorizing();
+      }
+
+      // 5. Cài đặt các Event Tooltip tương tác trực tiếp trên Map
+      const tooltip = document.getElementById("province-tooltip");
+
+      function bindMapEvents() {
+        document.querySelectorAll("#map-container path").forEach((path) => {
+          const name = getProvinceNameFromPath(path);
+          if (!name) return;
+
+          path.addEventListener("mouseenter", () => {
+            const item = PROVINCES_DATA[name];
+            const infoStr =
+              item && item.current !== null
+                ? `Tiến độ: ${item.current}/${item.max} CSDL`
+                : "Đang cập nhật CSDL";
+            tooltip.innerHTML = `<strong>${name}</strong><span>${infoStr}</span>`;
+            tooltip.classList.add("show");
+          });
+
+          path.addEventListener("mousemove", (e) => {
+            tooltip.style.left = e.clientX + 15 + "px";
+            tooltip.style.top = e.clientY - 15 + "px";
+          });
+
+          path.addEventListener("mouseleave", () =>
+            tooltip.classList.remove("show"),
+          );
+          path.addEventListener("click", () => switchProvince(name));
+        });
+      }
+
+      // ── VÒNG ĐỜI KÍCH HOẠT CHÍNH ──────────────────────────────
+      document.addEventListener("DOMContentLoaded", function () {
+        // Đọc file bản đồ thực tế từ vị trí thư mục hiện hành của bạn
+        fetch("./vnMap.html")
+          .then((response) => {
+            if (!response.ok)
+              throw new Error("Không thể tải tập tin vnMap.html");
+            return response.text();
+          })
+          .then((htmlContent) => {
+            document.getElementById("map-container").innerHTML = htmlContent;
+
+            // Kích hoạt đồng bộ ứng dụng
+            initSidebar();
+            renderInfoBoxes(activeProvinceName);
+            applyMapColorizing();
+            bindMapEvents();
+          })
+          .catch((err) => {
+            console.error(err);
+            // Cơ chế fallback: Nếu chưa có file vnMap.html thì vẽ mock tạm thời để không lỗi giao diện
+            document.getElementById("map-container").innerHTML = `
+            <svg viewBox="0 0 100 100" style="width:100%;height:100%;"><text x="10" y="50" fill="#ff5252">Vui lòng kiểm tra file ./vnMap.html</text></svg>
+          `;
+          });
+      });
+    </script>
+  </body>
+</html>
