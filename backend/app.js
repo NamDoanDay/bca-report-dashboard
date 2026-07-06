@@ -23,6 +23,8 @@ app.use(express.json());
 // Khai báo định tuyến (Routes)
 app.use('/api', reportRoutes);
 
+// app.use(express.static(path.join(__dirname, '../frontend')));
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Backend đang chạy tại: http://localhost:${PORT}`);
