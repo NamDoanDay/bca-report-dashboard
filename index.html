@@ -1137,6 +1137,44 @@
       </main>
     </div>
 
+    <script>
+      // Biến toàn cục lưu trữ data nhận từ API
+      let globalReportData = null;
+
+      // Hàm gọi API để lấy dữ liệu từ Backend
+      async function loadReportData() {
+        try {
+          const response = await fetch("http://localhost:3000/api/reports");
+          if (!response.ok) {
+            throw new Error(`Lỗi tải dữ liệu: ${response.status}`);
+          }
+
+          // Nhận dữ liệu JSON chuẩn cấu trúc từ Backend
+          globalReportData = await response.json();
+
+          console.log(
+            "Dữ liệu đã kết nối thành công từ Backend:",
+            globalReportData,
+          );
+
+          // Gọi các hàm khởi tạo giao diện của bạn tại đây
+          initTongQuanDashboard(globalReportData);
+        } catch (error) {
+          console.error("Không thể kết nối đến API Backend:", error);
+          alert("Hệ thống mất kết nối dữ liệu nền, vui lòng kiểm tra Backend!");
+        }
+      }
+
+      // Hàm khởi chạy khi trang web được load xong
+      document.addEventListener("DOMContentLoaded", () => {
+        loadReportData();
+      });
+
+      function initTongQuanDashboard(data) {
+        // Đưa dữ liệu vào vẽ biểu đồ BarChart, đổ dữ liệu vào Table...
+        // Code xử lý cũ của handleChiTietBoNganhTable.js hay handleChiTietBoNganhBarChart.js giữ nguyên logic chạy
+      }
+    </script>
     <script src="./js/tongQuan/handleTongQuan.js"></script>
     <script src="./js/tongQuan/handleTieuChi.js"></script>
     <script src="./js/tongQuan/handleChiTietBoNganhBarChart.js"></script>
