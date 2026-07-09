@@ -1,0 +1,38 @@
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: bca_mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456  # <-- Đặt mật khẩu DB của bạn ở đây
+      MYSQL_DATABASE: bca_baocao_thongke_csdl                 # <-- Đặt tên Database của bạn ở đây
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+    build: ./backend
+    container_name: bca_backend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=mysql-db                             # <-- Giữ nguyên (Docker tự kết nối nội bộ)
+      - DB_USER=root
+      - DB_PASSWORD=123456         # <-- Khớp với mật khẩu phía trên
+      - DB_NAME=bca_baocao_thongke_csdl                        # <-- Khớp với tên DB phía trên
+    depends_on:
+      - mysql-db
+
+  frontend:
+    build: ./frontend
+    container_name: bca_frontend
+    restart: always
+    ports:
+      - "80:80"                                      # <-- Mở cổng 80 để truy cập trực tiếp bằng IP
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:

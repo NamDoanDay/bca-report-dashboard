@@ -201,7 +201,21 @@ function renderCriteriaDashboard() {
           </div>
 
           <div class="col-span-12 lg:col-span-6 hidden space-y-2.5 transition-all duration-300 overflow-y-auto max-h-[250px] pr-1" id="criteria-panel-${safeName}">
-            ${listItems
+            <div class="w-full flex flex-wrap items-center gap-2">
+                  <div class="relative w-72">
+                    <i
+                      class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"
+                    ></i>
+                    <input
+                      id="donViCSDLSearchInput"
+                      type="text"
+                      placeholder="Tìm theo tiêu chí..."
+                      oninput="onTableStateChange()"
+                      class="w-full pl-9 pr-3 py-2 rounded-md border border-slate-200 bg-slate-50/50 placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-400 focus-visible:bg-white transition-all text-xs font-medium"
+                    />
+                  </div>
+                </div>  
+          ${listItems
                 .map((item) => {
                     const per = Math.round((item.passed / TOTAL_CSDL) * 100);
                     return `

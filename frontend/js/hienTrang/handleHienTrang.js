@@ -17,17 +17,18 @@ const databaseStateData = [
                                 id: 1, date: "20/02/2026", displayDate: "20/02", title: "Tổng kết chiến dịch làm sạch dữ liệu dân cư 1",
                                 highlights: [
                                     { criteria: "Dữ liệu Đúng - Đủ - Sạch - Sống", stats: "98.231.405 (99%)", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },
-                                    { criteria: "Đáp ứng ATTT", stats: "98.231.405 (99%)", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },
-                                    { criteria: "Đã đồng bộ về TTDLQG", stats: "98.231.405 (99%)", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },
-                                    { criteria: "Đồng bộ dữ liệu", stats: "98.231.405 bản ghi", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },
-                                    { criteria: "Hạ tầng đặt tại TTDLQG", stats: "98.231.405 (99%)", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },
-                                    { criteria: "Đã ban hành Khung", stats: "98.231.405 (99%)", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },
-                                    { criteria: "Các tiêu chí nổi bật khác", stats: "98.231.405 (99%)", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },
+                                    { criteria: "Dữ liệu được làm giàu, làm sạch", stats: "64.773.915/102.930.183 thửa đất, đạt 63%", icon: "fa-check", desc: "Nhóm 1 “đúng-đủ-sạch-sống” là 27.032.683 thửa đất, chiếm tỷ lệ 42%.Nhóm 2 làm đúng, làm đủ, bổ sung và xác thực thông tin của người sử dụng đất, chủ sở hữu tài sản gắn liền với đất 37.295.914 thửa đất, chiếm tỷ lệ 58%." },
+                                    { criteria: "Vv ban hành Khung", stats: "QĐ số 1805/QĐ-BNNMT, 5445/QĐ-BNNMT", icon: "fa-check", desc: "Khung kiến trúc dữ liệu, Khung quản trị, quản lý dữ liệu và Từ điển dữ liệu" },
+                                    { criteria: "Đã đồng bộ về TTDLQG", stats: "7,954,978 / 15,904,164 bản ghi", icon: "fa-check", desc: "thông tin đăng ký kết hôn của người chồng không có thông tin định danh (Số CCCD, Hộ chiếu,..), tỷ lệ 50,01%. 7,775,226/15,904,164 bản ghi thông tin đăng ký kết hôn về người vợ không có thông tin định danh (Số CCCD, Hộ chiếu,..), tỷ lệ 48,89%. 543/15,904,164 bản ghi thông tin đăng ký kết hôn không có giấy chứng nhận, tỷ lệ 0,0034%." },
+                                    { criteria: "Đồng bộ dữ liệu", stats: "Đồng bộ 909.713 lô dữ liệu từ CSDL Tổng hợp", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },
+                                    { criteria: "Hạ tầng đặt tại TTDLQG", stats: "Quyết định số 1323/QĐ-BTC ngày 29/5/2026 của Bộ trưởng Bộ Tài chính", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },
+                                    { criteria: "Đã ban hành Khung", stats: "49,659,996", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },
+                                    { criteria: "Các tiêu chí nổi bật khác", stats: "12,130,527", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },
 
                                 ],
                                 summary: "Về cơ bản, điều kiện “cần” về dữ liệu và hệ thống đã được hình thành; CSDL có quy mô đủ lớn, có thể sử dụng liên thông chia sẻ dữ liệu, thay thế các loại giấy tờ thủ công, giúp cắt giảm các thủ tục hành chính. Mặt khác, tuy đã có hệ thống VNLIS tập trung tại Trung ương, tuy nhiên việc tồn tại nhiều hệ thống vận hành song song tại địa phương (như VBDLIS, VNPT-iLIS,.. đã đầu tư tư trước) đang làm phân tán công cụ điều hành, hạn chế khả năng quản lý tập trung, thống nhất ở tầm quốc gia, đòi hỏi phải có kết luận chỉ đạo dứt điểm về mô hình và nền tảng vận hành thống nhất."
                             }, {
-                                id: 2, date: "20/04/2026", displayDate: "20/02", title: "Tổng kết chiến dịch làm sạch dữ liệu dân cư 2",
+                                id: 2, date: "20/04/2026", displayDate: "20/04", title: "Tổng kết chiến dịch làm sạch dữ liệu dân cư 2",
                                 highlights: [
                                     { criteria: "Đúng - Đủ - Sạch - Sống", stats: "98.231.405 (99%)", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },
                                     { criteria: "Thống nhất dùng chung", stats: "98.231.405 (99%)", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },
@@ -36,7 +37,7 @@ const databaseStateData = [
                                 summary: "Về cơ bản, điều kiện “cần” về dữ liệu và hệ thống đã được hình thành; CSDL có quy mô đủ lớn, có thể sử dụng liên thông chia sẻ dữ liệu, thay thế các loại giấy tờ thủ công, giúp cắt giảm các thủ tục hành chính. Mặt khác, tuy đã có hệ thống VNLIS tập trung tại Trung ương, tuy nhiên việc tồn tại nhiều hệ thống vận hành song song tại địa phương (như VBDLIS, VNPT-iLIS,.. đã đầu tư tư trước) đang làm phân tán công cụ điều hành, hạn chế khả năng quản lý tập trung, thống nhất ở tầm quốc gia, đòi hỏi phải có kết luận chỉ đạo dứt điểm về mô hình và nền tảng vận hành thống nhất."
                             },
                             {
-                                id: 3, date: "20/05/2026", displayDate: "20/02", title: "Tổng kết chiến dịch làm sạch dữ liệu dân cư 3",
+                                id: 3, date: "20/05/2026", displayDate: "20/05", title: "Tổng kết chiến dịch làm sạch dữ liệu dân cư 3",
                                 highlights: [
                                     { criteria: "Đúng - Đủ - Sạch - Sống", stats: "98.231.405 (99%)", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },
                                     { criteria: "Đã đồng bộ về TTDLQG", stats: "98.231.405 (99%)", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },
@@ -44,7 +45,7 @@ const databaseStateData = [
                                 ],
                                 summary: "Về cơ bản, điều kiện “cần” về dữ liệu và hệ thống đã được hình thành; CSDL có quy mô đủ lớn, có thể sử dụng liên thông chia sẻ dữ liệu, thay thế các loại giấy tờ thủ công, giúp cắt giảm các thủ tục hành chính. Mặt khác, tuy đã có hệ thống VNLIS tập trung tại Trung ương, tuy nhiên việc tồn tại nhiều hệ thống vận hành song song tại địa phương (như VBDLIS, VNPT-iLIS,.. đã đầu tư tư trước) đang làm phân tán công cụ điều hành, hạn chế khả năng quản lý tập trung, thống nhất ở tầm quốc gia, đòi hỏi phải có kết luận chỉ đạo dứt điểm về mô hình và nền tảng vận hành thống nhất."
                             }, {
-                                id: 4, date: "20/06/2026", displayDate: "20/02", title: "Tổng kết chiến dịch làm sạch dữ liệu dân cư 4",
+                                id: 4, date: "20/06/2026", displayDate: "20/06", title: "Tổng kết chiến dịch làm sạch dữ liệu dân cư 4",
                                 highlights: [
                                     { criteria: "Đúng - Đủ - Sạch - Sống", stats: "98.231.405 (99%)", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },
                                     { criteria: "Đúng - Đủ - Sạch - Sống", stats: "98.231.405 (99%)", icon: "fa-check", desc: "Dữ liệu thông tin công dân toàn quốc đảm bảo chính xác theo thời gian thực." },

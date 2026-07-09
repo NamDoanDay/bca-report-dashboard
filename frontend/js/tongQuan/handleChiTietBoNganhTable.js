@@ -49,7 +49,11 @@ window.tableState = {
         chuQuan: false,
         tieuChiCon: false,
         danhGiaChung: false
-    }
+    },
+    // ---- BỔ SUNG 3 THUỘC TÍNH NÀY ----
+    useProgressSlider: false,
+    sliderMin: 0,
+    sliderMax: 100
 };
 
 let _internalCoreData = window.coreDataSource || [];
@@ -92,6 +96,20 @@ window.renderTableEngine = function () {
     if (window.tableState.statusFilter !== "all") {
         filteredData = filteredData.filter(d => d.statusType === window.tableState.statusFilter);
     }
+
+    // ======= CHÈN THÊM LOGIC BỘ LỌC SLIDER VÀO ĐÂY =======
+    if (window.tableState.useProgressSlider) {
+        filteredData = filteredData.filter(d => {
+            // Chuẩn hóa tiến độ về số (Nếu là chuỗi hoặc rỗng thì quy về 0, "passed" quy về 100)
+            let currentProgress = 0;
+            if (d.statusType === "passed") currentProgress = 100;
+            else if (d.statusType === "failed") currentProgress = 0;
+            else currentProgress = parseInt(d.progress, 10) || 0;
+
+            return currentProgress >= window.tableState.sliderMin && currentProgress <= window.tableState.sliderMax;
+        });
+    }
+    // =====================================================
 
     filteredData.sort((a, b) => {
         return window.tableState.sortDirection === "asc" ? (a.progress || 0) - (b.progress || 0) : (b.progress || 0) - (a.progress || 0);
@@ -197,6 +215,8 @@ window.renderTableEngine = function () {
     if (counterRows) {
         counterRows.textContent = `Hiển thị từ ${startIndex + 1} đến ${endIndex} trên tổng số ${totalRows} hệ thống CSDL được lọc.`;
     }
+
+    window.updatePaginationUI(totalRows);
 };
 window.toggleProgressSort = function () {
     window.tableState.sortDirection = window.tableState.sortDirection === "desc" ? "asc" : "desc";
@@ -373,6 +393,28 @@ window.openShadcnDialog = function (rowId) {
     modal.classList.remove("hidden");
 };
 
+/**
+ * Mở Sidebar bằng cách xóa class hidden, thêm class flex
+ */
+window.openLegalLeftSidebar = function () {
+    const sidebar = document.getElementById("legalLeftSidebar");
+    if (sidebar) {
+        sidebar.classList.remove("hidden");
+        sidebar.classList.add("flex");
+    }
+};
+
+/**
+ * Đóng Sidebar bằng cách xóa class flex, thêm lại class hidden
+ */
+window.closeLegalLeftSidebar = function () {
+    const sidebar = document.getElementById("legalLeftSidebar");
+    if (sidebar) {
+        sidebar.classList.remove("flex");
+        sidebar.classList.add("hidden");
+    }
+};
+
 // ==========================================
 // HÀM XỬ LÝ QUẢN LÝ POPUP PHỤ TIÊU CHÍ CHI TIẾT
 // ==========================================
@@ -414,9 +456,12 @@ window.openSubPopup = function (criteriaKey, isPassed, iconClass) {
     `).join("");
 
     const subItemsHtml = subList.map(sub => `
-        <div class="p-3 border border-slate-100 rounded-xl bg-slate-50/50 hover:bg-slate-50 transition-colors space-y-2">
+        <div class="p-3 border border-slate-100 rounded-xl bg-slate-50/50 hover:bg-slate-50 transition-colors space-y-2 relative">
+            <i onclick="window.openLegalLeftSidebar()" 
+               class="fa-solid fa-up-right-and-down-left-from-center absolute top-3 right-3 text-slate-400 text-[12px] hover:scale-110 hover:text-black cursor-pointer transition-all"></i>
+            
             <div class="flex flex-col gap-2 text-left">
-                <p class="text-xs font-semibold text-slate-800 leading-normal">
+                <p class="text-xs font-semibold text-slate-800 leading-normal pr-4">
                     <i class="fa-regular fa-circle-question text-slate-400 mr-1.5"></i>${sub.q}
                 </p>
                 <span class="text-[10px] font-bold ${isPassed ? 'text-emerald-700 bg-emerald-50 border-emerald-100' : 'text-slate-400 bg-slate-100 border-slate-200'} px-2 py-0.5 rounded-md border self-start">
@@ -478,3 +523,155 @@ function closeShadcnDialog() {
     if (modal) modal.classList.add("hidden");
     activeCriteriaCache = null; // giải phóng bộ nhớ tạm
 }
+
+/**
+ * Hàm xử lý chuyển trang (Lùi trang hoặc Tiến trang)
+ * @param {number} direction - Nhận giá trị -1 (Lùi trang) hoặc 1 (Tiến trang)
+ */
+window.goToPage = function (direction) {
+    // 1. Tính toán lại tổng số dòng sau khi đã qua bộ lọc (Filter)
+    const dataSource = window.coreDataSource || [];
+    let filteredData = [...dataSource];
+
+    if (window.tableState.boNganhFilter) {
+        const keywordBoNganh = window.tableState.boNganhFilter.toLowerCase().trim();
+        filteredData = filteredData.filter(d => d.boNganh && d.boNganh.toLowerCase().includes(keywordBoNganh));
+    }
+
+    if (window.tableState.subGlobalFilter) {
+        const keywordSub = window.tableState.subGlobalFilter.toLowerCase().trim();
+        filteredData = filteredData.filter(d =>
+            (d.chuQuan && d.chuQuan.toLowerCase().includes(keywordSub)) ||
+            (d.csdl && d.csdl.toLowerCase().includes(keywordSub))
+        );
+    }
+
+    if (window.tableState.statusFilter !== "all") {
+        filteredData = filteredData.filter(d => d.statusType === window.tableState.statusFilter);
+    }
+
+    const totalRows = filteredData.length;
+    const totalPages = Math.ceil(totalRows / window.tableState.rowsPerPage) || 1;
+
+    // 2. Cập nhật trang hiện tại dựa trên hướng click
+    const targetPage = window.tableState.currentPage + direction;
+
+    // Kiểm tra chặn nếu vượt quá giới hạn trang cho phép
+    if (targetPage >= 1 && targetPage <= totalPages) {
+        window.tableState.currentPage = targetPage;
+
+        // 3. Render lại dữ liệu bảng cho trang mới
+        window.renderTableEngine();
+    }
+};
+
+/**
+ * Hàm cập nhật trạng thái hiển thị của các nút phân trang và text thông báo
+ * @param {number} totalRows - Tổng số dòng sau khi lọc
+ */
+window.updatePaginationUI = function (totalRows) {
+    const totalPages = Math.ceil(totalRows / window.tableState.rowsPerPage) || 1;
+
+    // Đảm bảo trang hiện tại không vượt quá tổng số trang hợp lệ
+    if (window.tableState.currentPage > totalPages) {
+        window.tableState.currentPage = totalPages;
+    }
+
+    // 1. Cập nhật Text hiển thị: "Trang X / Y"
+    const paginationInfo = document.getElementById("paginationInfo");
+    if (paginationInfo) {
+        paginationInfo.textContent = `Trang ${window.tableState.currentPage} / ${totalPages}`;
+    }
+
+    // 2. Vô hiệu hóa (Disable) nút bấm nếu ở trang đầu hoặc trang cuối
+    const prevPageBtn = document.getElementById("prevPageBtn");
+    const nextPageBtn = document.getElementById("nextPageBtn");
+
+    if (prevPageBtn) {
+        prevPageBtn.disabled = (window.tableState.currentPage === 1);
+    }
+    if (nextPageBtn) {
+        nextPageBtn.disabled = (window.tableState.currentPage === totalPages);
+    }
+};
+
+/**
+ * Hàm xử lý khi người dùng thay đổi số lượng hàng hiển thị trên một trang
+ */
+window.onRowsPerPageChange = function () {
+    const select = document.getElementById("rowsPerPageSelect");
+    if (!select) return;
+
+    // Cập nhật cấu hình rowsPerPage mới và quay về trang 1 để tránh lỗi lệch index
+    window.tableState.rowsPerPage = parseInt(select.value, 10) || 10;
+    window.tableState.currentPage = 1;
+
+    // Render lại giao diện
+    window.renderTableEngine();
+};
+
+/**
+ * Hàm ẩn/hiện container Slider khi click checkbox
+ */
+window.toggleProgressSlider = function (checkbox) {
+    const container = document.getElementById("sliderContainer");
+    window.tableState.useProgressSlider = checkbox.checked;
+
+    if (checkbox.checked) {
+        container.classList.remove("hidden");
+    } else {
+        container.classList.add("hidden");
+        // Reset lại giá trị lọc về mặc định khi tắt tính năng
+        window.tableState.sliderMin = 0;
+        window.tableState.sliderMax = 100;
+        document.getElementById("sliderMinInput").value = 0;
+        document.getElementById("sliderMaxInput").value = 100;
+        window.updateSliderTrackUI();
+    }
+    window.tableState.currentPage = 1; // Reset về trang 1
+    window.renderTableEngine();
+};
+
+/**
+ * Hàm đồng bộ giá trị kéo từ giao diện vào logic bộ lọc
+ */
+window.onSliderInputChange = function () {
+    const minInput = document.getElementById("sliderMinInput");
+    const maxInput = document.getElementById("sliderMaxInput");
+
+    let minVal = parseInt(minInput.value, 10);
+    let maxVal = parseInt(maxInput.value, 10);
+
+    // Xử lý chặn nếu người dùng kéo nút Min vượt quá nút Max
+    if (minVal > maxVal) {
+        let temp = minVal;
+        minVal = maxVal;
+        maxVal = temp;
+    }
+
+    window.tableState.sliderMin = minVal;
+    window.tableState.sliderMax = maxVal;
+
+    // Cập nhật giao diện thanh kéo và nhãn văn bản
+    window.updateSliderTrackUI();
+
+    // Thực thi lọc dữ liệu tức thì (Real-time Filter)
+    window.tableState.currentPage = 1;
+    window.renderTableEngine();
+};
+
+/**
+ * Hàm vẽ lại thanh màu xanh đại diện khoảng cách giữa 2 nút kéo
+ */
+window.updateSliderTrackUI = function () {
+    const min = window.tableState.sliderMin;
+    const max = window.tableState.sliderMax;
+
+    document.getElementById("sliderRangeLabel").textContent = `${min}% - ${max}%`;
+
+    const activeTrack = document.getElementById("sliderActiveTrack");
+    if (activeTrack) {
+        activeTrack.style.left = `${min}%`;
+        activeTrack.style.right = `${100 - max}%`;
+    }
+};
