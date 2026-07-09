@@ -3,46 +3,58 @@ const TOTAL_CSDL = 100;
 
 const criteriaData = {
     "Pháp lý": [
-        {
-            id: 1,
-            q: "Đã có cơ sở pháp lý để triển khai xây dựng CSDL?",
-            passed: 75,
-        },
-        {
-            id: 2,
-            q: "Đã ban hành quy trình thu thập, tạo lập dữ liệu?",
-            passed: 60,
-        },
-        {
-            id: 3,
-            q: "Đã ban hành danh mục trường thông tin của CSDL?",
-            passed: 45,
-        },
+        { id: 1, q: "Đã có cơ sở pháp lý để triển khai xây dựng CSDL?", passed: 75 },
+        { id: 2, q: "Đã ban hành quy trình thu thập, tạo lập dữ liệu?", passed: 60 },
+        { id: 3, q: "Đã ban hành danh mục trường thông tin của CSDL?", passed: 45 },
+        { id: 31, q: "Đã có văn bản quy định về chia sẻ và quyền khai thác dữ liệu?", passed: 70 }, // Bổ sung
+        { id: 32, q: "Đã ban hành quy chế phối hợp cập nhật, đôn đốc dữ liệu giữa các đơn vị?", passed: 50 } // Bổ sung
     ],
     "Tài chính": [
         { id: 4, q: "Đã đăng ký nhu cầu vốn triển khai?", passed: 80 },
         { id: 5, q: "Đã được bố trí kinh phí triển khai?", passed: 55 },
+        { id: 33, q: "Đã phê duyệt dự toán kinh phí bảo trì, vận hành hệ thống hàng năm?", passed: 40 }, // Bổ sung
+        { id: 34, q: "Nguồn vốn chuẩn bị cho hạng mục nâng cấp hạ tầng công nghệ được đảm bảo?", passed: 65 }, // Bổ sung
+        { id: 35, q: "Có kế hoạch phân bổ ngân sách riêng cho công tác đào tạo nhân sự quản trị?", passed: 30 }  // Bổ sung
     ],
     "Hạ tầng": [
-        {
-            id: 6,
-            q: "CSDL đã được triển khai trên hạ tầng tập trung?",
-            passed: 70,
-        },
-        {
-            id: 7,
-            q: "Hạ tầng đang vận hành tại TTDL đạt tiêu chuẩn?",
-            passed: 65,
-        },
+        { id: 6, q: "CSDL đã được triển khai trên hạ tầng tập trung?", passed: 70 },
+        { id: 7, q: "Hạ tầng đang vận hành tại TTDL đạt tiêu chuẩn?", passed: 65 },
+        { id: 36, q: "Đã triển khai hệ thống máy chủ dự phòng (Backup) và trung tâm dự phòng thảm họa (DR)?", passed: 50 }, // Bổ sung
+        { id: 37, q: "Năng lực lưu trữ hiện tại đáp ứng tốc độ tăng trưởng dữ liệu trong 3 năm tới?", passed: 85 }, // Bổ sung
+        { id: 38, q: "Đường truyền kết nối mạng chuyên dùng đạt băng thông tiêu chuẩn, ổn định?", passed: 78 }   // Bổ sung
     ],
     "Dữ liệu": [
         { id: 8, q: "Dữ liệu bảo đảm 'đúng'?", passed: 85 },
         { id: 9, q: "Dữ liệu bảo đảm 'đủ'?", passed: 78 },
         { id: 10, q: "Dữ liệu bảo đảm 'sạch'?", passed: 62 },
         { id: 11, q: "Dữ liệu bảo đảm 'sống'?", passed: 40 },
+        { id: 39, q: "Cấu trúc danh mục dữ liệu dùng chung tuân thủ tiêu chuẩn quốc gia?", passed: 70 } // Bổ sung
     ],
+    "An toàn thông tin": [
+        { id: 12, q: "Hệ thống CSDL đã được phê duyệt hồ sơ đề xuất cấp độ an toàn thông tin?", passed: 90 },
+        { id: 13, q: "Đã triển khai đầy đủ phương án bảo vệ an toàn hệ thống thông tin theo cấp độ?", passed: 75 },
+        { id: 14, q: "Hệ thống đã thực hiện đánh giá an toàn thông tin định kỳ hàng năm?", passed: 60 },
+        { id: 15, q: "Dữ liệu nhạy cảm, thông tin cá nhân trong CSDL đã được mã hóa lưu trữ?", passed: 80 },
+        { id: 16, q: "Có phân quyền truy cập, ghi nhật ký (log) chi tiết các tác động vào CSDL?", passed: 95 },
+        { id: 17, q: "Đã xây dựng và diễn tập phương án ứng phó sự cố an toàn thông tin?", passed: 50 }
+    ],
+    "Cắt giảm thủ tục hành chính": [
+        { id: 18, q: "CSDL giúp cắt giảm các thành phần hồ sơ giấy khi người dân làm thủ tục?", passed: 85 },
+        { id: 19, q: "Đã điện tử hóa hoàn toàn quy trình xử lý nội bộ dựa trên dữ liệu của CSDL?", passed: 70 },
+        { id: 20, q: "Thời gian giải quyết thủ tục hành chính được rút ngắn nhờ khai thác CSDL trực tuyến?", passed: 65 },
+        { id: 21, q: "Hỗ trợ cắt giảm việc yêu cầu người dân cung cấp lại thông tin cơ bản?", passed: 90 },
+        { id: 22, q: "Đã thực hiện rà soát, đơn giản hóa các mẫu đơn, tờ khai liên quan đến CSDL?", passed: 55 },
+        { id: 23, q: "Tỷ lệ thủ tục hành chính sử dụng dữ liệu từ CSDL đạt chỉ tiêu đề ra?", passed: 48 }
+    ],
+    "Phần mềm": [
+        { id: 24, q: "Phần mềm quản trị CSDL đáp ứng các tiêu chuẩn kỹ thuật về kết nối, chia sẻ?", passed: 88 },
+        { id: 25, q: "Giao diện phần mềm thân thiện, tối ưu hóa trải nghiệm người dùng (UX/UI)?", passed: 72 },
+        { id: 26, q: "Phần mềm có khả năng tự động kiểm tra, cảnh báo lỗi dữ liệu đầu vào?", passed: 60 },
+        { id: 27, q: "Hiệu năng phần mềm đáp ứng tốt tần suất truy cập lớn và truy vấn đồng thời?", passed: 82 },
+        { id: 28, q: "Hệ thống phần mềm được thiết kế theo kiến trúc Microservices dễ nâng cấp?", passed: 45 },
+        { id: 29, q: "Đã nghiệm thu, bàn giao đầy đủ mã nguồn và tài liệu kỹ thuật phần mềm?", passed: 100 }
+    ]
 };
-
 // 2. GIẢ LẬP DỮ LIỆU DANH SÁCH BỘ BAN NGÀNH (Bổ sung thêm: Đơn vị chủ quản, Căn cứ pháp lý mẫu)
 const mockMinistries = [
     {
@@ -135,32 +147,82 @@ function initPieChart() {
 function switchTab(tabName) {
     const title = document.getElementById("dynamicSectionTitle");
     const filterWrapper = document.getElementById("groupFilterWrapper");
+    const filterPhanLoai = document.getElementById("groupFilterPhanLoai"); // Lấy thêm bộ lọc phân loại
+    const timeFilter = document.getElementById("timeFilterGroup");       // Cụm chứa từ ngày, đến ngày, tìm kiếm
 
+    // 1. Reset class cho TẤT CẢ các tab nút bấm về trạng thái chưa active
     document.getElementById("tab-tongquan").className =
         "px-3 py-1 text-gray-400 hover:bg-gray-200/50 rounded transition-all";
     document.getElementById("tab-tieuchi").className =
         "px-3 py-1 text-gray-400 hover:bg-gray-200/50 rounded transition-all";
+    document.getElementById("tab-phanloai").className =
+        "px-3 py-1 text-gray-400 hover:bg-gray-200/50 rounded transition-all"; // Bổ sung reset tab phân loại
+
+    // 2. Ẩn TẤT CẢ các khối nội dung tab
     document.getElementById("tab-content-tongquan").classList.add("hidden");
     document.getElementById("tab-content-tieuchi").classList.add("hidden");
+    document.getElementById("tab-content-phanloai").classList.add("hidden"); // Bổ sung ẩn nội dung phân loại
 
+    // 3. Phân phối hiển thị theo cấu trúc Tab được chọn
     if (tabName === "tongquan") {
         title.textContent = "Tổng Quan";
+
+        // Điều khiển Bộ lọc
         filterWrapper.classList.add("hidden");
+        filterPhanLoai.classList.add("hidden");
+        timeFilter.classList.remove("hidden"); // HIỆN thời gian + tìm kiếm
+
+        // Kích hoạt trạng thái Tab Button & Hiển thị Content
         document.getElementById("tab-tongquan").className =
             "px-3 py-1 bg-white rounded shadow-sm text-gray-800 font-semibold transition-all";
         document
             .getElementById("tab-content-tongquan")
             .classList.remove("hidden");
         initPieChart();
-    } else {
+
+    } else if (tabName === "tieuchi") {
         title.textContent = "Nhóm tiêu chí đánh giá CSDL";
-        filterWrapper.classList.remove("hidden");
+
+        // Điều khiển Bộ lọc
+        filterWrapper.classList.remove("hidden"); // HIỆN bộ lọc tiêu chí chi tiết
+        filterPhanLoai.classList.add("hidden");
+        timeFilter.classList.add("hidden");       // ẨN thời gian + tìm kiếm
+
+        // Kích hoạt trạng thái Tab Button & Hiển thị Content
         document.getElementById("tab-tieuchi").className =
             "px-3 py-1 bg-white rounded shadow-sm text-gray-800 font-semibold transition-all";
         document
             .getElementById("tab-content-tieuchi")
             .classList.remove("hidden");
         renderCriteriaDashboard();
+
+    } else if (tabName === "phanloai") {
+        title.textContent = "Phân loại cơ sở dữ liệu chuyên ngành";
+
+        // Điều khiển Bộ lọc
+        filterWrapper.classList.add("hidden");
+        filterPhanLoai.classList.remove("hidden"); // HIỆN bộ lọc phân loại mới
+        timeFilter.classList.add("hidden");        // ẨN thời gian + tìm kiếm
+
+        // Kích hoạt trạng thái Tab Button & Hiển thị Content
+        document.getElementById("tab-phanloai").className =
+            "px-3 py-1 bg-white rounded shadow-sm text-gray-800 font-semibold transition-all";
+
+        const phanLoaiContent = document.getElementById("tab-content-phanloai");
+        phanLoaiContent.classList.remove("hidden");
+
+        // Tự động nạp file thành phần phanloaicsdl.html bằng fetch nếu chưa nạp dữ liệu
+        if (phanLoaiContent.innerHTML.trim() === "") {
+            phanLoaiContent.innerHTML = `<div class="text-xs text-gray-400 py-4"><i class="fa-solid fa-spinner animate-spin mr-1"></i> Đang nạp cấu trúc dữ liệu văn bản...</div>`;
+            fetch('phanloaicsdl.html')
+                .then(response => response.text())
+                .then(html => {
+                    phanLoaiContent.innerHTML = html;
+                })
+                .catch(err => {
+                    phanLoaiContent.innerHTML = `<div class="text-xs text-red-500 py-4">Không thể tải cấu trúc phân loại.</div>`;
+                });
+        }
     }
 }
 

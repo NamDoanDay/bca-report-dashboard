@@ -346,32 +346,6 @@ function renderTableRows(tbody, list, fixedStatus = null) {
     });
 }
 
-
-// --- 7. ĐIỀU HƯỚNG TƯƠNG TÁC TABS ---
-function switchTab(tabId) {
-    currentTab = tabId;
-    const tabTongQuan = document.getElementById("tab-tongquan");
-    const tabTieuChi = document.getElementById("tab-tieuchi");
-    const viewTongQuan = document.getElementById("tab-content-tongquan");
-    const viewTieuChi = document.getElementById("tab-content-tieuchi");
-    const groupFilter = document.getElementById("groupFilterWrapper");
-
-    if (tabId === "tongquan") {
-        tabTongQuan.className = "px-4 py-1.5 bg-white rounded-lg shadow-xs text-slate-800 font-bold transition-all duration-150";
-        tabTieuChi.className = "px-4 py-1.5 text-slate-500 hover:text-slate-800 rounded-lg transition-all duration-150";
-        viewTongQuan.classList.remove("hidden");
-        viewTieuChi.classList.add("hidden");
-        if (groupFilter) groupFilter.classList.add("hidden");
-    } else if (tabId === "tieuchi") {
-        tabTongQuan.className = "px-4 py-1.5 text-slate-500 hover:text-slate-800 rounded-lg transition-all duration-150";
-        tabTieuChi.className = "px-4 py-1.5 bg-white rounded-lg shadow-xs text-slate-800 font-bold transition-all duration-150";
-        viewTongQuan.classList.add("hidden");
-        viewTieuChi.classList.remove("hidden");
-        if (groupFilter) groupFilter.classList.remove("hidden");
-        renderCriteriaTable();
-    }
-}
-
 // --- 8. ĐỔ DỮ LIỆU CHO BẢNG TIÊU CHÍ CHI TIẾT (TAB 2) ---
 function renderCriteriaTable() {
     const tbody = document.getElementById("criteriaTableBody");

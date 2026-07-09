@@ -358,13 +358,20 @@
         </a>
       </div>
       <div class="flex items-center justify-between sm:justify-end gap-6 pr-8">
-        <div class="flex items-center gap-1">
-          <span class="text-xs font-medium text-gray-500">Dark mode</span>
+        <div class="flex items-center gap-2">
+          <span
+            class="text-sm font-medium text-slate-600 dark:text-slate-400 select-none"
+          >
+            Light mode
+          </span>
+
           <div
-            class="w-10 h-5 bg-gray-200 rounded-full p-0.5 cursor-pointer neu-inset relative"
+            id="compact-toggle"
+            class="w-9 h-5 bg-slate-200 dark:bg-blue-500 rounded-full p-0.5 cursor-pointer transition-colors duration-200 relative flex items-center"
           >
             <div
-              class="w-4 h-4 bg-white rounded-full shadow-md transform translate-x-0 transition duration-200"
+              id="compact-circle"
+              class="w-4 h-4 bg-white rounded-full shadow-sm transform translate-x-0 dark:translate-x-4 transition duration-200"
             ></div>
           </div>
         </div>

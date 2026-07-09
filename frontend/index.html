@@ -295,11 +295,12 @@
                     onclick="switchTab('tieuchi')"
                     class="px-3 md:px-4 py-1.5 text-slate-500 hover:text-slate-800 rounded-lg transition-all duration-150"
                   >
-                    Tiêu chí chi tiết
+                    Tiêu chí
                   </button>
                   <button
-                    class="px-3 md:px-4 py-1.5 text-slate-400 cursor-not-allowed opacity-50"
-                    disabled
+                    id="tab-phanloai"
+                    onclick="switchTab('phanloai')"
+                    class="px-3 md:px-4 py-1.5 text-slate-400 hover:text-slate-800 rounded-lg transition-all duration-150"
                   >
                     Phân loại
                   </button>
@@ -329,65 +330,100 @@
                   </div>
 
                   <div
-                    class="relative flex items-center gap-2 px-3 py-1 rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-all cursor-pointer shadow-2xs w-full sm:w-auto"
-                    onclick="this.querySelector('.date-picker').showPicker()"
+                    id="groupFilterPhanLoai"
+                    class="hidden relative flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200 shadow-2xs transition-all"
                   >
-                    <i class="fa-regular fa-calendar text-teal-600"></i>
-                    <div class="flex flex-col text-left flex-1 sm:flex-initial">
-                      <span
-                        class="text-[9px] text-slate-400 font-bold uppercase leading-none"
-                        >Từ ngày</span
-                      >
-                      <input
-                        type="text"
-                        id="startDateDisplay"
-                        value="01/01/2024"
-                        class="bg-transparent text-xs font-bold text-slate-700 outline-none pointer-events-none pt-0.5 w-full sm:w-24"
-                        readonly
-                      />
-                      <input
-                        type="date"
-                        id="startDatePicker"
-                        value="2024-01-01"
-                        onchange="syncDatePicker(this, 'start')"
-                        class="date-picker absolute opacity-0 pointer-events-none"
-                      />
-                    </div>
+                    <i
+                      class="fa-solid fa-layer-group text-blue-600 text-xs"
+                    ></i>
+                    <select
+                      id="phanLoaiSelectFilter"
+                      onchange="filterPhanLoaiData()"
+                      class="bg-transparent text-xs font-bold text-slate-700 outline-none pr-2 cursor-pointer"
+                    >
+                      <option value="all">Tất cả danh mục phân loại</option>
+                      <option value="KH02">Kế hoạch 02/KH-BCĐTW</option>
+                      <option value="NQ11">Nghị quyết 11/NQ-CP</option>
+                      <option value="CSDL">Cơ sở dữ liệu ngành</option>
+                      <option value="XepHang2910">Xếp hạng theo QĐ 2910</option>
+                      <option value="CSDLTrongYeu">
+                        CSDL trọng yếu quốc gia
+                      </option>
+                      <option value="CSDLChuaQuyHoach">
+                        CSDL chưa được quy hoạch theo VBPL
+                      </option>
+                    </select>
                   </div>
 
                   <div
-                    class="relative flex items-center gap-2 px-3 py-1 rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-all cursor-pointer shadow-2xs w-full sm:w-auto"
-                    onclick="this.querySelector('.date-picker').showPicker()"
+                    id="timeFilterGroup"
+                    class="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto"
                   >
-                    <i class="fa-regular fa-calendar text-rose-500"></i>
-                    <div class="flex flex-col text-left flex-1 sm:flex-initial">
-                      <span
-                        class="text-[9px] text-slate-400 font-bold uppercase leading-none"
-                        >Đến ngày</span
+                    <div
+                      class="relative flex items-center gap-2 px-3 py-1 rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-all cursor-pointer shadow-2xs w-full sm:w-auto"
+                      onclick="this.querySelector('.date-picker').showPicker()"
+                    >
+                      <i class="fa-regular fa-calendar text-teal-600"></i>
+                      <div
+                        class="flex flex-col text-left flex-1 sm:flex-initial"
                       >
-                      <input
-                        type="text"
-                        id="endDateDisplay"
-                        value="31/12/2025"
-                        class="bg-transparent text-xs font-bold text-slate-700 outline-none pointer-events-none pt-0.5 w-full sm:w-24"
-                        readonly
-                      />
-                      <input
-                        type="date"
-                        id="endDatePicker"
-                        value="2025-12-31"
-                        onchange="syncDatePicker(this, 'end')"
-                        class="date-picker absolute opacity-0 pointer-events-none"
-                      />
+                        <span
+                          class="text-[9px] text-slate-400 font-bold uppercase leading-none"
+                          >Từ ngày</span
+                        >
+                        <input
+                          type="text"
+                          id="startDateDisplay"
+                          value="01/01/2024"
+                          class="bg-transparent text-xs font-bold text-slate-700 outline-none pointer-events-none pt-0.5 w-full sm:w-24"
+                          readonly
+                        />
+                        <input
+                          type="date"
+                          id="startDatePicker"
+                          value="2024-01-01"
+                          onchange="syncDatePicker(this, 'start')"
+                          class="date-picker absolute opacity-0 pointer-events-none"
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  <button
-                    onclick="executeTimeSearch()"
-                    class="w-full sm:w-auto flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold transition-all shadow-sm active:scale-95"
-                  >
-                    <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
-                  </button>
+                    <div
+                      class="relative flex items-center gap-2 px-3 py-1 rounded-xl bg-white border border-slate-200 hover:border-slate-300 transition-all cursor-pointer shadow-2xs w-full sm:w-auto"
+                      onclick="this.querySelector('.date-picker').showPicker()"
+                    >
+                      <i class="fa-regular fa-calendar text-rose-500"></i>
+                      <div
+                        class="flex flex-col text-left flex-1 sm:flex-initial"
+                      >
+                        <span
+                          class="text-[9px] text-slate-400 font-bold uppercase leading-none"
+                          >Đến ngày</span
+                        >
+                        <input
+                          type="text"
+                          id="endDateDisplay"
+                          value="31/12/2025"
+                          class="bg-transparent text-xs font-bold text-slate-700 outline-none pointer-events-none pt-0.5 w-full sm:w-24"
+                          readonly
+                        />
+                        <input
+                          type="date"
+                          id="endDatePicker"
+                          value="2025-12-31"
+                          onchange="syncDatePicker(this, 'end')"
+                          class="date-picker absolute opacity-0 pointer-events-none"
+                        />
+                      </div>
+                    </div>
+
+                    <button
+                      onclick="executeTimeSearch()"
+                      class="w-full sm:w-auto flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold transition-all shadow-sm active:scale-95"
+                    >
+                      <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -678,6 +714,11 @@
               <div
                 id="tab-content-tieuchi"
                 class="hidden grid grid-cols-1 md:grid-cols-2 animate-fade-in gap-4"
+              ></div>
+
+              <div
+                id="tab-content-phanloai"
+                class="hidden w-full animate-fade-in"
               ></div>
             </div>
           </section>
