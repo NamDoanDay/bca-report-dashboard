@@ -132,82 +132,86 @@ window.renderTableEngine = function () {
         return;
     }
 
+    // --- CẬP NHẬT TRONG HÀM RENDER TABLE ENGINE (Đoạn paginatedData.forEach) ---
+    // Thay thế đoạn render thẻ <tr> hiện tại của bạn bằng cấu trúc mới này để tương thích khi bổ sung cột.
+
     paginatedData.forEach((row, index) => {
-        // Tích hợp icon mắt ẩn, tự động hiện/ẩn hoán đổi với dấu chấm tròn khi hover vào ô
+        // Hệ thống icon mắt ẩn khi hover cho các tiêu chí con
         const dotValid = `
-            <div class="relative flex items-center justify-center w-6 h-6 mx-auto">
-                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-2xs group-hover:opacity-0 group-hover:scale-50 transition-all duration-150"></div>
-                <i class="fa-solid fa-eye text-emerald-600 text-xs absolute opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-150"></i>
-            </div>
-        `;
-
+        <div class="relative flex items-center justify-center w-6 h-6 mx-auto">
+            <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-2xs group-hover:opacity-0 group-hover:scale-50 transition-all duration-150"></div>
+            <i class="fa-solid fa-eye text-emerald-600 text-xs absolute opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-150"></i>
+        </div>
+    `;
         const dotInvalid = `
-            <div class="relative flex items-center justify-center w-6 h-6 mx-auto">
-                <div class="w-2.5 h-2.5 rounded-full bg-rose-200 border border-rose-400/30 shadow-2xs group-hover:opacity-0 group-hover:scale-50 transition-all duration-150"></div>
-                <i class="fa-solid fa-eye text-rose-500 text-xs absolute opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-150"></i>
-            </div>
-        `;
+        <div class="relative flex items-center justify-center w-6 h-6 mx-auto">
+            <div class="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-2xs group-hover:opacity-0 group-hover:scale-50 transition-all duration-150"></div>
+            <i class="fa-solid fa-eye text-rose-500 text-xs absolute opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-150"></i>
+        </div>
+    `;
 
-        let badgeGeneral = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-semibold">🟢 Đã xây dựng</span>`;
-        let textProgress = "Đã xong";
+        // Biến lưu trạng thái hiển thị của Tiến độ & màu sắc của Trạng thái
+        let badgeStatus = "";
+        let textProgress = "";
 
-        if (row.statusType === "processing") {
-            badgeGeneral = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-[11px] font-semibold">🟡 Đang xây dựng</span>`;
-            textProgress = `${row.progress || 0}%`;
-        } else if (row.statusType === "failed") {
-            badgeGeneral = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200 text-[11px] font-semibold">🔴 Chưa xây dựng</span>`;
-            textProgress = "Chưa làm";
+        if (row.statusType === "passed") {
+            badgeStatus = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-bold">🟢 Đã xong</span>`;
+            textProgress = `<span class="text-emerald-600 font-bold font-mono">100%</span>`;
+        } else if (row.statusType === "processing") {
+            badgeStatus = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-[11px] font-bold">🟡 Đang xây dựng</span>`;
+            textProgress = `<span class="text-amber-500 font-bold font-mono">${row.progress || 0}%</span>`;
+        } else {
+            // Thay thế "Chưa làm" thành "Dự thảo"
+            badgeStatus = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 text-[11px] font-bold">⚪ Dự thảo</span>`;
+            textProgress = `<span class="text-slate-400 font-medium">Dự thảo</span>`;
         }
 
-        // Tạo chuỗi an toàn mã hóa JSON để truyền trực tiếp vào thẻ onclick dạng đối tượng
         const rowDataString = JSON.stringify(row).replace(/"/g, '&quot;');
 
         const tr = document.createElement("tr");
-        tr.className = "hover:bg-slate-50/70 transition-colors bg-white border-b border-slate-100";
-        tr.innerHTML = `
-            <td class="p-3 text-center font-mono text-slate-400 font-bold">${startIndex + index + 1}</td>
-            <td class="p-3 font-semibold text-slate-900 bo-nganh-cell">${row.boNganh || ''}</td>
-            <td class="p-3 text-slate-500 col-sub-holder ${window.tableState.hiddenColumns.chuQuan ? 'hidden' : ''}">${row.chuQuan || ''}</td>
-            <td class="p-3 text-slate-700 font-medium max-w-sm truncate">${row.csdl || ''}</td>
-            <td class="p-3 text-center font-bold text-slate-900 font-mono">${textProgress}</td>
-            
-            <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" 
-                onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'pl')" title="Xem chi tiết tiêu chí Pháp lý">
-                ${row.pl ? dotValid : dotInvalid}
-            </td>
-            
-            <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" 
-                onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'tc')" title="Xem chi tiết tiêu chí Tài chính">
-                ${row.tc ? dotValid : dotInvalid}
-            </td>
-            
-            <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" 
-                onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'ht')" title="Xem chi tiết tiêu chí Hạ tầng">
-                ${row.ht ? dotValid : dotInvalid}
-            </td>
-            
-            <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" 
-                onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'dl')" title="Xem chi tiết tiêu chí Dữ liệu">
-                ${row.dl ? dotValid : dotInvalid}
-            </td>
-            
-            <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" 
-                onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'pm')" title="Xem chi tiết tiêu chí Phần mềm">
-                ${row.pm ? dotValid : dotInvalid}
-            </td>
-            
-            <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" 
-                onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'attt')" title="Xem chi tiết tiêu chí ATTT">
-                ${row.attt ? dotValid : dotInvalid}
-            </td>
+        tr.className = "hover:bg-slate-50/70 transition-colors bg-white border-b border-slate-100 text-xs items-stretch";
 
-            <td class="p-3 text-center col-sub-eval ${window.tableState.hiddenColumns.danhGiaChung ? 'hidden' : ''}">${badgeGeneral}</td>
-            <td class="p-3 text-center">
-                <button onclick="openShadcnDialog(${row.id})" class="w-6 h-6 rounded-md border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 hover:text-slate-900 flex items-center justify-center transition-all shadow-2xs mx-auto">
-                    <i class="fa-solid fa-expand text-[10px]"></i>
-                </button>
-            </td>
-        `;
+        tr.innerHTML = `
+        <td class="p-3 text-center font-mono text-slate-400 font-bold">${startIndex + index + 1}</td>
+        <td class="p-3 font-semibold text-slate-900 whitespace-normal break-words">${row.boNganh || ''}</td>
+        <td class="p-3 text-slate-500 col-sub-holder ${window.tableState.hiddenColumns.chuQuan ? 'hidden' : ''} whitespace-normal break-words">${row.chuQuan || ''}</td>
+        <td class="p-3 text-slate-700 font-medium whitespace-normal break-words">${row.csdl || ''}</td>
+        <td class="p-3 text-center">${textProgress}</td>
+        
+        <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'pl')">${row.pl ? dotValid : dotInvalid}</td>
+        <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'tc')">${row.tc ? dotValid : dotInvalid}</td>
+        <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'ht')">${row.ht ? dotValid : dotInvalid}</td>
+        <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'dl')">${row.dl ? dotValid : dotInvalid}</td>
+        <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'pm')">${row.pm ? dotValid : dotInvalid}</td>
+        <td class="p-3 col-sub-criteria cursor-pointer hover:bg-slate-100 group transition-all text-center ${window.tableState.hiddenColumns.tieuChiCon ? 'hidden' : ''}" onclick="event.stopPropagation(); window.openSubPopupFromTable(${rowDataString}, 'attt')">${row.attt ? dotValid : dotInvalid}</td>
+
+        <td class="p-3 text-center col-sub-eval ${window.tableState.hiddenColumns.danhGiaChung ? 'hidden' : ''}">${badgeStatus}</td>
+        
+        <td class="p-3 text-slate-600 whitespace-normal break-words">
+            <div class="flex items-start gap-1.5">
+                <i class="fa-solid fa-magnifying-glass-chart text-blue-500 text-[10px] mt-0.5 shrink-0"></i>
+                <span>${row.danhGiaCsdl || '<span class="text-slate-300 italic">Chưa đánh giá</span>'}</span>
+            </div>
+        </td>
+        <td class="p-3 text-slate-600 whitespace-normal break-words">
+            <div class="flex items-start gap-1.5">
+                <i class="fa-solid fa-triangle-exclamation text-rose-500 text-[10px] mt-0.5 shrink-0"></i>
+                <span>${row.khoKhan || '<span class="text-slate-300 italic">Không có</span>'}</span>
+            </div>
+        </td>
+        <td class="p-3 text-slate-600 whitespace-normal break-words">
+            <div class="flex items-start gap-1.5">
+                <i class="fa-solid fa-hand-holding-hand text-emerald-500 text-[10px] mt-0.5 shrink-0"></i>
+                <span>${row.kienNghi || '<span class="text-slate-300 italic">Không có</span>'}</span>
+            </div>
+        </td>
+
+        <td class="p-3 text-center">
+            <button onclick="openShadcnDialog(${row.id})" class="w-6 h-6 rounded-md border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 hover:text-slate-900 flex items-center justify-center transition-all shadow-2xs mx-auto">
+                <i class="fa-solid fa-expand text-[10px]"></i>
+            </button>
+        </td>
+    `;
         tbody.appendChild(tr);
     });
 
@@ -297,16 +301,15 @@ window.openShadcnDialog = function (rowId) {
     const modal = document.getElementById("chiTietDanhGia");
     if (!modal) return;
 
-    // Lưu dữ liệu tổng của item hiện tại vào cache
     activeCriteriaCache = item;
 
-    // Đồng bộ cấu hình kích thước giao diện chính
+    // Thiết lập diện mạo rộng rãi cho Modal
     const modalContentContainer = modal.querySelector('.bg-white, [class*="bg-white"]');
     if (modalContentContainer) {
-        modalContentContainer.classList.remove("max-w-md", "max-w-lg", "max-w-xl", "max-w-2xl", "max-w-3xl", "max-w-4xl");
-        modalContentContainer.className = "bg-white w-full max-w-5xl h-[80vh] max-h-[85vh] rounded-2xl shadow-xl border border-slate-100 flex flex-col overflow-hidden transition-all duration-200 relative animate-in fade-in zoom-in-95";
+        modalContentContainer.className = "bg-white w-full max-w-6xl h-[85vh] max-h-[90vh] rounded-2xl shadow-xl border border-slate-100 flex flex-col overflow-hidden transition-all duration-200 relative animate-in fade-in zoom-in-95";
     }
 
+    // Đổ Metadata cơ bản
     if (document.getElementById("dialogMetaSTT")) document.getElementById("dialogMetaSTT").innerHTML = `<i class="fa-solid fa-fingerprint mr-1"></i>STT-${String(item.id).padStart(2, "0")}`;
     if (document.getElementById("dialogMetaCsdlName")) document.getElementById("dialogMetaCsdlName").textContent = item.csdl;
 
@@ -314,30 +317,22 @@ window.openShadcnDialog = function (rowId) {
     if (elBoNganh) elBoNganh.innerHTML = `<i class="fa-solid fa-building text-slate-400 mr-2"></i><span class="text-slate-500 inline-block w-24">Bộ ban ngành:</span><span class="font-semibold text-slate-800">${item.boNganh}</span>`;
     if (document.getElementById("dialogMetaChuQuan")) document.getElementById("dialogMetaChuQuan").innerHTML = `<i class="fa-solid fa-users text-slate-400 mr-2"></i><span class="text-slate-500 inline-block w-24">Đơn vị chủ quản:</span><span class="font-medium text-slate-700">${item.chuQuan}</span>`;
 
+    // Thanh tiến độ (Progress bar)
     let progressValue = item.progress || 0;
     let progressColorClass = "bg-amber-500";
-
     const elProgText = document.getElementById("dialogProgressText");
     if (elProgText) {
-        if (item.statusType === "passed") {
-            elProgText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>Đã hoàn thành`;
-            progressColorClass = "bg-emerald-500";
-        } else if (item.statusType === "failed") {
-            elProgText.innerHTML = `<i class="fa-solid fa-circle-minus text-rose-500 mr-1"></i>Chưa làm`;
-            progressColorClass = "bg-slate-200";
-            progressValue = 0;
-        } else {
-            elProgText.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-amber-500 mr-1"></i>Tiến độ: ${progressValue}%`;
-            progressColorClass = "bg-amber-500";
-        }
+        if (item.statusType === "passed") { elProgText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>Đã hoàn thành`; progressColorClass = "bg-emerald-500"; progressValue = 100; }
+        else if (item.statusType === "failed") { elProgText.innerHTML = `<i class="fa-solid fa-circle-minus text-rose-500 mr-1"></i>Chưa làm`; progressColorClass = "bg-slate-200"; progressValue = 0; }
+        else { elProgText.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-amber-500 mr-1"></i>Tiến độ: ${progressValue}%`; }
     }
-
     const progressBar = document.getElementById("dialogProgressBar");
     if (progressBar) {
         progressBar.className = `h-full rounded-full transition-all duration-500 ${progressColorClass}`;
         progressBar.style.width = `${progressValue}%`;
     }
 
+    // Xử lý nạp các ô Grid tiêu chí thành phần (Pháp lý, Tài chính, ...)
     const criteriaConfig = [
         { key: "Pháp lý", val: item.pl, icon: "fa-scale-balanced" },
         { key: "Tài chính", val: item.tc, icon: "fa-coins" },
@@ -346,48 +341,72 @@ window.openShadcnDialog = function (rowId) {
         { key: "Phần mềm", val: item.pm, icon: "fa-laptop-code" },
         { key: "ATTT", val: item.attt, icon: "fa-shield-halved" },
     ];
-
     const gridBox = document.getElementById("dialogCriteriaGridBox");
     if (gridBox) {
-        gridBox.style.display = "grid";
-        gridBox.style.gridTemplateColumns = "repeat(3, minmax(0, 1fr))";
-        gridBox.style.gap = "14px";
-
         gridBox.innerHTML = criteriaConfig.map((c) => {
-            const bgClass = c.val
-                ? "bg-emerald-50/60 hover:bg-emerald-50 border-emerald-200 text-emerald-900 shadow-2xs"
-                : "bg-rose-50/40 hover:bg-rose-50/70 border-rose-100 text-slate-500";
-
-            const statusBadge = c.val
-                ? "<span class='px-2 py-0.5 rounded bg-emerald-500 text-white text-[10px] font-bold'><i class='fa-solid fa-check mr-1'></i> Đạt</span>"
-                : "<span class='px-2 py-0.5 rounded bg-rose-400 text-white text-[10px] font-bold'><i class='fa-solid fa-xmark mr-1'></i> Chưa đạt</span>";
-
+            const bgClass = c.val ? "bg-emerald-50/60 border-emerald-200 text-emerald-900" : "bg-rose-50/40 border-rose-100 text-slate-500";
+            const statusBadge = c.val ? "<span class='px-2 py-0.5 rounded bg-emerald-500 text-white text-[10px] font-bold'>Đạt</span>" : "<span class='px-2 py-0.5 rounded bg-rose-400 text-white text-[10px] font-bold'>Chưa đạt</span>";
             return `
-                <div onclick="openSubPopup('${c.key}', ${c.val ? 1 : 0}, '${c.icon}')" 
-                     class="border rounded-xl p-4 flex items-center justify-between cursor-pointer select-none transition-all duration-150 hover:scale-[1.01] active:scale-[0.99] group ${bgClass}">
-                    <div class="flex items-center gap-3 truncate">
-                        <div class="w-9 h-9 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-700 shadow-3xs group-hover:text-slate-900 transition-colors shrink-0">
-                            <i class="fa-solid ${c.icon} text-base"></i>
-                        </div>
-                        <div class="flex flex-col text-left truncate">
-                            <span class="font-bold text-sm text-slate-800 leading-tight">${c.key}</span>
-                            <span class="text-[11px] text-slate-400 mt-0.5 font-medium">Bấm xem chi tiết</span>
-                        </div>
+                <div onclick="openSubPopup('${c.key}', ${c.val ? 1 : 0}, '${c.icon}')" class="border rounded-xl p-3 flex items-center justify-between cursor-pointer transition-all hover:scale-[1.01] bg-white ${bgClass}">
+                    <div class="flex items-center gap-2 truncate">
+                        <div class="w-8 h-8 rounded-lg bg-white border flex items-center justify-center text-slate-700 shrink-0"><i class="fa-solid ${c.icon} text-xs"></i></div>
+                        <span class="font-bold text-xs text-slate-800">${c.key}</span>
                     </div>
-                    <div class="shrink-0 pl-1">
-                        ${statusBadge}
-                    </div>
+                    ${statusBadge}
                 </div>
             `;
         }).join("");
     }
 
+    // --- ĐOẠN PHÁT TRIỂN MỚI: ĐỔ DỮ LIỆU NHẬN XÉT, KHÓ KHĂN, KIẾN NGHỊ VÀO MODAL ---
+    const detailAnalysisBox = document.getElementById("dialogDetailAnalysisBox");
+    if (detailAnalysisBox) {
+        detailAnalysisBox.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                <div class="p-4 rounded-xl border border-slate-100 bg-slate-50/50 space-y-3">
+                    <div>
+                        <h5 class="text-xs font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-magnifying-glass-chart text-blue-500"></i> Đánh giá hiện trạng CSDL
+                        </h5>
+                        <p class="text-slate-600 text-xs mt-1 bg-white p-2.5 rounded-lg border border-slate-100 min-h-[50px]">
+                            ${item.danhGiaCsdl || '<span class="text-slate-400 italic">Chưa có dữ liệu đánh giá chi tiết.</span>'}
+                        </p>
+                    </div>
+                    <div>
+                        <h5 class="text-xs font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-comment-dots text-indigo-500"></i> Nhận xét từ tổ kiểm tra
+                        </h5>
+                        <p class="text-slate-600 text-xs mt-1 bg-white p-2.5 rounded-lg border border-slate-100 min-h-[50px]">
+                            ${item.nhanXet || '<span class="text-slate-400 italic">Chưa có nhận xét cụ thể.</span>'}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-xl border border-rose-100 bg-rose-50/20 space-y-3">
+                    <div>
+                        <h5 class="text-xs font-bold text-rose-900 flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-rose-500"></i> Khó khăn, vướng mắc tồn đọng
+                        </h5>
+                        <p class="text-slate-700 text-xs mt-1 bg-white p-2.5 rounded-lg border border-rose-100 min-h-[50px]">
+                            ${item.khoKhan || '<span class="text-slate-400 italic">Ghi nhận: Không có khó khăn, vướng mắc lớn.</span>'}
+                        </p>
+                    </div>
+                    <div>
+                        <h5 class="text-xs font-bold text-emerald-900 flex items-center gap-2">
+                            <i class="fa-solid fa-hand-holding-hand text-emerald-500"></i> Kiến nghị & Đề xuất giải pháp
+                        </h5>
+                        <p class="text-slate-700 text-xs mt-1 bg-white p-2.5 rounded-lg border border-emerald-100 min-h-[50px]">
+                            ${item.kienNghi || '<span class="text-slate-400 italic">Chưa có đề xuất được ghi nhận.</span>'}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
     const generalBadge = document.getElementById("dialogGeneralStatusBadge");
     if (generalBadge) {
-        generalBadge.innerHTML =
-            item.statusType === "passed" ? `<span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full font-bold text-[11px]"><i class="fa-solid fa-circle text-[8px] mr-1.5 align-middle"></i>Đã xây dựng</span>` :
-                (item.statusType === "failed" ? `<span class="px-3 py-1 bg-rose-50 text-rose-700 border border-rose-200 rounded-full font-bold text-[11px]"><i class="fa-solid fa-circle text-[8px] mr-1.5 align-middle"></i>Chưa xây dựng</span>` :
-                    `<span class="px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full font-bold text-[11px]"><i class="fa-solid fa-circle text-[8px] mr-1.5 align-middle"></i>Đang xây dựng</span>`);
+        generalBadge.innerHTML = item.statusType === "passed" ? `<span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full font-bold text-[11px]">Đã xây dựng</span>` : (item.statusType === "failed" ? `<span class="px-3 py-1 bg-rose-50 text-rose-700 border border-rose-200 rounded-full font-bold text-[11px]">Chưa xây dựng</span>` : `<span class="px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full font-bold text-[11px]">Đang xây dựng</span>`);
     }
 
     modal.classList.remove("hidden");

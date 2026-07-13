@@ -231,9 +231,80 @@ function renderCriteriaDashboard() {
     const container = document.getElementById("tab-content-tieuchi");
     container.innerHTML = "";
 
+    // Hủy các instance biểu đồ cũ nếu có
     Object.values(polarChartsInstances).forEach((chart) => chart.destroy());
     polarChartsInstances = {};
 
+    // 1. RENDER PHẦN THỐNG KÊ TỔNG QUAN VÀO TRƯỚC
+    const summaryHtml = `
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="p-4 bg-white border border-slate-100 rounded-xl shadow-2xs flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm shadow-2xs">
+            <i class="fa-solid fa-gavel"></i>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Nghị quyết 11/NQ-CP</span>
+            <div class="flex items-baseline gap-1.5">
+              <span class="text-lg font-black text-slate-800">92%</span>
+              <span class="text-[10px] text-emerald-600 font-bold"><i class="fa-solid fa-arrow-trend-up"></i> +4.2%</span>
+            </div>
+            <p class="text-[10px] text-slate-500">Đã sửa đổi thiết chế hạ tầng số</p>
+          </div>
+        </div>
+
+        <div class="p-4 bg-white border border-slate-100 rounded-xl shadow-2xs flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-sm shadow-2xs">
+            <i class="fa-solid fa-network-wired"></i>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Kế hoạch 02/KH-BCĐTW</span>
+            <div class="flex items-baseline gap-1.5">
+              <span class="text-lg font-black text-slate-800">4/5</span>
+              <span class="text-[10px] text-slate-500 font-medium">Trục cốt lõi</span>
+            </div>
+            <p class="text-[10px] text-slate-500">Chuyển đổi số liên thông đồng bộ</p>
+          </div>
+        </div>
+
+        <div class="p-4 bg-white border border-slate-100 rounded-xl shadow-2xs flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-sm shadow-2xs">
+            <i class="fa-solid fa-database"></i>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">CSDL Trọng Yếu Quốc Gia</span>
+            <div class="flex items-baseline gap-1.5">
+              <span class="text-lg font-black text-slate-800">14</span>
+              <span class="text-[10px] text-slate-400">Danh mục gốc</span>
+            </div>
+            <p class="text-[10px] text-amber-600 font-bold">Kiểm soát an toàn tầng sâu</p>
+          </div>
+        </div>
+
+        <div class="p-4 bg-white border border-slate-100 rounded-xl shadow-2xs flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center text-sm shadow-2xs">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Chưa được quy hoạch</span>
+            <div class="flex items-baseline gap-1.5">
+              <span class="text-lg font-black text-slate-800">23%</span>
+              <span class="text-[10px] text-rose-500 font-medium">Cần chuẩn hóa</span>
+            </div>
+            <p class="text-[10px] text-slate-500">Vận hành ngoài khung pháp luật</p>
+          </div>
+        </div>
+    </div>
+    
+    <div id="criteria-cards-container" class="grid grid-cols-1 md:grid-cols-2 animate-fade-in gap-4"></div>
+    `;
+
+    // Ép khối HTML thống kê vào container trước
+    container.innerHTML = summaryHtml;
+
+    // Lấy thẻ div vừa tạo để làm nơi append các card tiêu chí
+    const cardsContainer = document.getElementById("criteria-cards-container");
+
+    // 2. VÒNG LẶP DỰNG CÁC CARD TIÊU CHÍ (GIỮ NGUYÊN LOGIC CỦA BẠN)
     Object.keys(criteriaData).forEach((groupName) => {
         const listItems = criteriaData[groupName];
         const safeName = groupName.replace(/\s+/g, "");
@@ -255,7 +326,6 @@ function renderCriteriaDashboard() {
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
-          
           <div class="col-span-12 lg:col-span-12 transition-all duration-300 flex justify-center items-center py-4 bg-slate-50/40 border border-slate-100 rounded-xl" id="chart-panel-${safeName}">
             <div class="w-full max-w-[340px] h-60 cursor-pointer">
               <canvas id="polar-${safeName}"></canvas>
@@ -264,44 +334,42 @@ function renderCriteriaDashboard() {
 
           <div class="col-span-12 lg:col-span-6 hidden space-y-2.5 transition-all duration-300 overflow-y-auto max-h-[250px] pr-1" id="criteria-panel-${safeName}">
             <div class="w-full flex flex-wrap items-center gap-2">
-                  <div class="relative w-72">
-                    <i
-                      class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"
-                    ></i>
-                    <input
-                      id="donViCSDLSearchInput"
-                      type="text"
-                      placeholder="Tìm theo tiêu chí..."
-                      oninput="onTableStateChange()"
-                      class="w-full pl-9 pr-3 py-2 rounded-md border border-slate-200 bg-slate-50/50 placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-400 focus-visible:bg-white transition-all text-xs font-medium"
-                    />
-                  </div>
-                </div>  
-          ${listItems
+              <div class="relative w-72">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                <input
+                  id="donViCSDLSearchInput"
+                  type="text"
+                  placeholder="Tìm theo tiêu chí..."
+                  oninput="onTableStateChange()"
+                  class="w-full pl-9 pr-3 py-2 rounded-md border border-slate-200 bg-slate-50/50 placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-400 focus-visible:bg-white transition-all text-xs font-medium"
+                />
+              </div>
+            </div>  
+            ${listItems
                 .map((item) => {
                     const per = Math.round((item.passed / TOTAL_CSDL) * 100);
                     return `
-                <div class="p-3 rounded-xl bg-slate-50 hover:bg-white border border-slate-100 hover:border-teal-400 hover:shadow-sm transition-all flex items-center justify-between gap-4 relative group/item">
-                  <div class="flex-1">
-                    <p class="text-xs font-bold text-slate-700 leading-snug">${item.q}</p>
-                    <div class="flex items-center gap-2 mt-1.5">
-                      <span class="text-[10px] font-bold text-slate-400">Đáp ứng: ${item.passed}/${TOTAL_CSDL}</span>
-                      <span class="text-[10px] font-bold text-teal-600">(${per}%)</span>
+                    <div class="p-3 rounded-xl bg-slate-50 hover:bg-white border border-slate-100 hover:border-teal-400 hover:shadow-sm transition-all flex items-center justify-between gap-4 relative group/item">
+                      <div class="flex-1">
+                        <p class="text-xs font-bold text-slate-700 leading-snug">${item.q}</p>
+                        <div class="flex items-center gap-2 mt-1.5">
+                          <span class="text-[10px] font-bold text-slate-400">Đáp ứng: ${item.passed}/${TOTAL_CSDL}</span>
+                          <span class="text-[10px] font-bold text-teal-600">(${per}%)</span>
+                        </div>
+                      </div>
+                      <button onclick="openMinistryModal('${groupName}', ${item.id})" class="flex-shrink-0 w-7 h-7 bg-white border border-slate-200 text-slate-400 hover:text-teal-600 hover:border-teal-300 rounded-lg flex items-center justify-center transition-all shadow-sm active:scale-90" title="Xem chi tiết bộ ngành">
+                        <i class="fa-solid fa-expand text-xs"></i>
+                      </button>
                     </div>
-                  </div>
-                  <button onclick="openMinistryModal('${groupName}', ${item.id})" class="flex-shrink-0 w-7 h-7 bg-white border border-slate-200 text-slate-400 hover:text-teal-600 hover:border-teal-300 rounded-lg flex items-center justify-center transition-all shadow-sm active:scale-90" title="Xem chi tiết bộ ngành">
-                    <i class="fa-solid fa-expand text-xs"></i>
-                  </button>
-                </div>
-              `;
+                    `;
                 })
                 .join("")}
           </div>
-
         </div>
-      `;
+        `;
 
-        container.appendChild(groupWrapper);
+        // Đẩy card tiêu chí vào vùng chứa bên dưới hàng thống kê tổng quan
+        cardsContainer.appendChild(groupWrapper);
         renderPolarChart(groupName, listItems);
     });
 }

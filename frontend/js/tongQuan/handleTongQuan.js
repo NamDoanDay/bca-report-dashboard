@@ -1,60 +1,175 @@
-// --- 1. KHỞI TẠO DANH MỤC 50 CSDL THỰC TẾ TRẢI DÀI TRONG NĂM 2024 ---
+// --- 1. KHỞI TẠO DANH MỤC 50 CSDL THỰC TẾ ---
 const mock50Databases = [
-    { id: 1, boNganh: "Bộ Công An", chuQuan: "Cục Cảnh sát QLHC về TTXH", csdl: "Cơ sở dữ liệu quốc gia về Dân cư", startDangXD: new Date("2024-01-10"), startDaXong: new Date("2024-05-15") },
-    { id: 2, boNganh: "Bộ Công An", chuQuan: "Cục Cảnh sát Giao thông", csdl: "Cơ sở dữ liệu Đăng ký xe toàn quốc", startDangXD: new Date("2024-01-15"), startDaXong: new Date("2024-06-20") },
-    { id: 3, boNganh: "Bộ Công An", chuQuan: "Cục Cảnh sát QLHC về TTXH", csdl: "Cơ sở dữ liệu Căn cước công dân", startDangXD: new Date("2024-02-01"), startDaXong: new Date("2024-05-10") },
-    { id: 4, boNganh: "Bộ Tư Pháp", chuQuan: "Cục Công nghệ thông tin", csdl: "Cơ sở dữ liệu Hộ tịch điện tử toàn quốc", startDangXD: new Date("2024-02-10"), startDaXong: new Date("2024-07-15") },
-    { id: 5, boNganh: "Bộ Tư Pháp", chuQuan: "Cục Đăng ký quốc gia Giao dịch bảo đảm", csdl: "Cơ sở dữ liệu Giao dịch bảo đảm", startDangXD: new Date("2024-02-20"), startDaXong: new Date("2024-08-05") },
-    { id: 6, boNganh: "Bộ Kế hoạch & Đầu tư", chuQuan: "Cục Quản lý đăng ký kinh doanh", csdl: "Cơ sở dữ liệu quốc gia về Đăng ký doanh nghiệp", startDangXD: new Date("2024-01-05"), startDaXong: new Date("2024-04-30") },
-    { id: 7, boNganh: "Bộ Kế hoạch & Đầu tư", chuQuan: "Cục Quản lý Đấu thầu", csdl: "Hệ thống mạng đấu thầu quốc gia", startDangXD: new Date("2024-03-01"), startDaXong: new Date("2024-09-10") },
-    { id: 8, boNganh: "Bộ Tài Chính", chuQuan: "Tổng cục Thuế", csdl: "Cơ sở dữ liệu quốc gia về Thuế", startDangXD: new Date("2024-01-20"), startDaXong: new Date("2024-06-15") },
-    { id: 9, boNganh: "Bộ Tài Chính", chuQuan: "Tổng cục Hải quan", csdl: "Cơ sở dữ liệu Hải quan tích hợp", startDangXD: new Date("2024-02-15"), startDaXong: new Date("2024-07-25") },
-    { id: 10, boNganh: "Bộ Tài Chính", chuQuan: "Kho bạc Nhà nước", csdl: "Hệ thống thông tin Quản lý Ngân sách và Kho bạc (TABMIS)", startDangXD: new Date("2024-03-10"), startDaXong: new Date("2024-08-20") },
-    { id: 11, boNganh: "Bộ Tài nguyên & Môi trường", chuQuan: "Cục Chuyển đổi số và Dữ liệu TNMT", csdl: "Cơ sở dữ liệu đất đai quốc gia", startDangXD: new Date("2024-03-15"), startDaXong: new Date("2024-11-15") },
-    { id: 12, boNganh: "Bộ Tài nguyên & Môi trường", chuQuan: "Cục Viễn thám quốc gia", csdl: "Cơ sở dữ liệu ảnh viễn thám quốc gia", startDangXD: new Date("2024-04-01"), startDaXong: new Date("2024-10-05") },
-    { id: 13, boNganh: "Bộ Lao động - Thương binh & Xã hội", chuQuan: "Trung tâm Thông tin", csdl: "Cơ sở dữ liệu An sinh xã hội", startDangXD: new Date("2024-04-10"), startDaXong: new Date("2024-09-20") },
-    { id: 14, boNganh: "Bộ Lao động - Thương binh & Xã hội", chuQuan: "Cục Việc làm", csdl: "Cơ sở dữ liệu Người lao động và Việc làm", startDangXD: new Date("2024-05-01"), startDaXong: new Date("2024-12-10") },
-    { id: 15, boNganh: "Bộ Y Tế", chuQuan: "Cục Công nghệ thông tin", csdl: "Cơ sở dữ liệu Hồ sơ sức khỏe điện tử", startDangXD: new Date("2024-02-05"), startDaXong: new Date("2024-08-15") },
-    { id: 16, boNganh: "Bộ Y Tế", chuQuan: "Cục Quản lý Dược", csdl: "Hệ thống cơ sở dữ liệu Dược quốc gia", startDangXD: new Date("2024-03-20"), startDaXong: new Date("2024-09-05") },
-    { id: 17, boNganh: "Bộ Giáo dục & Đào tạo", chuQuan: "Cục Công nghệ thông tin", csdl: "Cơ sở dữ liệu toàn ngành về Giáo dục mầm non và Phổ thông", startDangXD: new Date("2024-01-15"), startDaXong: new Date("2024-06-30") },
-    { id: 18, boNganh: "Bộ Giáo dục & Đào tạo", chuQuan: "Cục Công nghệ thông tin", csdl: "Cơ sở dữ liệu về Giáo dục đại học (HEMIS)", startDangXD: new Date("2024-04-15"), startDaXong: new Date("2024-10-25") },
-    { id: 19, boNganh: "Bộ Giao thông vận tải", chuQuan: "Cục Đường bộ Việt Nam", csdl: "Cơ sở dữ liệu Giấy phép lái xe quốc gia", startDangXD: new Date("2024-02-01"), startDaXong: new Date("2024-06-10") },
-    { id: 20, boNganh: "Bộ Giao thông vận tải", chuQuan: "Cục Đăng kiểm Việt Nam", csdl: "Cơ sở dữ liệu Phương tiện giao thông cơ giới đường bộ", startDangXD: new Date("2024-03-05"), startDaXong: new Date("2024-08-30") },
-    { id: 21, boNganh: "Bộ Thông tin & Truyền thông", chuQuan: "Cục Phát thanh, truyền hình và thông tin điện tử", csdl: "Cơ sở dữ liệu Quản lý thông tin mạng xã hội", startDangXD: new Date("2024-05-10"), startDaXong: new Date("2024-11-20") },
-    { id: 22, boNganh: "Bộ Thông tin & Truyền thông", chuQuan: "Cục Tần số vô tuyến điện", csdl: "Cơ sở dữ liệu Quản lý cấp phép tần số vô tuyến điện", startDangXD: new Date("2024-04-20"), startDaXong: new Date("2024-09-15") },
-    { id: 23, boNganh: "Bộ Nội Vụ", chuQuan: "Trung tâm Thông tin", csdl: "Cơ sở dữ liệu quốc gia về Cán bộ, công chức, viên chức", startDangXD: new Date("2024-02-15"), startDaXong: new Date("2024-07-30") },
-    { id: 24, boNganh: "Bộ Nội Vụ", chuQuan: "Cục Văn thư và Lưu trữ nhà nước", csdl: "Hệ thống quản lý tài liệu lưu trữ điện tử", startDangXD: new Date("2024-06-01"), startDaXong: new Date("2024-12-15") },
-    { id: 25, boNganh: "Bộ Xây Dựng", chuQuan: "Trung tâm Thông tin", csdl: "Cơ sở dữ liệu quốc gia về Hoạt động xây dựng", startDangXD: new Date("2024-05-15"), startDaXong: new Date("2024-11-05") },
-    { id: 26, boNganh: "Bộ Nông nghiệp & Phát triển nông thôn", chuQuan: "Cục Trồng trọt", csdl: "Cơ sở dữ liệu Mã số vùng trồng quốc gia", startDangXD: new Date("2024-04-10"), startDaXong: new Date("2024-10-10") },
-    { id: 27, boNganh: "Bộ Nông nghiệp & Phát triển nông thôn", chuQuan: "Cục Chăn nuôi", csdl: "Cơ sở dữ liệu Đăng ký thức ăn chăn nuôi", startDangXD: new Date("2024-06-15"), startDaXong: null },
-    { id: 28, boNganh: "Bộ Văn hóa, Thể thao & Du lịch", chuQuan: "Cục Du lịch Quốc gia Việt Nam", csdl: "Cơ sở dữ liệu Cơ sở lưu trú du lịch", startDangXD: new Date("2024-05-20"), startDaXong: new Date("2024-12-01") },
-    { id: 29, boNganh: "Bộ Công Thương", chuQuan: "Cục Thương mại điện tử và Kinh tế số", csdl: "Cơ sở dữ liệu Doanh nghiệp Thương mại điện tử", startDangXD: new Date("2024-04-05"), startDaXong: new Date("2024-09-30") },
-    { id: 30, boNganh: "Bộ Tư Pháp", chuQuan: "Cục Lý lịch tư pháp quốc gia", csdl: "Cơ sở dữ liệu Lý lịch tư pháp", startDangXD: new Date("2024-03-25"), startDaXong: new Date("2024-08-25") },
-    { id: 31, boNganh: "Bảo hiểm Xã hội Việt Nam", chuQuan: "Trung tâm Công nghệ thông tin", csdl: "Cơ sở dữ liệu quốc gia về Bảo hiểm", startDangXD: new Date("2024-01-01"), startDaXong: new Date("2024-04-15") },
-    { id: 32, boNganh: "Ngân hàng Nhà nước Việt Nam", chuQuan: "Cục Công nghệ thông tin", csdl: "Cơ sở dữ liệu thông tin tín dụng khách hàng vay", startDangXD: new Date("2024-02-15"), startDaXong: new Date("2024-07-10") },
-    { id: 33, boNganh: "Thanh tra Chính phủ", chuQuan: "Trung tâm Thông tin", csdl: "Cơ sở dữ liệu quốc gia về Khiếu nại, Tố cáo", startDangXD: new Date("2024-06-01"), startDaXong: null },
-    { id: 34, boNganh: "Thanh tra Chính phủ", chuQuan: "Cục Bản kê khai", csdl: "Cơ sở dữ liệu quốc gia về Kiểm soát tài sản, thu nhập", startDangXD: new Date("2024-07-10"), startDaXong: null },
-    { id: 35, boNganh: "Bộ Ngoại Giao", chuQuan: "Cục Lãnh sự", csdl: "Cơ sở dữ liệu Cấp phát hộ chiếu ngoại giao, công vụ", startDangXD: new Date("2024-03-10"), startDaXong: new Date("2024-08-12") },
-    { id: 36, boNganh: "Bộ Ngoại Giao", chuQuan: "Cục Lãnh sự", csdl: "Hệ thống thông tin Quản lý Xuất nhập cảnh ngành Ngoại giao", startDangXD: new Date("2024-05-05"), startDaXong: new Date("2024-11-10") },
-    { id: 37, boNganh: "Bộ Khoa học & Công nghệ", chuQuan: "Cục Sở hữu trí tuệ", csdl: "Cơ sở dữ liệu quốc gia về Sở hữu công nghiệp", startDangXD: new Date("2024-04-12"), startDaXong: new Date("2024-10-18") },
-    { id: 38, boNganh: "Ủy ban Dân tộc", chuQuan: "Trung tâm Thông tin", csdl: "Cơ sở dữ liệu về Thống kê các dân tộc thiểu số", startDangXD: new Date("2024-08-01"), startDaXong: null },
-    { id: 39, boNganh: "Văn phòng Chính phủ", chuQuan: "Cổng Dịch vụ công Quốc gia", csdl: "Cơ sở dữ liệu theo dõi trạng thái hồ sơ Dịch vụ công", startDangXD: new Date("2024-01-20"), startDaXong: new Date("2024-05-30") },
-    { id: 40, boNganh: "Bộ Công An", chuQuan: "Cục Cảnh sát PCCC và CNCH", csdl: "Cơ sở dữ liệu Thống kê An toàn phòng cháy chữa cháy", startDangXD: new Date("2024-07-20"), startDaXong: null },
-    { id: 41, boNganh: "Bộ Tư Pháp", chuQuan: "Cục Quốc tịch, chứng thực", csdl: "Cơ sở dữ liệu Quản lý Quốc tịch Việt Nam", startDangXD: new Date("2024-05-15"), startDaXong: new Date("2024-10-30") },
-    { id: 42, boNganh: "Bộ Tài Chính", chuQuan: "Cục Quản lý giá", csdl: "Cơ sở dữ liệu quốc gia về Giá công sản và hàng hóa", startDangXD: new Date("2024-04-18"), startDaXong: new Date("2024-09-25") },
-    { id: 43, boNganh: "Bộ Y Tế", chuQuan: "Cục Quản lý Khám chữa bệnh", csdl: "Cơ sở dữ liệu Giấy phép hành nghề Y - Dược toàn quốc", startDangXD: new Date("2024-03-01"), startDaXong: new Date("2024-08-10") },
-    { id: 44, boNganh: "Bộ Giao thông vận tải", chuQuan: "Cục Hàng hải Việt Nam", csdl: "Hệ thống thông tin Thuyền viên và Tàu biển", startDangXD: new Date("2024-05-02"), startDaXong: new Date("2024-10-15") },
-    { id: 45, boNganh: "Bộ Xây Dựng", chuQuan: "Cục Quản lý nhà và Thị trường BĐS", csdl: "Cơ sở dữ liệu về Nhà ở và Thị trường bất động sản", startDangXD: new Date("2024-06-20"), startDaXong: null },
-    { id: 46, boNganh: "Bộ Thông tin & Truyền thông", chuQuan: "Cục Viễn thông", csdl: "Cơ sở dữ liệu Quản lý thông tin thuê bao di động", startDangXD: new Date("2024-02-10"), startDaXong: new Date("2024-07-05") },
-    { id: 47, boNganh: "Bộ Tài nguyên & Môi trường", chuQuan: "Cục Quản lý tài nguyên nước", csdl: "Cơ sở dữ liệu Cấp phép tài nguyên nước quốc gia", startDangXD: new Date("2024-07-01"), startDaXong: null },
-    { id: 48, boNganh: "Bộ Công Thương", chuQuan: "Cục Điều tiết điện lực", csdl: "Cơ sở dữ liệu Quản lý cấp phép hoạt động điện lực", startDangXD: new Date("2024-05-12"), startDaXong: new Date("2024-11-15") },
-    { id: 49, boNganh: "Bộ Giáo dục & Đào tạo", chuQuan: "Cục Quản lý chất lượng", csdl: "Cơ sở dữ liệu Văn bằng chứng chỉ hệ thống giáo dục", startDangXD: new Date("2024-03-15"), startDaXong: new Date("2024-09-10") },
-    { id: 50, boNganh: "Bộ Công An", chuQuan: "Cục Cảnh sát điều tra tội phạm về ma túy", csdl: "Cơ sở dữ liệu Quản lý đối tượng sử dụng ma túy", startDangXD: new Date("2024-09-01"), startDaXong: null }
+    {
+        id: 1,
+        boNganh: "Bộ Công An",
+        chuQuan: "Cục Cảnh sát QLHC về TTXH",
+        csdl: "Cơ sở dữ liệu quốc gia về Dân cư",
+        startDangXD: new Date("2024-01-10"),
+        startDaXong: new Date("2024-05-15"),
+        phanMem: "Hệ thống Quản lý Dân cư Quốc gia V2",
+        linkPhanMem: "https://dancu.moi.gov.vn",
+        tongSoBanGhi: 99244163,
+        duLieuDongBo: 98450210,
+        phanTratDongBo: 99.2
+    },
+    {
+        id: 2,
+        boNganh: "Bộ Công An",
+        chuQuan: "Cục Cảnh sát Giao thông",
+        csdl: "Cơ sở dữ liệu Đăng ký xe toàn quốc",
+        startDangXD: new Date("2024-01-15"),
+        startDaXong: new Date("2024-06-20"),
+        phanMem: "Phần mềm Đăng ký & Quản lý Phương tiện Giao thông",
+        linkPhanMem: "https://dangkyxe.csgt.gov.vn",
+        tongSoBanGhi: 6758015,
+        duLieuDongBo: 6420115,
+        phanTratDongBo: 95.0
+    },
+    {
+        id: 3,
+        boNganh: "Bộ Công An",
+        chuQuan: "Cục Cảnh sát QLHC về TTXH",
+        csdl: "Cơ sở dữ liệu Căn cước công dân",
+        startDangXD: new Date("2024-02-01"),
+        startDaXong: new Date("2024-05-10"),
+        phanMem: "Hệ thống Cấp & Quản lý Thẻ Căn cước gắn chip",
+        linkPhanMem: "https://cancuoc.bca.gov.vn",
+        tongSoBanGhi: 83120400,
+        duLieuDongBo: 83120400,
+        phanTratDongBo: 100
+    },
+    {
+        id: 4,
+        boNganh: "Bộ Tư Pháp",
+        chuQuan: "Cục Công nghệ thông tin",
+        csdl: "Cơ sở dữ liệu Hộ tịch điện tử toàn quốc",
+        startDangXD: new Date("2024-02-10"),
+        startDaXong: new Date("2024-07-15"),
+        phanMem: "Hệ thống Đăng ký & Quản lý Hộ tịch dùng chung",
+        linkPhanMem: "https://hotich.moj.gov.vn",
+        tongSoBanGhi: 49346000,
+        duLieuDongBo: 45102300,
+        phanTratDongBo: 91.4
+    },
+    {
+        id: 27,
+        boNganh: "Bộ Nông nghiệp & Phát triển nông thôn",
+        chuQuan: "Cục Chăn nuôi",
+        csdl: "Cơ sở dữ liệu Đăng ký thức ăn chăn nuôi",
+        startDangXD: new Date("2024-06-15"),
+        startDaXong: null,
+        tienDoHoanThanh: 65,
+        khoKhanVuongMac: "Một số doanh nghiệp nhập khẩu chưa thành thạo khai báo biểu mẫu trực tuyến.",
+        duKienXong: "15/12/2026"
+    },
+    {
+        id: 33,
+        boNganh: "Thanh tra Chính phủ",
+        chuQuan: "Trung tâm Thông tin",
+        csdl: "Cơ sở dữ liệu quốc gia về Khiếu nại, Tố cáo",
+        startDangXD: new Date("2024-06-01"),
+        startDaXong: null,
+        tienDoHoanThanh: 45,
+        khoKhanVuongMac: "Hạ tầng kết nối mạng nội bộ của một số địa phương chưa đồng bộ tiêu chuẩn mã hóa bảo mật.",
+        duKienXong: "30/03/2027"
+    },
+    {
+        id: 34,
+        boNganh: "Thanh tra Chính phủ",
+        chuQuan: "Cục Bản kê khai",
+        csdl: "Cơ sở dữ liệu quốc gia về Kiểm soát tài sản, thu nhập",
+        startDangXD: new Date("2024-07-10"),
+        startDaXong: null,
+        tienDoHoanThanh: 30,
+        khoKhanVuongMac: "Vướng mắc cơ chế xác minh thông tin tài khoản ngân hàng thương mại theo thời gian thực.",
+        duKienXong: "30/06/2027"
+    },
+    {
+        id: 38,
+        boNganh: "Ủy ban Dân tộc",
+        chuQuan: "Trung tâm Thông tin",
+        csdl: "Cơ sở dữ liệu về Thống kê các dân tộc thiểu số",
+        startDangXD: null,
+        startDaXong: null,
+        lyDoChuaXD: "Vướng mắc quy định phân định danh mục biểu mẫu thống kê dùng chung",
+        giaiPhap: "Đang xin ý kiến phối hợp của Tổng cục Thống kê để đồng bộ thông số",
+        duKienKhoiCong: "Quý I/2027"
+    },
+    {
+        id: 40,
+        boNganh: "Bộ Công An",
+        chuQuan: "Cục Cảnh sát PCCC và CNCH",
+        csdl: "Cơ sở dữ liệu Thống kê An toàn phòng cháy chữa cháy",
+        startDangXD: null,
+        startDaXong: null,
+        lyDoChuaXD: "Chưa phê duyệt được báo cáo nghiên cứu khả thi (Feasibility Study) hạ tầng phần cứng",
+        giaiPhap: "Đang hoàn thiện hồ sơ thẩm định trình Bộ phê duyệt ngân sách đầu tư công",
+        duKienKhoiCong: "Tháng 11/2026"
+    },
+    {
+        id: 45,
+        boNganh: "Bộ Xây Dựng",
+        chuQuan: "Cục Quản lý nhà và Thị trường BĐS",
+        csdl: "Cơ sở dữ liệu về Nhà ở và Thị trường bất động sản",
+        startDangXD: null,
+        startDaXong: null,
+        lyDoChuaXD: "Đang xây dựng lại chuẩn kết nối API chia sẻ dữ liệu liên thông với Bộ Tài nguyên Môi trường",
+        giaiPhap: "Thành lập tổ công tác liên ngành xử lý xung đột dữ liệu địa chính",
+        duKienKhoiCong: "Quý II/2027"
+    },
+    {
+        id: 47,
+        boNganh: "Bộ Tài nguyên & Môi trường",
+        chuQuan: "Cục Quản lý tài nguyên nước",
+        csdl: "Cơ sở dữ liệu Cấp phép tài nguyên nước quốc gia",
+        startDangXD: null,
+        startDaXong: null,
+        lyDoChuaXD: "Thiếu nhân lực chuyên trách công nghệ thông tin tại Cục chuyên ngành",
+        giaiPhap: "Thuê dịch vụ công nghệ thông tin trọn gói từ nhà mạng đối tác",
+        duKienKhoiCong: "Tháng 02/2027"
+    },
+    {
+        id: 50,
+        boNganh: "Bộ Công An",
+        chuQuan: "Cục Cảnh sát điều tra tội phạm về ma túy",
+        csdl: "Cơ sở dữ liệu Quản lý đối tượng sử dụng ma túy",
+        startDangXD: null,
+        startDaXong: null,
+        lyDoChuaXD: "Cần đảm bảo tiêu chuẩn an ninh, bảo mật cấp độ 4 trước khi thiết lập máy chủ",
+        giaiPhap: "Đợi Cục An ninh mạng kiểm tra và cấp chứng nhận an toàn hệ thống thông tin",
+        duKienKhoiCong: "Quý III/2027"
+    }
 ];
+
+// Giả lập dữ liệu cho đủ 50 bản ghi
+for (let i = 5; i <= 50; i++) {
+    if (!mock50Databases.find(d => d.id === i)) {
+        mock50Databases.push({
+            id: i,
+            boNganh: i % 2 === 0 ? "Bộ Tài Chính" : "Bộ Y Tế",
+            chuQuan: i % 2 === 0 ? "Tổng cục Thuế" : "Cục Công nghệ thông tin",
+            csdl: `Cơ sở dữ liệu giả lập phân hệ số ${i}`,
+            startDangXD: new Date("2024-02-15"),
+            startDaXong: new Date("2024-07-20"),
+            phanMem: `Phần mềm quản lý chuyên ngành v${i}.0`,
+            linkPhanMem: "https://mof.gov.vn",
+            tongSoBanGhi: 1350000 * i,
+            duLieuDongBo: 1250000 * i,
+            phanTratDongBo: 95.5
+        });
+    }
+}
 
 let pieChartInstance = null;
 let barChartInstance = null;
 let currentTab = 'tongquan';
+
+// --- BIẾN TRẠNG THÁI TRUNG TÂM CỦA BẢNG CHI TIẾT GỘP ---
+let currentTableStatus = "Đã xây dựng";   // THAY ĐỔI: Mặc định trực tiếp là "Đã xây dựng" thay vì "all"
+let currentTableDatePoint = new Date();
+let currentTableDateLabel = "Hiện tại";
+let currentFilteredListCombined = [];
 
 // --- 2. HÀM ĐỒNG BỘ DATE PICKER ---
 function syncDatePicker(input, type) {
@@ -79,7 +194,7 @@ function getStatusAtDate(db, targetDate) {
     return "Chưa xây dựng";
 }
 
-// --- 4. HÀM TÌM KIẾM THEO KHOẢNG THỜI GIAN (TỪ NGÀY -> ĐẾN NGÀY) ---
+// --- 4. HÀM TÌM KIẾM THEO KHOẢNG THỜI GIAN ---
 function executeTimeSearch() {
     const startStr = document.getElementById("startDatePicker").value;
     const endStr = document.getElementById("endDatePicker").value;
@@ -96,7 +211,6 @@ function executeTimeSearch() {
     let timeSteps = [];
     let curr = new Date(startDate);
 
-    // Tạo mảng các mốc thời gian cách nhau từng tháng từ khoảng Từ Ngày -> Đến Ngày
     while (curr <= endDate) {
         timeSteps.push(new Date(curr));
         labels.push(formatDateToString(curr));
@@ -105,7 +219,7 @@ function executeTimeSearch() {
 
     let dataDaXayDung = [];
     let dataDangXayDung = [];
-    let dataChuaXayDung = [];
+    let dataAnChuaXayDung = [];
 
     timeSteps.forEach((datePoint) => {
         let countDa = 0, countDang = 0, countChua = 0;
@@ -117,35 +231,30 @@ function executeTimeSearch() {
         });
         dataDaXayDung.push(countDa);
         dataDangXayDung.push(countDang);
-        dataChuaXayDung.push(countChua);
+        dataAnChuaXayDung.push(countChua);
     });
 
     let lastIdx = timeSteps.length - 1;
     if (lastIdx < 0) return;
 
-    // Đổ dữ liệu của mốc thời gian cuối (Đến ngày) lên bộ đếm Thẻ Card của index2.html
     document.getElementById("totalCsdlCount").innerText = mock50Databases.length;
     document.getElementById("countDaXayDung").innerText = dataDaXayDung[lastIdx];
     document.getElementById("countDangXayDung").innerText = dataDangXayDung[lastIdx];
-    document.getElementById("countChuaXayDung").innerText = dataChuaXayDung[lastIdx];
+    document.getElementById("countChuaXayDung").innerText = dataAnChuaXayDung[lastIdx];
 
-    // Vẽ lại Biểu đồ tròn và Biểu đồ cột động
-    renderPieChart(dataDaXayDung[lastIdx], dataDangXayDung[lastIdx], dataChuaXayDung[lastIdx]);
-    renderMultipleBarChart(labels, timeSteps, dataDaXayDung, dataDangXayDung, dataChuaXayDung);
+    renderPieChart(dataDaXayDung[lastIdx], dataDangXayDung[lastIdx], dataAnChuaXayDung[lastIdx]);
+    renderMultipleBarChart(labels, timeSteps, dataDaXayDung, dataDangXayDung, dataAnChuaXayDung);
+
+    // Giữ nguyên bộ lọc khi đổi khoảng thời gian tìm kiếm
+    currentTableDatePoint = timeSteps[lastIdx];
+    toggleExpandCombined(currentTableStatus, 'pie');
 
     if (currentTab === 'tieuchi') {
         renderCriteriaTable();
     }
 }
-// Quản lý trạng thái dữ liệu đang hiển thị để hỗ trợ Live Search độc lập
-let currentRow1Status = null;
-let currentFilteredListRow1 = [];
 
-let currentRow2Status = null;
-let currentRow2DatePoint = null;
-let currentFilteredListRow2 = [];
-
-// --- 5. ĐIỀU KHIỂN VÀ SỰ KIỆN CLICK PIE CHART (HÀNG 1) ---
+// --- 5. ĐIỀU KHIỂN PIE CHART ---
 function renderPieChart(da, dang, chua) {
     const ctx = document.getElementById("csdlPieChart").getContext("2d");
     if (pieChartInstance) pieChartInstance.destroy();
@@ -165,7 +274,7 @@ function renderPieChart(da, dang, chua) {
                 if (activeElements && activeElements.length > 0) {
                     const dataIndex = activeElements[0].index;
                     const labelStatus = pieChartInstance.data.labels[dataIndex];
-                    toggleExpandRow1(labelStatus);
+                    toggleExpandCombined(labelStatus, 'pie');
                 }
             },
             plugins: {
@@ -181,58 +290,7 @@ function renderPieChart(da, dang, chua) {
     });
 }
 
-function toggleExpandRow1(status) {
-    const panel = document.getElementById("panelDetailRow1");
-    const icon = document.getElementById("iconTogglePie");
-    const searchInput = document.getElementById("searchRow1");
-
-    if (!panel.classList.contains("hidden") && currentRow1Status === status) {
-        closeExpandRow1();
-        return;
-    }
-
-    currentRow1Status = status;
-    panel.classList.remove("hidden");
-    icon.className = "fa-solid fa-angles-left text-xs";
-    searchInput.value = ""; // Reset ô tìm kiếm khi đổi bộ lọc
-
-    document.getElementById("panelTitleRow1").textContent = `Trạng thái: ${status === 'all' ? 'Tất cả CSDL' : status}`;
-    document.getElementById("panelSubtitleRow1").textContent = `Thời điểm: Hiện tại`;
-
-    // Tạo tập dữ liệu gốc cho Row 1
-    currentFilteredListRow1 = [...mock50Databases].map(item => ({ ...item, status: getStatusAtDate(item, new Date()) }));
-    if (status !== "all") {
-        currentFilteredListRow1 = currentFilteredListRow1.filter(item => item.status === status);
-    }
-
-    executeSearchRow1();
-}
-
-function handleSearchRow1() {
-    executeSearchRow1();
-}
-
-function executeSearchRow1() {
-    const keyword = document.getElementById("searchRow1").value.trim().toLowerCase();
-    const tbody = document.getElementById("tableBodyRow1");
-
-    const results = currentFilteredListRow1.filter(item =>
-        item.boNganh.toLowerCase().includes(keyword) ||
-        item.chuQuan.toLowerCase().includes(keyword) ||
-        item.csdl.toLowerCase().includes(keyword)
-    );
-
-    renderTableRows(tbody, results);
-}
-
-function closeExpandRow1() {
-    document.getElementById("panelDetailRow1").classList.add("hidden");
-    document.getElementById("iconTogglePie").className = "fa-solid fa-angles-right text-xs";
-    currentRow1Status = null;
-}
-
-
-// --- 6. ĐIỀU KHIỂN VÀ SỰ KIỆN CLICK MULTIPLE BAR CHART (HÀNG 2) ---
+// --- 6. ĐIỀU KHIỂN MULTIPLE BAR CHART ---
 function renderMultipleBarChart(labels, timeSteps, daArr, dangArr, chuaArr) {
     const ctx = document.getElementById("statusBarChart").getContext("2d");
     if (barChartInstance) barChartInstance.destroy();
@@ -250,7 +308,11 @@ function renderMultipleBarChart(labels, timeSteps, daArr, dangArr, chuaArr) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: { y: { beginAtZero: true, max: 55 } },
+            // scales: { y: { beginAtZero: true, max: 55 } },
+            scales: {
+                y: { ticks: { font: { size: 9 } } },
+                x: { ticks: { font: { size: 9 } } }
+            },
             plugins: {
                 legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } }
             },
@@ -265,88 +327,201 @@ function renderMultipleBarChart(labels, timeSteps, daArr, dangArr, chuaArr) {
 
                     let selectedStatus = datasetLabel.includes("Đã") ? "Đã xây dựng" : datasetLabel.includes("Đang") ? "Đang xây dựng" : "Chưa xây dựng";
 
-                    toggleExpandRow2(selectedStatus, targetDate, targetLabel);
+                    toggleExpandCombined(selectedStatus, 'bar', targetDate, targetLabel);
                 }
             },
         },
     });
 }
 
-function toggleExpandRow2(status, datePoint, dateLabel) {
-    const barContainer = document.getElementById("barChartContainer");
-    const panel = document.getElementById("panelDetailRow2");
-    const searchInput = document.getElementById("searchRow2");
+// --- 7. CẤU TRÚC HEADER ĐỘNG CHO BẢNG GỘP TRUNG TÂM ---
+function renderTableHeaderDynamic(selector, status) {
+    const thead = document.querySelector(selector);
+    if (!thead) return;
 
-    currentRow2Status = status;
-    currentRow2DatePoint = datePoint;
+    let headerHTML = `
+        <tr class="border-b border-slate-200 bg-slate-50 text-slate-500 font-bold sticky top-0 z-10 text-[11px]">
+            <th class="p-2 text-center w-8">STT</th>
+            <th class="p-2 w-20">Bộ ngành</th>
+            <th class="p-2 w-20">Chủ quan</th>
+            <th class="p-2 w-24">Tên Cơ sở dữ liệu</th>
+    `;
 
-    barContainer.className = "col-span-1 lg:col-span-3 transition-all duration-300 relative group";
-    panel.classList.remove("hidden");
-    searchInput.value = ""; // Reset ô tìm kiếm
+    if (status === "Đã xây dựng") {
+        headerHTML += `
+            <th class="p-2 w-20">Phần mềm / Link</th>
+            <th class="p-2 text-right w-20">Tổng số bản ghi</th>
+            <th class="p-2 text-right w-20">Bản ghi đồng bộ</th>
+            <th class="p-2 text-center w-16">% Đ.Bộ</th>
+        `;
+    } else if (status === "Đang xây dựng") {
+        headerHTML += `
+            <th class="p-2 text-center w-20">Tiến độ</th>
+            <th class="p-2 w-40">Khó khăn / Vướng mắc</th>
+            <th class="p-2 text-center w-24">Dự kiến xong</th>
+        `;
+    } else if (status === "Chưa xây dựng") {
+        headerHTML += `
+            <th class="p-2 w-40">Lý do tồn đọng / Giải pháp</th>
+            <th class="p-2 text-center w-24">Dự kiến k.công</th>
+        `;
+    } else {
+        headerHTML += `<th class="p-2 text-center w-20">Hiện trạng</th>`;
+    }
 
-    document.getElementById("panelTitleRow2").textContent = `Tiến độ: ${status}`;
-    document.getElementById("panelSubtitleRow2").textContent = `Mốc: ${dateLabel}`;
-
-    currentFilteredListRow2 = mock50Databases.filter(db => getStatusAtDate(db, datePoint) === status);
-
-    executeSearchRow2();
+    headerHTML += `</tr>`;
+    thead.innerHTML = headerHTML;
 }
 
-function handleSearchRow2() {
-    executeSearchRow2();
+// --- 8. LOGIC ĐIỀU HƯỚNG TẬP TRUNG CHO BẢNG GỘP ---
+function toggleExpandCombined(status, source, datePoint = null, dateLabel = null) {
+    currentTableStatus = status;
+
+    if (source === 'pie') {
+        const endStr = document.getElementById("endDatePicker")?.value;
+        if (!datePoint) {
+            currentTableDatePoint = endStr ? new Date(endStr) : new Date();
+        }
+        document.getElementById("panelSubtitleCombined").innerHTML = `
+            <span class="inline-flex items-center gap-1 text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full font-bold border border-teal-200">
+                <i class="fa-solid fa-clock-rotate-left text-[10px]"></i> Thời điểm: Hiện tại
+            </span>`;
+    } else if (source === 'bar' && datePoint && dateLabel) {
+        currentTableDatePoint = datePoint;
+        currentTableDateLabel = dateLabel;
+
+        document.getElementById("panelSubtitleCombined").innerHTML = `
+            <span class="inline-flex items-center gap-1 text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full font-bold border border-blue-200">
+                <i class="fa-regular fa-calendar-check text-[10px]"></i> Mốc lịch sử: ${dateLabel}
+            </span>`;
+    }
+
+    document.getElementById("panelTitleCombined").textContent = `Trạng thái: ${status === 'all' ? 'Tất cả CSDL' : status}`;
+    updateCombinedTable();
 }
 
-function executeSearchRow2() {
-    const keyword = document.getElementById("searchRow2").value.trim().toLowerCase();
-    const tbody = document.getElementById("tableBodyRow2");
+function updateCombinedTable() {
+    renderTableHeaderDynamic("#tableHeaderCombined", currentTableStatus);
 
-    const results = currentFilteredListRow2.filter(item =>
+    currentFilteredListCombined = [...mock50Databases].map(item => ({
+        ...item,
+        status: getStatusAtDate(item, currentTableDatePoint)
+    }));
+
+    if (currentTableStatus !== "all") {
+        currentFilteredListCombined = currentFilteredListCombined.filter(item => item.status === currentTableStatus);
+    }
+
+    executeSearchCombined();
+}
+
+function handleSearchCombined() {
+    executeSearchCombined();
+}
+
+function executeSearchCombined() {
+    const keyword = document.getElementById("searchCombined").value.trim().toLowerCase();
+    const tbody = document.getElementById("tableBodyCombined");
+
+    const results = currentFilteredListCombined.filter(item =>
         item.boNganh.toLowerCase().includes(keyword) ||
         item.chuQuan.toLowerCase().includes(keyword) ||
         item.csdl.toLowerCase().includes(keyword)
     );
 
-    renderTableRows(tbody, results, currentRow2Status);
+    renderTableRows(tbody, results, currentTableStatus === "all" ? null : currentTableStatus);
 }
 
-function closeExpandRow2() {
-    const barContainer = document.getElementById("barChartContainer");
-    const panel = document.getElementById("panelDetailRow2");
-
-    panel.classList.add("hidden");
-    barContainer.className = "col-span-1 lg:col-span-6 transition-all duration-300 relative group";
-    currentRow2Status = null;
-    currentRow2DatePoint = null;
-}
-
-
-// --- HÀM TRỢ GIÚP RENDER CORE TABLE TRÁNH LẶP CODE (Đã bổ sung Đơn vị chủ quản) ---
+// --- 9. HÀM CORE RENDER HÀNG DỮ LIỆU ĐA DẠNG ---
 function renderTableRows(tbody, list, fixedStatus = null) {
     tbody.innerHTML = "";
+    let colSpanCount = fixedStatus === "Đã xây dựng" ? 8 : (fixedStatus === "Đang xây dựng" || fixedStatus === "Chưa xây dựng" ? 7 : 5);
+
     if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 bg-slate-50/50">Không tìm thấy dữ liệu phù hợp.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="${colSpanCount}" class="p-4 text-center text-slate-400 bg-slate-50/50">Không tìm thấy dữ liệu phù hợp.</td></tr>`;
         return;
     }
-    list.forEach((row, idx) => {
-        let currentStatus = fixedStatus || row.status || getStatusAtDate(row, new Date());
-        let badgeColor = currentStatus === "Đã xây dựng" ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
-            currentStatus === "Đang xây dựng" ? "bg-amber-50 text-amber-700 border-amber-200" :
-                "bg-rose-50 text-rose-700 border-rose-200";
 
-        tbody.innerHTML += `
-        <tr class="hover:bg-slate-50 transition-colors border-b border-slate-100">
-          <td class="p-2 text-center font-mono font-bold text-slate-400">${idx + 1}</td>
-          <td class="p-2 font-bold text-slate-800 text-[10px] truncate max-w-[85px]" title="${row.boNganh}">${row.boNganh}</td>
-          <td class="p-2 text-slate-500 text-[10px] leading-tight font-medium max-w-[110px] truncate" title="${row.chuQuan}">${row.chuQuan}</td>
-          <td class="p-2 text-blue-950 font-semibold leading-tight text-[10.5px]">${row.csdl}</td>
-          <td class="p-2 text-center">
-            <span class="px-1.5 py-0.5 rounded border text-[9px] font-bold whitespace-nowrap ${badgeColor}">${currentStatus}</span>
-          </td>
-        </tr>`;
+    let rowsHTML = "";
+    list.forEach((row, idx) => {
+        let currentStatus = fixedStatus || row.status;
+
+        let rowHTML = `
+            <tr class="hover:bg-slate-50 transition-colors border-b border-slate-100 text-xs">
+              <td class="p-2 text-center font-mono font-bold text-slate-400">${idx + 1}</td>
+              <td class="p-2 font-bold text-slate-800 text-[10px] max-w-[85px]" title="${row.boNganh}">${row.boNganh}</td>
+              <td class="p-2 text-slate-500 text-[10px] leading-tight font-medium max-w-[110px]" title="${row.chuQuan}">${row.chuQuan}</td>
+              <td class="p-2 text-blue-950 font-semibold leading-tight text-[10.5px] whitespace-normal">${row.csdl}</td>
+        `;
+
+        if (currentStatus === "Đã xây dựng") {
+            rowHTML += `
+                <td class="p-2">
+                    <div class="font-bold text-slate-700 text-[10px] max-w-[120px]" title="${row.phanMem || ''}">${row.phanMem || 'N/A'}</div>
+                    ${row.linkPhanMem ? `
+                        <a href="${row.linkPhanMem}" target="_blank" class="text-[9px] text-teal-600 hover:underline font-extrabold flex items-center gap-0.5 mt-0.5">
+                            <i class="fa-solid fa-square-arrow-up-right text-[8px]"></i> Hệ thống Link
+                        </a>
+                    ` : '<span class="text-[9px] text-slate-400 block mt-0.5">Không có link</span>'}
+                </td>
+                <td class="p-2 text-right font-mono font-bold text-slate-700 text-[11px]">
+                    ${row.tongSoBanGhi ? row.tongSoBanGhi.toLocaleString('vi-VN') : '0'}
+                </td>
+                <td class="p-2 text-right font-mono text-slate-500 text-[11px]">
+                    ${row.duLieuDongBo ? row.duLieuDongBo.toLocaleString('vi-VN') : '0'}
+                </td>
+                <td class="p-2 text-center">
+                    <span class="px-1 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-bold rounded-sm font-mono">${row.phanTratDongBo ?? 100}%</span>
+                </td>
+            `;
+        } else if (currentStatus === "Đang xây dựng") {
+            let progress = row.tienDoHoanThanh || 0;
+            rowHTML += `
+                <td class="p-2 text-center">
+                    <div class="flex items-center gap-1 justify-center">
+                        <div class="w-12 bg-slate-100 h-1 rounded-full overflow-hidden shrink-0">
+                            <div class="bg-amber-400 h-full rounded-full" style="width: ${progress}%"></div>
+                        </div>
+                        <span class="font-mono font-bold text-slate-700 text-[10px]">${progress}%</span>
+                    </div>
+                </td>
+                <td class="p-2 text-slate-600 text-[10px] leading-tight whitespace-normal font-medium">
+                    ${row.khoKhanVuongMac ? `<span class="text-amber-600 font-semibold flex items-start gap-0.5"><i class="fa-solid fa-triangle-exclamation text-[9px] mt-0.5 shrink-0"></i> ${row.khoKhanVuongMac}</span>` : '<span class="text-slate-400 italic">Không có ghi nhận vướng mắc</span>'}
+                </td>
+                <td class="p-2 text-center font-mono text-slate-500 text-[10px]">
+                    <i class="fa-regular fa-calendar-days text-[9px] text-slate-400 mr-0.5"></i> ${row.duKienXong || 'Chưa định ngày'}
+                </td>
+            `;
+        } else if (currentStatus === "Chưa xây dựng") {
+            rowHTML += `
+                <td class="p-2">
+                    <div class="text-rose-600 text-[10px] font-bold leading-tight" title="${row.lyDoChuaXD || ''}">
+                        <i class="fa-solid fa-circle-minus text-[8px] mr-1"></i>${row.lyDoChuaXD || 'Chưa có thông tin lý do'}
+                    </div>
+                    ${row.giaiPhap ? `<div class="text-[9px] text-slate-400 italic mt-0.5 whitespace-normal" title="${row.giaiPhap}">G/pháp: ${row.giaiPhap}</div>` : ''}
+                </td>
+                <td class="p-2 text-center font-bold text-amber-600 text-[10px] font-mono">
+                    ${row.duKienKhoiCong || 'Chưa lên lịch'}
+                </td>
+            `;
+        } else {
+            let badgeColor = currentStatus === "Đã xây dựng" ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
+                currentStatus === "Đang xây dựng" ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-rose-50 text-rose-700 border-rose-200";
+            rowHTML += `
+                <td class="p-2 text-center">
+                    <span class="px-1.5 py-0.5 rounded border text-[9px] font-bold whitespace-nowrap ${badgeColor}">${currentStatus}</span>
+                </td>
+            `;
+        }
+
+        rowHTML += `</tr>`;
+        rowsHTML += rowHTML;
     });
+
+    tbody.innerHTML = rowsHTML;
 }
 
-// --- 8. ĐỔ DỮ LIỆU CHO BẢNG TIÊU CHÍ CHI TIẾT (TAB 2) ---
+// --- 10. ĐỔ DỮ LIỆU CÂU HỎI RÀ SOÁT (TAB 2) ---
 function renderCriteriaTable() {
     const tbody = document.getElementById("criteriaTableBody");
     if (!tbody) return;
@@ -354,19 +529,21 @@ function renderCriteriaTable() {
     tbody.innerHTML = "";
 
     let stt = 1;
+    let rowsHTML = "";
     nhomTieuChi.forEach(nhom => {
         for (let i = 1; i <= 2; i++) {
-            tbody.innerHTML += `
-        <tr class="hover:bg-slate-50/80 border-b border-slate-100 transition-colors">
-          <td class="p-3 text-center font-mono text-slate-400">${stt++}</td>
-          <td class="p-3 font-semibold text-slate-700 text-xs">${nhom}</td>
-          <td class="p-3 text-slate-600 text-xs">Nội dung câu hỏi rà soát hiện trạng chi tiết thuộc nhóm tiêu chí ${nhom} mục số ${i}.</td>
-          <td class="p-3 text-center">
-            <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-100">Đạt</span>
-          </td>
-        </tr>`;
+            rowsHTML += `
+                <tr class="hover:bg-slate-50/80 border-b border-slate-100 transition-colors">
+                  <td class="p-3 text-center font-mono text-slate-400">${stt++}</td>
+                  <td class="p-3 font-semibold text-slate-700 text-xs">${nhom}</td>
+                  <td class="p-3 text-slate-600 text-xs">Nội dung câu hỏi rà soát hiện trạng chi tiết thuộc nhóm tiêu chí ${nhom} mục số ${i}.</td>
+                  <td class="p-3 text-center">
+                    <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-100">Đạt</span>
+                  </td>
+                </tr>`;
         }
     });
+    tbody.innerHTML = rowsHTML;
 }
 
 function filterGroups() {
@@ -382,7 +559,7 @@ function filterGroups() {
     });
 }
 
-// --- 9. RUNTIME SETUP ---
+// --- 11. RUNTIME RUN ---
 document.addEventListener("DOMContentLoaded", () => {
     executeTimeSearch();
 });

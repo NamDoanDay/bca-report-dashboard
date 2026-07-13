@@ -20,9 +20,13 @@
         background-color: #f9ffff;
       }
 
+      .bg-section {
+        background: linear-gradient(90deg, #173669, #1b428e, #040c17);
+      }
+
       .scroll-container {
         overflow-y: auto;
-        scrollbar-color: #888888 transparent;
+        scrollbar-color: #0b557a transparent;
         scrollbar-width: thin;
       }
 
@@ -36,7 +40,7 @@
       }
 
       .scroll-container::-webkit-scrollbar-thumb {
-        background-color: #888888;
+        background-color: #0b557a;
         border-radius: 4px;
       }
 
@@ -98,8 +102,10 @@
       .nav-item:hover .nav-node,
       .nav-item.active-tracking .nav-node {
         color: white !important;
-        background-color: #0b557a !important; /* Đổi nền sang xanh đậm */
-        border-color: #0b557a !important;
+        background-color: rgb(
+          13 148 136
+        ) !important; /* Đổi nền sang xanh đậm */
+        border-color: rgb(13 148 136) !important;
         transform: scale(1.08);
         box-shadow: 0 4px 12px rgba(11, 85, 122, 0.2);
       }
@@ -139,11 +145,11 @@
   <body class="text-gray-600 font-sans antialiased h-screen">
     <div
       id="appContainer"
-      class="container mx-auto w-full h-full min-h-screen flex flex-col overflow-x-hidden"
+      class="container mx-auto w-full h-full min-h-screen flex flex-col overflow-x-hidden bg-section"
     >
       <header
         id="appHeader"
-        class="sticky top-0 z-50 bg-green-50 pt-2 pb-2 md:pb-0 px-4 md:px-0 flex flex-col md:flex-row gap-4 md:gap-0 justify-between items-stretch md:items-center shrink-0 border-b border-gray-200/50"
+        class="sticky top-0 z-50 pb-2 md:pb-0 px-4 md:px-0 flex flex-col md:flex-row gap-4 md:gap-0 justify-between items-stretch md:items-center shrink-0"
       >
         <div
           class="flex items-end gap-0 bg-gray-100 rounded-t-xl md:rounded-tr-xl md:rounded-tl-none overflow-x-auto no-scrollbar whitespace-nowrap"
@@ -179,7 +185,7 @@
           class="flex items-center justify-between md:justify-end gap-4 md:gap-6 md:pr-8"
         >
           <div class="flex items-center gap-2">
-            <span class="text-xs font-medium text-gray-500">Dark mode</span>
+            <span class="text-xs font-medium text-white">Dark mode</span>
             <div
               class="w-10 h-5 bg-gray-200 rounded-full p-0.5 cursor-pointer neu-inset relative"
             >
@@ -190,7 +196,7 @@
           </div>
           <div class="flex items-center gap-2">
             <button
-              class="w-9 h-9 rounded-full flex items-center justify-center text-gray-500 neu-flat hover:text-gray-700 relative"
+              class="w-9 h-9 rounded-full flex items-center justify-center text-gray-500 neu-inset hover:text-gray-700 relative"
             >
               <i class="fa-solid fa-bell"></i>
               <span
@@ -198,12 +204,12 @@
               ></span>
             </button>
             <button
-              class="w-9 h-9 rounded-full flex items-center justify-center text-gray-500 neu-flat hover:text-gray-700 relative"
+              class="w-9 h-9 rounded-full flex items-center justify-center text-gray-500 neu-inset hover:text-gray-700 relative"
             >
               <i class="fa-solid fa-gear w-5"></i>
             </button>
             <button
-              class="w-9 h-9 rounded-full overflow-hidden neu-flat flex items-center justify-center hover:text-gray-700 relative"
+              class="w-9 h-9 rounded-full overflow-hidden neu-inset flex items-center justify-center hover:text-gray-700 relative"
             >
               <i class="fa-solid fa-user"></i>
             </button>
@@ -211,7 +217,10 @@
         </div>
       </header>
 
-      <main id="appMain" class="flex h-full flex-row gap-2 overflow-auto">
+      <main
+        id="appMain"
+        class="flex h-full flex-row gap-2 overflow-auto bg-section"
+      >
         <div
           class="w-[65px] pt-6 flex flex-col items-center sticky top-4 left-2 z-50 select-none"
         >
@@ -229,7 +238,7 @@
               </span>
             </button>
             <span
-              class="text-[10px] font-bold mt-2 transition-colors duration-300"
+              class="text-[10px] text-white font-bold mt-2 transition-colors duration-300"
             >
               Tổng Quan
             </span>
@@ -254,29 +263,30 @@
               </span>
             </button>
             <span
-              class="text-[10px] font-bold mt-2 transition-colors duration-300"
+              class="text-[10px] text-white font-bold mt-2 transition-colors duration-300"
             >
               Chi Tiết
             </span>
           </div>
         </div>
 
-        <div class="flex h-full flex-col gap-4 md:py-6 overflow-auto">
-          <div id="title-section1" class="flex items-center justify-between">
+        <div class="flex h-full flex-col overflow-auto">
+          <div
+            id="title-section1"
+            class="flex p-4 pl-6 items-center justify-between"
+          >
             <h1
               id="dynamicSectionTitle"
-              class="text-xl md:text-2xl font-bold uppercase text-gray-800 tracking-tight"
+              class="text-xl md:text-2xl font-bold uppercase text-white"
             >
               Tổng quan Bộ ngành
             </h1>
           </div>
           <section
             id="section-1"
-            class="section-1 glass-card p-4 md:p-6 rounded-lg neu-flat bg-[#f9ffff] space-y-6"
+            class="section-1 p-4 md:p-6 rounded-lg space-y-4"
           >
-            <div
-              class="bg-[#f9ffff]/95 backdrop-blur-md pb-4 border-b border-gray-100 flex flex-col gap-4"
-            >
+            <div class="backdrop-blur-md flex flex-col gap-4">
               <div
                 class="flex flex-col lg:flex-row lg:items-center justify-between gap-4"
               >
@@ -428,280 +438,304 @@
               </div>
             </div>
 
-            <div id="dynamicContentBody">
-              <div
-                id="tab-content-tongquan"
-                class="grid grid-cols-1 gap-4 items-stretch w-full"
-              >
+            <div id="dynamicContentBody" class="space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div
-                  class="grid grid-cols-1 lg:grid-cols-6 gap-4 items-stretch w-full"
+                  class="p-4 bg-white border border-slate-100 rounded-xl shadow-2xs flex items-center gap-3"
                 >
                   <div
-                    id="pieChartContainer"
-                    class="col-span-1 lg:col-span-3 transition-all duration-300"
+                    class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm shadow-2xs"
                   >
-                    <div
-                      class="p-4 md:p-5 rounded-2xl border border-slate-100 bg-white shadow-xs h-full flex flex-col justify-between relative group"
-                    >
-                      <button
-                        id="btnTogglePie"
-                        onclick="toggleExpandRow1('all')"
-                        class="hidden lg:flex absolute top-1/2 -translate-y-1/2 right-[-12px] w-7 h-7 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-400 hover:text-slate-700 items-center justify-center transition-all z-10"
-                        title="Mở rộng danh sách"
-                      >
-                        <i
-                          id="iconTogglePie"
-                          class="fa-solid fa-angles-right text-xs"
-                        ></i>
-                      </button>
-
-                      <div
-                        class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center flex-1 w-full"
-                      >
-                        <div
-                          class="sm:col-span-6 space-y-2 text-xs font-semibold order-2 sm:order-1"
-                        >
-                          <div
-                            class="p-3 rounded-xl flex items-center justify-between gap-3 bg-slate-50/60 border border-slate-100"
-                          >
-                            <div
-                              class="w-9 h-9 rounded-lg bg-white shadow-xs flex items-center justify-center text-slate-500 text-sm"
-                            >
-                              <i class="fa-solid fa-chart-pie"></i>
-                            </div>
-                            <div class="text-right">
-                              <p
-                                class="text-[10px] font-bold uppercase tracking-wider text-slate-400"
-                              >
-                                Tổng số CSDL
-                              </p>
-                              <h3
-                                id="totalCsdlCount"
-                                class="text-sm font-bold text-slate-800"
-                              >
-                                0
-                              </h3>
-                            </div>
-                          </div>
-                          <div
-                            onclick="toggleExpandRow1('Đã xây dựng')"
-                            class="p-2.5 rounded-xl bg-emerald-50/50 border border-emerald-100 flex items-center justify-between cursor-pointer hover:bg-emerald-50 transition-all"
-                          >
-                            <div
-                              class="flex items-center gap-2 text-emerald-900"
-                            >
-                              <i class="text-emerald-500 fa-solid fa-check"></i>
-                              <span>Đã xây dựng</span>
-                            </div>
-                            <span
-                              id="countDaXayDung"
-                              class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[11px]"
-                              >0</span
-                            >
-                          </div>
-                          <div
-                            onclick="toggleExpandRow1('Đang xây dựng')"
-                            class="p-2.5 rounded-xl bg-amber-50/50 border border-amber-100 flex items-center justify-between cursor-pointer hover:bg-amber-50 transition-all"
-                          >
-                            <div class="flex items-center gap-2 text-amber-900">
-                              <i
-                                class="text-amber-500 fa-regular fa-hourglass"
-                              ></i>
-                              <span>Đang xây dựng</span>
-                            </div>
-                            <span
-                              id="countDangXayDung"
-                              class="w-5 h-5 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-[11px]"
-                              >0</span
-                            >
-                          </div>
-                          <div
-                            onclick="toggleExpandRow1('Chưa xây dựng')"
-                            class="p-2.5 rounded-xl bg-rose-50/50 border border-rose-100 flex items-center justify-between cursor-pointer hover:bg-rose-50 transition-all"
-                          >
-                            <div class="flex items-center gap-2 text-rose-900">
-                              <i
-                                class="text-rose-500 fa-solid fa-triangle-exclamation"
-                              ></i>
-                              <span>Chưa xây dựng</span>
-                            </div>
-                            <span
-                              id="countChuaXayDung"
-                              class="w-5 h-5 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-[11px]"
-                              >0</span
-                            >
-                          </div>
-                        </div>
-                        <div
-                          class="sm:col-span-6 flex flex-col items-center justify-center relative min-h-[160px] order-1 sm:order-2"
-                        >
-                          <div
-                            class="w-full max-w-[180px] aspect-square cursor-pointer"
-                          >
-                            <canvas id="csdlPieChart"></canvas>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <i class="fa-solid fa-gavel"></i>
                   </div>
-
-                  <div
-                    id="panelDetailRow1"
-                    class="hidden col-span-1 lg:col-span-3 transition-all duration-300 animate-slide-in-right"
-                  >
-                    <div
-                      class="p-4 md:p-5 rounded-2xl border border-slate-100 bg-white shadow-xs h-full flex flex-col justify-between"
+                  <div>
+                    <span
+                      class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block"
+                      >Nghị quyết 11/NQ-CP</span
                     >
-                      <div
-                        class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pb-2 border-b border-slate-100 bg-slate-50/80 p-3 rounded-xl mb-3"
+                    <div class="flex items-baseline gap-1.5">
+                      <span class="text-lg font-black text-slate-800">92%</span>
+                      <span class="text-[10px] text-emerald-600 font-bold"
+                        ><i class="fa-solid fa-arrow-trend-up"></i> +4.2%</span
                       >
-                        <div>
-                          <h4
-                            id="panelTitleRow1"
-                            class="font-bold text-xs text-slate-900 truncate"
-                          >
-                            Danh sách chi tiết
-                          </h4>
-                          <p
-                            id="panelSubtitleRow1"
-                            class="text-[9px] text-slate-500 font-medium mt-0.5"
-                          ></p>
-                        </div>
-                        <div
-                          class="relative flex-1 max-w-full sm:max-w-[180px]"
-                        >
-                          <input
-                            type="text"
-                            id="searchRow1"
-                            oninput="handleSearchRow1()"
-                            placeholder="Tìm bộ ngành, CSDL..."
-                            class="w-full pl-7 pr-2 py-1.5 border border-slate-200 rounded-lg text-[11px] focus:outline-hidden focus:border-blue-500 bg-white"
-                          />
-                          <i
-                            class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[10px]"
-                          ></i>
-                        </div>
-                        <button
-                          onclick="closeExpandRow1()"
-                          class="px-2 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 font-bold text-[10px] flex items-center justify-center gap-1 transition-all active:scale-95"
-                        >
-                          Thu gọn
-                          <i class="fa-solid fa-angles-left text-[9px]"></i>
-                        </button>
-                      </div>
-                      <div
-                        class="overflow-x-auto flex-1 max-h-[200px] pr-1 custom-scrollbar"
-                      >
-                        <table
-                          class="w-full text-[11px] text-left border-collapse tracking-tight min-w-[500px]"
-                        >
-                          <thead>
-                            <tr
-                              class="border-b border-slate-200 bg-slate-50 text-slate-500 font-bold sticky top-0 z-10"
-                            >
-                              <th class="p-2 text-center w-8">STT</th>
-                              <th class="p-2 w-20">Bộ ngành</th>
-                              <th class="p-2 w-24">Chủ quản</th>
-                              <th class="p-2">Tên Cơ sở dữ liệu</th>
-                              <th class="p-2 text-center w-20">Hiện trạng</th>
-                            </tr>
-                          </thead>
-                          <tbody
-                            id="tableBodyRow1"
-                            class="divide-y divide-slate-100 text-slate-600"
-                          ></tbody>
-                        </table>
-                      </div>
                     </div>
+                    <p class="text-[10px] text-slate-500">
+                      Đã sửa đổi thiết chế hạ tầng số
+                    </p>
                   </div>
                 </div>
 
                 <div
-                  class="grid grid-cols-1 lg:grid-cols-6 gap-4 items-stretch w-full"
+                  class="p-4 bg-white border border-slate-100 rounded-xl shadow-2xs flex items-center gap-3"
                 >
                   <div
-                    id="barChartContainer"
-                    class="col-span-1 lg:col-span-6 transition-all duration-300 relative group"
+                    class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-sm shadow-2xs"
                   >
-                    <div
-                      class="p-4 md:p-5 rounded-2xl border border-slate-100 bg-white shadow-xs h-full flex flex-col justify-between"
+                    <i class="fa-solid fa-network-wired"></i>
+                  </div>
+                  <div>
+                    <span
+                      class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block"
+                      >Kế hoạch 02/KH-BCĐTW</span
                     >
-                      <div class="flex flex-col gap-0.5 mb-2">
-                        <h3 class="text-slate-800 font-bold text-sm">
-                          Tiến độ xây dựng CSDL
-                        </h3>
-                      </div>
-                      <div
-                        class="w-full relative flex-1 min-h-[220px] md:min-h-[260px]"
+                    <div class="flex items-baseline gap-1.5">
+                      <span class="text-lg font-black text-slate-800">4/5</span>
+                      <span class="text-[10px] text-slate-500 font-medium"
+                        >Trục cốt lõi</span
                       >
-                        <canvas id="statusBarChart"></canvas>
+                    </div>
+                    <p class="text-[10px] text-slate-500">
+                      Chuyển đổi số liên thông đồng bộ
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  class="p-4 bg-white border border-slate-100 rounded-xl shadow-2xs flex items-center gap-3"
+                >
+                  <div
+                    class="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-sm shadow-2xs"
+                  >
+                    <i class="fa-solid fa-database"></i>
+                  </div>
+                  <div>
+                    <span
+                      class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block"
+                      >CSDL Trọng Yếu Quốc Gia</span
+                    >
+                    <div class="flex items-baseline gap-1.5">
+                      <span class="text-lg font-black text-slate-800">14</span>
+                      <span class="text-[10px] text-slate-400"
+                        >Danh mục gốc</span
+                      >
+                    </div>
+                    <p class="text-[10px] text-amber-600 font-bold">
+                      Kiểm soát an toàn tầng sâu
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  class="p-4 bg-white border border-slate-100 rounded-xl shadow-2xs flex items-center gap-3"
+                >
+                  <div
+                    class="w-10 h-10 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center text-sm shadow-2xs"
+                  >
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                  </div>
+                  <div>
+                    <span
+                      class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block"
+                      >Chưa được quy hoạch</span
+                    >
+                    <div class="flex items-baseline gap-1.5">
+                      <span class="text-lg font-black text-slate-800">23%</span>
+                      <span class="text-[10px] text-rose-500 font-medium"
+                        >Cần chuẩn hóa</span
+                      >
+                    </div>
+                    <p class="text-[10px] text-slate-500">
+                      Vận hành ngoài khung pháp luật
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div id="tab-content-tongquan" class="w-full">
+                <div
+                  class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch w-full"
+                >
+                  <div class="col-span-1 lg:col-span-4 flex flex-col gap-4">
+                    <div
+                      id="pieChartContainer"
+                      class="transition-all duration-300"
+                    >
+                      <div
+                        class="p-3.5 rounded-2xl border border-slate-100 bg-white shadow-xs flex flex-col justify-between relative group"
+                      >
+                        <div
+                          class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center w-full"
+                        >
+                          <div
+                            class="sm:col-span-7 space-y-1.5 text-[11px] font-semibold order-2 sm:order-1"
+                          >
+                            <div
+                              class="p-2 rounded-xl flex items-center justify-between gap-2 bg-slate-50/60 border border-slate-100"
+                            >
+                              <div
+                                class="w-7 h-7 rounded-lg bg-white shadow-xs flex items-center justify-center text-slate-500 text-xs"
+                              >
+                                <i class="fa-solid fa-chart-pie"></i>
+                              </div>
+                              <div class="text-right">
+                                <p
+                                  class="text-[9px] font-bold uppercase tracking-wider text-slate-400"
+                                >
+                                  Tổng số CSDL
+                                </p>
+                                <h3
+                                  id="totalCsdlCount"
+                                  class="text-xs font-bold text-slate-800"
+                                >
+                                  0
+                                </h3>
+                              </div>
+                            </div>
+
+                            <div
+                              onclick="
+                                toggleExpandCombined('Đã xây dựng', 'pie')
+                              "
+                              class="p-2 rounded-xl bg-emerald-50/50 border border-emerald-100 flex items-center justify-between cursor-pointer hover:bg-emerald-50 transition-all"
+                            >
+                              <div
+                                class="flex items-center gap-1.5 text-emerald-900"
+                              >
+                                <i
+                                  class="text-emerald-500 fa-solid fa-check text-[10px]"
+                                ></i>
+                                <span>Đã xây dựng</span>
+                              </div>
+                              <span
+                                id="countDaXayDung"
+                                class="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[10px]"
+                                >0</span
+                              >
+                            </div>
+
+                            <div
+                              onclick="
+                                toggleExpandCombined('Đang xây dựng', 'pie')
+                              "
+                              class="p-2 rounded-xl bg-amber-50/50 border border-amber-100 flex items-center justify-between cursor-pointer hover:bg-amber-50 transition-all"
+                            >
+                              <div
+                                class="flex items-center gap-1.5 text-amber-900"
+                              >
+                                <i
+                                  class="text-amber-500 fa-regular fa-hourglass text-[10px]"
+                                ></i>
+                                <span>Đang xây dựng</span>
+                              </div>
+                              <span
+                                id="countDangXayDung"
+                                class="w-4 h-4 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-[10px]"
+                                >0</span
+                              >
+                            </div>
+
+                            <div
+                              onclick="
+                                toggleExpandCombined('Chưa xây dựng', 'pie')
+                              "
+                              class="p-2 rounded-xl bg-rose-50/50 border border-rose-100 flex items-center justify-between cursor-pointer hover:bg-rose-50 transition-all"
+                            >
+                              <div
+                                class="flex items-center gap-1.5 text-rose-900"
+                              >
+                                <i
+                                  class="text-rose-500 fa-solid fa-triangle-exclamation text-[10px]"
+                                ></i>
+                                <span>Chưa xây dựng</span>
+                              </div>
+                              <span
+                                id="countChuaXayDung"
+                                class="w-4 h-4 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-[10px]"
+                                >0</span
+                              >
+                            </div>
+                          </div>
+
+                          <div
+                            class="sm:col-span-5 flex flex-col items-center justify-center relative min-h-[120px] order-1 sm:order-2"
+                          >
+                            <div
+                              class="w-full max-w-[130px] aspect-square cursor-pointer"
+                            >
+                              <canvas id="csdlPieChart"></canvas>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      id="barChartContainer"
+                      class="transition-all duration-300 relative group"
+                    >
+                      <div
+                        class="p-3.5 rounded-2xl border border-slate-100 bg-white shadow-xs flex flex-col justify-between h-[235px]"
+                      >
+                        <div class="flex flex-col gap-0.5 mb-1">
+                          <h3 class="text-slate-800 font-bold text-xs">
+                            Tiến độ xây dựng CSDL
+                          </h3>
+                        </div>
+                        <div class="w-full relative flex-1 h-[180px]">
+                          <canvas id="statusBarChart"></canvas>
+                        </div>
                       </div>
                     </div>
                   </div>
 
                   <div
-                    id="panelDetailRow2"
-                    class="hidden col-span-1 lg:col-span-3 transition-all duration-300 animate-slide-in-right"
+                    id="panelDetailCombined"
+                    class="col-span-1 lg:col-span-8 transition-all duration-300 animate-slide-in-right"
                   >
                     <div
-                      class="p-4 md:p-5 rounded-2xl border border-slate-100 bg-white shadow-xs h-full flex flex-col justify-between"
+                      class="p-4 rounded-2xl border border-slate-100 bg-white shadow-xs h-[450px] flex flex-col justify-between"
                     >
                       <div
-                        class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pb-2 border-b border-slate-100 bg-slate-50/80 p-3 rounded-xl mb-3"
+                        class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pb-2 border-b border-slate-100 bg-slate-50/80 p-2.5 rounded-xl mb-2.5 shrink-0"
                       >
                         <div>
                           <h4
-                            id="panelTitleRow2"
+                            id="panelTitleCombined"
                             class="font-bold text-xs text-slate-900 truncate"
                           >
-                            Chi tiết mốc tiến độ
+                            Trạng thái: Tất cả CSDL
                           </h4>
                           <p
-                            id="panelSubtitleRow2"
+                            id="panelSubtitleCombined"
                             class="text-[9px] text-slate-500 font-medium mt-0.5"
-                          ></p>
+                          >
+                            <span
+                              class="inline-flex items-center gap-1 text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full font-bold border border-teal-200"
+                            >
+                              <i
+                                class="fa-solid fa-clock-rotate-left text-[10px]"
+                              ></i>
+                              Thời điểm: Hiện tại
+                            </span>
+                          </p>
                         </div>
                         <div
-                          class="relative flex-1 max-w-full sm:max-w-[180px]"
+                          class="relative flex-1 max-w-full sm:max-w-[220px]"
                         >
                           <input
                             type="text"
-                            id="searchRow2"
-                            oninput="handleSearchRow2()"
-                            placeholder="Tìm bộ ngành, CSDL..."
-                            class="w-full pl-7 pr-2 py-1.5 border border-slate-200 rounded-lg text-[11px] focus:outline-hidden focus:border-blue-500 bg-white"
+                            id="searchCombined"
+                            oninput="handleSearchCombined()"
+                            placeholder="Tìm bộ ngành, chủ quản, tên CSDL..."
+                            class="w-full pl-7 pr-2 py-1 border border-slate-200 rounded-lg text-[11px] focus:outline-hidden focus:border-blue-500 bg-white"
                           />
                           <i
                             class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[10px]"
                           ></i>
                         </div>
-                        <button
-                          onclick="closeExpandRow2()"
-                          class="px-2 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 font-bold text-[10px] flex items-center justify-center gap-1 transition-all active:scale-95"
-                        >
-                          Thu gọn
-                          <i class="fa-solid fa-angles-left text-[9px]"></i>
-                        </button>
                       </div>
+
                       <div
-                        class="overflow-x-auto flex-1 max-h-[220px] pr-1 custom-scrollbar"
+                        class="flex-1 h-0 overflow-y-auto overflow-x-auto pr-1 custom-scrollbar border border-slate-50 rounded-xl"
                       >
                         <table
-                          class="w-full text-[11px] text-left border-collapse tracking-tight min-w-[500px]"
+                          class="w-full text-[11px] text-left border-collapse tracking-tight min-w-[700px]"
                         >
-                          <thead>
-                            <tr
-                              class="border-b border-slate-200 bg-slate-50 text-slate-500 font-bold sticky top-0 z-10"
-                            >
-                              <th class="p-2 text-center w-8">STT</th>
-                              <th class="p-2 w-20">Bộ ngành</th>
-                              <th class="p-2 w-24">Chủ quản</th>
-                              <th class="p-2">Tên Cơ sở dữ liệu</th>
-                              <th class="p-2 text-center w-20">Hiện trạng</th>
-                            </tr>
-                          </thead>
+                          <thead
+                            id="tableHeaderCombined"
+                            class="sticky top-0 bg-slate-100 z-10"
+                          ></thead>
                           <tbody
-                            id="tableBodyRow2"
+                            id="tableBodyCombined"
                             class="divide-y divide-slate-100 text-slate-600"
                           ></tbody>
                         </table>
@@ -713,7 +747,7 @@
 
               <div
                 id="tab-content-tieuchi"
-                class="hidden grid grid-cols-1 md:grid-cols-2 animate-fade-in gap-4"
+                class="hidden flex flex-col gap-2"
               ></div>
 
               <div
@@ -723,36 +757,35 @@
             </div>
           </section>
 
-          <div id="title-section2" class="flex items-center">
+          <div id="title-section2" class="flex p-4 pl-6 items-center">
             <h1
               id="dynamicSectionTitle"
-              class="text-xl md:text-2xl uppercase font-bold text-gray-800"
+              class="text-xl md:text-2xl uppercase font-bold text-white"
             >
               Chi tiết Bộ ngành
             </h1>
           </div>
-          <section
-            id="section-2"
-            class="section-2 glass-card p-6 rounded-lg neu-flat bg-[#f9ffff] space-y-6"
-          >
-            <div class="relative w-full max-w-md mx-auto flex items-center">
-              <div
-                class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-400"
-              >
-                <i class="fa-solid fa-magnifying-glass"></i>
+          <section id="section-2" class="section-2 rounded-lg p-4 space-y-6">
+            <div class="w-full mx-auto flex items-center justify-start">
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-400"
+                >
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <input
+                  id="boNganhLineChartSearchInput"
+                  type="text"
+                  placeholder="Tìm kiếm theo Bộ ngành..."
+                  class="w-full pl-11 pr-24 sm:pr-28 py-2.5 rounded-full border border-gray-200 bg-white text-xs md:text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 shadow-sm transition-all"
+                />
+                <button
+                  class="absolute right-1.5 inset-y-1.5 px-3 sm:px-4 rounded-full bg-teal-600 text-white text-[11px] font-medium hover:bg-teal-700 active:scale-95 transition-all flex items-center gap-1"
+                >
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <span class="hidden sm:inline">Tìm kiếm</span>
+                </button>
               </div>
-              <input
-                id="boNganhLineChartSearchInput"
-                type="text"
-                placeholder="Tìm kiếm theo Bộ ngành..."
-                class="w-full pl-11 pr-24 sm:pr-28 py-2.5 rounded-full border border-gray-200 bg-white text-xs md:text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 shadow-sm transition-all"
-              />
-              <button
-                class="absolute right-1.5 inset-y-1.5 px-3 sm:px-4 rounded-full bg-teal-600 text-white text-[11px] font-medium hover:bg-teal-700 active:scale-95 transition-all flex items-center gap-1"
-              >
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <span class="hidden sm:inline">Tìm kiếm</span>
-              </button>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -784,11 +817,9 @@
             </div>
 
             <div
-              class="w-full pt-4 space-y-3 rounded-xl text-slate-950 shadow-sm"
+              class="w-full rounded-xl text-slate-950 shadow-sm bg-white p-6 space-y-4"
             >
-              <h3 class="text-gray-800 font-bold text-base mb-3">
-                Danh sách chi tiết
-              </h3>
+              <h3 class="text-black font-bold text-base">Danh sách chi tiết</h3>
               <div
                 class="flex flex-wrap items-center justify-between gap-3 text-xs"
               >
@@ -802,7 +833,7 @@
                       type="text"
                       placeholder="Lọc dữ liệu theo đơn vị chủ quản, CSDL..."
                       oninput="onTableStateChange()"
-                      class="w-full pl-9 pr-3 py-2 rounded-md border border-slate-200 bg-slate-50/50 placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-400 focus-visible:bg-white transition-all text-xs font-medium"
+                      class="w-full pl-9 pr-3 py-2 rounded-md border border-slate-200 placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-400 focus-visible:bg-white transition-all text-xs font-medium"
                     />
                   </div>
                 </div>
@@ -944,58 +975,82 @@
               >
                 <table
                   id="mainShadcnReactTable"
-                  class="w-full text-xs border-collapse min-w-[1200px] tracking-tight"
+                  class="w-full text-xs border-collapse min-w-[1600px] tracking-tight table-fixed"
                 >
                   <thead>
                     <tr
                       class="border-b border-slate-200 bg-slate-50/70 text-slate-500 transition-colors"
                     >
                       <th class="p-3 font-semibold text-center w-12">STT</th>
-                      <th class="p-3 font-semibold text-left">Bộ ngành</th>
-                      <th class="p-3 font-semibold text-left col-sub-holder">
+                      <th class="p-3 font-semibold text-left w-36">Bộ ngành</th>
+                      <th
+                        class="p-3 font-semibold text-left w-36 col-sub-holder"
+                      >
                         Đơn vị chủ quản
                       </th>
-                      <th class="p-3 font-semibold text-left">
+                      <th class="p-3 font-semibold text-left w-36">
                         Tên Cơ sở dữ liệu chuyên ngành
                       </th>
-                      <th class="p-3 font-semibold text-center w-24">
+                      <th class="p-3 font-semibold text-center w-20">
                         Tiến độ
                       </th>
+
                       <th
-                        class="p-3 font-semibold text-center w-16 col-sub-criteria"
+                        class="p-3 font-semibold text-center w-14 col-sub-criteria"
                       >
                         Pháp lý
                       </th>
                       <th
-                        class="p-3 font-semibold text-center w-16 col-sub-criteria"
+                        class="p-3 font-semibold text-center w-14 col-sub-criteria"
                       >
                         Tài chính
                       </th>
                       <th
-                        class="p-3 font-semibold text-center w-16 col-sub-criteria"
+                        class="p-3 font-semibold text-center w-14 col-sub-criteria"
                       >
                         Hạ tầng
                       </th>
                       <th
-                        class="p-3 font-semibold text-center w-16 col-sub-criteria"
+                        class="p-3 font-semibold text-center w-14 col-sub-criteria"
                       >
                         Dữ liệu
                       </th>
                       <th
-                        class="p-3 font-semibold text-center w-16 col-sub-criteria"
+                        class="p-3 font-semibold text-center w-14 col-sub-criteria"
                       >
                         Phần mềm
                       </th>
                       <th
-                        class="p-3 font-semibold text-center w-16 col-sub-criteria"
+                        class="p-3 font-semibold text-center w-14 col-sub-criteria"
                       >
                         ATTT
                       </th>
+
                       <th
-                        class="p-3 font-semibold text-center w-32 col-sub-eval"
+                        class="p-3 font-semibold text-center w-28 col-sub-eval"
                       >
-                        Đánh giá chung
+                        Trạng thái
                       </th>
+
+                      <th class="p-3 font-semibold text-left w-60">
+                        <i
+                          class="fa-solid fa-magnifying-glass-chart mr-1 text-slate-400"
+                        ></i
+                        >Đánh giá hiện trạng
+                      </th>
+                      <th class="p-3 font-semibold text-left w-60">
+                        <i
+                          class="fa-solid fa-triangle-exclamation mr-1 text-slate-400"
+                        ></i
+                        >Khó khăn vướng mắc
+                      </th>
+                      <th class="p-3 font-semibold text-left w-60">
+                        <i
+                          class="fa-solid fa-hand-holding-hand mr-1 text-slate-400"
+                        ></i
+                        >Kiến nghị đề xuất
+                      </th>
+
                       <th
                         class="p-3 font-semibold text-center w-12 text-slate-400"
                       >
@@ -1011,7 +1066,7 @@
               </div>
 
               <div
-                class="flex items-center justify-between text-xs text-slate-500 font-medium pt-1"
+                class="flex items-center justify-between text-xs text-black font-medium pt-1"
               >
                 <div class="flex items-center gap-1">
                   <i
@@ -1141,6 +1196,19 @@
                 class="grid grid-cols-3 gap-4"
                 id="dialogCriteriaGridBox"
               ></div>
+              <div class="mt-4 shrink-0">
+                <span
+                  class="text-[10px] uppercase tracking-wider font-bold text-slate-400 block mb-1"
+                >
+                  <i class="fa-solid fa-file-invoice text-slate-500 mr-1"></i>
+                  Nội dung phân tích & giải pháp chuyên sâu
+                </span>
+              </div>
+
+              <div
+                id="dialogDetailAnalysisBox"
+                class="flex-1 overflow-y-auto pr-1 custom-scrollbar"
+              ></div>
             </div>
 
             <div
@@ -1192,41 +1260,38 @@
       >
         <div
           id="chartDialogBoxStructure"
-          class="relative w-full max-w-xl mx-4 bg-white rounded-2xl shadow-xl border border-slate-100 flex flex-col max-h-[85vh] scale-95 opacity-0 transition-all duration-200 ease-out"
+          class="relative w-full max-w-2xl mx-4 bg-white rounded-2xl shadow-2xl border border-slate-100 flex flex-col max-h-[85vh] scale-95 opacity-0 transition-all duration-200 ease-out"
         >
-          <!-- Header -->
           <div
-            class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl"
+            class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/80 backdrop-blur-md rounded-t-2xl sticky top-0 z-10"
           >
             <h3
               id="chartModalTitle"
               class="text-sm font-semibold text-slate-800 flex items-center gap-2"
             >
-              Chi tiết CSDL theo Bộ ngành
+              <i class="fa-solid fa-folder-open text-slate-500 mr-2"></i>Chi
+              tiết CSDL theo Bộ ngành
             </h3>
             <button
               onclick="closeChartClickDetailsPopup()"
-              class="w-7 h-7 rounded-full text-slate-400 hover:bg-slate-200 hover:text-slate-800 flex items-center justify-center transition-colors"
+              class="w-7 h-7 rounded-full text-slate-400 hover:bg-slate-200 hover:text-slate-800 flex items-center justify-center transition-colors focus:outline-hidden"
+              title="Đóng (Phím Esc)"
             >
               <i class="fa-solid fa-xmark text-sm"></i>
             </button>
           </div>
 
-          <!-- Danh sách hiển thị nội dung (Tên BQP, Đơn vị chủ quản, CSDL, Trạng thái) -->
           <div
             id="chartModalListContent"
-            class="p-4 overflow-y-auto space-y-3 flex-1 min-h-[200px]"
-          >
-            <!-- JS render động dữ liệu vào đây -->
-          </div>
+            class="p-4 overflow-y-auto space-y-4 flex-1 min-h-[250px] scrollbar-thin scrollbar-thumb-slate-200"
+          ></div>
 
-          <!-- Footer -->
           <div
             class="p-3 border-t border-slate-100 bg-slate-50 text-right rounded-b-2xl"
           >
             <button
               onclick="closeChartClickDetailsPopup()"
-              class="px-4 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 shadow-3xs transition-all"
+              class="px-4 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 shadow-2xs hover:shadow-xs transition-all focus:ring-2 focus:ring-slate-100"
             >
               Đóng cửa sổ
             </button>
